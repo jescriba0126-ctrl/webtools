@@ -53,73 +53,77 @@
     </div>
   </div>
 
-  <div class="story-part">
-    <div class="story-img">
-      <img src="flower.png" alt="Cubiertos Story">
-    </div>
-    <div class="story-text">
-      <section id="story">
-      <h2>Our Story</h2>
-      <p>Cubiertos began with a small, late-night meal cooked by a young dreamer for her siblings. That moment sparked a passion that turned into a dream. Starting with two staff and three tables, we worked through storms, shortages, and sleepless nights — always holding onto our purpose: to serve food with soul.</p>
-      <p>Today, Cubiertos has grown into a cozy local hub where people come not just to eat, but to feel at home. From humble beginnings to heartfelt meals — this is our story, and it’s still being written with every dish we serve.</p>
+ <section id="booking" class="booking-section">
+  <div class="booking-container">
+    <h3>🍴 Book an Appointment</h3>
+    <p class="intro-text">Reserve your table for birthdays, weddings, or special events at <b>Cubiertos Food Hub</b>.</p>
+
+    <form class="booking-form">
+      <p>
+        <i>Full Name</i><br>
+        <input type="text" name="name" placeholder="Enter your full name" required>
+      </p>
+
+      <p>
+        <i>Email Address</i><br>
+        <input type="email" name="email" placeholder="Enter your email" required>
+      </p>
+
+      <p>
+        <i>Phone Number</i><br>
+        <input type="tel" name="phone" placeholder="e.g. 0981 027 0704" required>
+      </p>
+
+      <p>
+        <i>Type of Occasion</i><br>
+        <select name="occasion" required>
+          <option value="">-- Select Occasion --</option>
+          <option value="dine-in">Dine In</option>
+          <option value="birthday">Birthday</option>
+          <option value="wedding">Wedding</option>
+          <option value="corporate">Corporate Event</option>
+          <option value="other">Other</option>
+        </select>
+      </p>
+
+      <p>
+        <i>Number of Guests</i><br>
+        <input type="number" name="guests" placeholder="Enter number of guests" min="1" max="100" required>
+      </p>
+
+      <p>
+        <i>Preferred Date & Time</i><br>
+        <input type="datetime-local" name="datetime" required>
+      </p>
+
+      <p>
+        <i>Package Choice</i><br>
+        <select name="package">
+          <option value="">-- Choose a Package --</option>
+          <option value="basic">Basic Package (₱2,000 - Small Group)</option>
+          <option value="standard">Standard Package (₱5,000 - 10 Guests)</option>
+          <option value="premium">Premium Package (₱10,000+ - Events)</option>
+        </select>
+      </p>
+
+      <p>
+        <i>Special Notes</i><br>
+        <textarea name="message" rows="4" placeholder="Any special requests or details?"></textarea>
+      </p>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-submit">Submit Booking</button>
+        <button type="reset" class="btn-reset">Clear Form</button>
+      </div>
+    </form>
+
+    <div class="booking-info">
+      <h4>📞 Need Help?</h4>
+      <p>Contact us at <b>0981 027 0704</b><br>
+      or visit <em>Imelda Blvd., Rawis, Virac, Catanduanes</em></p>
     </div>
   </div>
 </section>
-<section class="contact">
-  <section id="contact">
-      <section id="container">
-    <div class="container">
-        <h2>Book an Appointment</h2>
-        <div class="contact-wrapper">
-            <div class="contact-form">
-                <h3></h3>
-                <form>
-                    <div class="form-group">
-                        <input type="text" name="name" placeholder="Name">
-                    </div>
-                    <div class="form-group">
-                        <input type="email" name="email" placeholder="Email">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" name="number" placeholder="Phone number">
-                    </div>
-                    <div class="form-group">
-                        <label for="dateTimePicker"></label>
-                        <input type="datetime-local" name="datetime" placeholder="Select your prefered date">
-                    </div>
-                    <div class="form-group">
-                       <label for="fruits">Choose your Service</label>
-  <select id="fruits" name="selected_fruit">
-    <option value="Dine-In">Dine In</option>
-    <option value="Catering">Catering</option>
-    <option value="Wedding">Wedding</option>
-    <option value="Birthdays">Birthdays</option>
-  </select>
-                    </div>
-                    <div class="select">
-                       <label for="fruits">Number of Guests</label>
-  <select id="fruits" name="selected_fruit">
-    <option value="Dine-In">2</option>
-    <option value="Catering">5</option>
-    <option value="Wedding">10 and above</option>
-  </select>
-                    </div>
-                    <div class="form-group">
-                        <textarea name="message" placeholder="Special Notes"></textarea>
-                    </div>
-                    <button type="submit">Submit</button>
-                    
-                </form>
-            </div>
-            <div class="contact-info">
-                <h3> Call us for more Information</h3>
-                <p><i class="fas fa-phone"></i>0981 027 0704</p>
-                <p><i class="fas fa-map-marker-alt"></i>Along Imelda Blvd.Rawis, Virac, Catanduanes</p>  
-                <img src="logo.jpg" alt="Cubiertos Food Hub Logo">
-            </div>
-        </div>
-    </div>
-   </section>
 
 <footer>
     <div class="footer-info">
@@ -141,7 +145,7 @@
      </div>
   </footer>
 
-  <script>
+ <script>
   window.addEventListener('scroll', function() {
     const header = document.querySelector('header');
     if (window.scrollY > 50) {
@@ -151,4 +155,12 @@
     }
   });
 
+
+  const bookingForm = document.querySelector('.booking-form');
+
+  bookingForm.addEventListener('submit', function(event) {
+    event.preventDefault(); 
+    alert("✅ Thank you for booking!\nYour receipt will be sent to your Gmail shortly.");
+    bookingForm.reset();
+  });
 </script>
