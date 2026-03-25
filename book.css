@@ -283,50 +283,13 @@ nav a:hover::after {
   }
 }
 
-footer {
-  width: 100vw; 
-  background-color: #ffffff;
-  text-align: center;
-  padding: 30px 20px;
-  color: #2d2d2d;
-  overflow: hidden;
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
-
-}
-
-.footer-logos {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 15px;
-}
-
-.footer-logos img {
-  width: 70px;
-  margin: 10px;
-  border-radius: 12px;
-}
-
-.footer-info {
-  font-size: 1px;
-  line-height: 1.6;
- 
-}
-
-.footer-socials {
-  margin-top: 15px;
-}
-
-.footer-socials img {
-  width: 50px;
-  margin: 0 10px;
-}
-
-p{
+ .mainpage p,
+.story-section p,
+.mission-part p {
   font-size: 3vh;
 }
+
+
 
 
 /* === BOOKING SECTION FIX === */
@@ -474,4 +437,49 @@ h4{
   margin-top: 7%;
    text-align: center;
   font-size: 5vh;
+}
+
+footer {
+  width: 100vw; 
+  background-color: #ffffff;
+  text-align: center;
+  padding: 30px 20px;
+  color: #2d2d2d;
+  overflow: hidden;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+
+}
+
+.footer-logos {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.footer-logos img {
+  width: 70px;
+  margin: 10px;
+  border-radius: 12px;
+}
+
+.footer-info {
+  font-size: 1px;
+  line-height: 1.6;
+ 
+}
+
+.footer-socials {
+  margin-top: 15px;
+}
+
+.footer-socials img {
+  width: 50px;
+  margin: 0 10px;
+}
+
+p{
+  font-size: 3vh;
 }

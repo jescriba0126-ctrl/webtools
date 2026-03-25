@@ -1,14 +1,15 @@
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
 }
-
 body {
   font-family: 'Poppins', sans-serif;
   color: #222;
   background-image: url("bodybg.jpg");
 }
+
 
 header {
   width: 100%;
@@ -82,4 +83,173 @@ nav a::after {
 
 nav a:hover::after {
   width: 100%;
+}
+
+/* Main Container */
+.container {
+    padding: 30px 70px;
+    margin-top: 7%;
+}
+
+.title {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 25px;
+}
+
+/* Profile Header */
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.profile-pic {
+    width: 110px;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.profile-info h2 {
+    font-size: 28px;
+}
+
+.subtext {
+    font-size: 12px;
+    color: gray;
+    letter-spacing: 1px;
+}
+
+/* Information Card */
+.info-card {
+    margin-top: 30px;
+    background: #fff;
+    padding: 35px;
+    border-radius: 30px;
+    display: flex;
+    gap: 120px;
+    width: 80%;
+    box-shadow: 0px 5px 18px rgba(0,0,0,0.1);
+}
+
+.info-section h3 {
+    margin-bottom: 10px;
+}
+
+.info-section p {
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.location {
+    margin-top: 10px;
+}
+
+.pin {
+    color: red;
+}
+
+
+/* Logout Button Styled Like Nav Links */
+.nav-btn {
+  padding: 8px 18px;
+  border: none;
+  background: #dda15e;
+  color: #fff;
+  font-weight: 500;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.nav-btn:hover {
+  background: #bc8a4c;
+  transform: translateY(-2px);
+}
+
+.logout {
+  margin-left: 15px;
+}
+
+footer {
+  width: 100vw; 
+  background-color: #ffffff;
+  text-align: center;
+  padding: 30px 20px;
+  color: #2d2d2d;
+  overflow: hidden;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+
+}
+
+
+.cards-wrapper {
+    display: flex;
+    gap: 50px;
+    margin-top: 30px;
+}
+
+
+.order-card {
+    width: 300px;
+    background: #fff;
+    padding: 30px;
+    border-radius: 30px;
+    box-shadow: 0px 5px 18px rgba(0,0,0,0.1);
+}
+
+.order-card h3 {
+    margin-bottom: 15px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.order-card .empty {
+    color: gray;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+
+footer p {
+    font-size: 14px;
+}
+
+
+
+.footer-logos {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.footer-logos img {
+  width: 70px;
+  margin: 10px;
+  border-radius: 12px;
+}
+
+.footer-info {
+  font-size: 1px;
+  line-height: 1.6;
+ 
+}
+
+.footer-socials {
+  margin-top: 15px;
+}
+
+.footer-socials img {
+  width: 50px;
+  margin: 0 10px;
+}
+
+p{
+  font-size: 3vh;
 }
