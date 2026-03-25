@@ -133,3 +133,43 @@ function logout() {
 
 renderOrders();
 renderHistory();
+
+// dito yung calendar render
+let navDate = new Date();
+
+function renderCalendar() {
+    const grid = document.getElementById('calendarGrid');
+    const display = document.getElementById('monthDisplay');
+    grid.innerHTML = "";
+
+    const month = navDate.getMonth();
+    const year = navDate.getFullYear();
+
+    display.innerText = navDate.toLocaleString('default', { month: 'long', year: 'numeric' });
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    // Add empty spaces for the first week
+    for (let i = 0; i < firstDay; i++) {
+        grid.appendChild(document.createElement('div'));
+    }
+
+    // Add the days
+    for (let i = 1; i <= daysInMonth; i++) {
+        const day = document.createElement('div');
+        day.innerText = i;
+        if (i === new Date().getDate() && month === new Date().getMonth()) {
+            day.classList.add('active-day');
+        }
+        grid.appendChild(day);
+    }
+}
+
+// Button clicks
+document.getElementById('prevMonth').onclick = () => { navDate.setMonth(navDate.getMonth() - 1); renderCalendar(); };
+document.getElementById('nextMonth').onclick = () => { navDate.setMonth(navDate.getMonth() + 1); renderCalendar(); };
+
+renderCalendar();
+
+// dito end neto
