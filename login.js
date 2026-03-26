@@ -21,11 +21,11 @@ form.addEventListener('submit', function(event) {
   } 
   else if (loginType === "customer") {
     if (username === "customer1" && password === "123") {
-<<<<<<< HEAD
+
       window.open("book.html", "_self"); // redirect to customer home page
-=======
+
       window.open("book.html", "_self"); // mapupunta sa customer page
->>>>>>> e35a2d3fa3f6a43f86f3b892d529d72fdcb4158c
+ e35a2d3fa3f6a43f86f3b892d529d72fdcb4158c
     } else {
       alert("Invalid customer credentials!");
     }

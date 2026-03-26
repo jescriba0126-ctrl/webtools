@@ -173,3 +173,23 @@ document.getElementById('nextMonth').onclick = () => { navDate.setMonth(navDate.
 renderCalendar();
 
 // dito end neto
+
+
+    window.addEventListener('scroll', function () {
+      const header = document.querySelector('header');
+      header.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+
+    let index = 0;
+    const slides = document.getElementsByClassName('mySlides');
+    function showSlides() {
+      for (let i = 0; i < slides.length; i++) {
+        slides[i].style.display = 'none';
+      }
+      index++;
+      if (index > slides.length) index = 1;
+      slides[index - 1].style.display = 'block';
+      setTimeout(showSlides, 2000);
+    }
+    showSlides();

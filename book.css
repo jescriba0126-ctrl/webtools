@@ -290,8 +290,7 @@ nav a:hover::after {
 }
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 .booking-section {
   position: relative;
   z-index: 20;
@@ -372,11 +371,10 @@ header::before,
 
 .btn-reset:hover {
   background-color: #b3b3b3;
-=======
-=======
+}
 
 
->>>>>>> 7545c7f8b16329e493324d5741d0e44c1f68eb0f
+
 /* === BOOKING SECTION FIX === */
 .booking-section {
   position: relative;
@@ -522,10 +520,10 @@ h4{
   margin-top: 7%;
    text-align: center;
   font-size: 5vh;
->>>>>>> ca5e629537aa0e567521797d83ab72acff84176e
+
 }
 
-<<<<<<< HEAD
+
 h3{
   text-align: center;
   font-size: 5vh;
@@ -536,7 +534,7 @@ h4{
    text-align: center;
   font-size: 5vh;
 }
-=======
+
 footer {
   width: 100vw; 
   background-color: #ffffff;
@@ -581,4 +579,3 @@ footer {
 p{
   font-size: 3vh;
 }
->>>>>>> 7545c7f8b16329e493324d5741d0e44c1f68eb0f
