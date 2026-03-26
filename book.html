@@ -4,8 +4,37 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cubiertos Food Hub - Book</title>
-  <link rel="stylesheet" href="try.css">
+  <link rel="stylesheet" href="book.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Minimal styles for the preview modal so it shows correctly with your existing CSS */
+    .preview-modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.6);
+      z-index: 9999;
+      padding: 16px;
+    }
+    .preview-modal.show { display: flex; }
+    .preview-modal-content {
+      background: #fff;
+      border-radius: 10px;
+      padding: 18px;
+      width: 100%;
+      max-width: 540px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      color: #222;
+    }
+    .preview-modal-content h3 { margin: 0 0 10px; color:#283618; }
+    #previewBody { white-space: pre-wrap; line-height: 1.4; margin-bottom: 14px; }
+    .preview-actions { text-align: right; }
+    .preview-actions .btn { margin-left: 8px; padding: 8px 12px; border-radius: 8px; border: none; cursor: pointer; }
+    .preview-actions .btn.confirm { background: #2f7a2f; color: white; }
+    .preview-actions .btn.edit { background: #ddd; color: #222; }
+  </style>
 </head>
 <body>
 
@@ -16,9 +45,9 @@
     <nav>
       <a href="main.html">Home</a>
       <a href="about.html">About</a>
-      <a href="stores.html">Our Stores</a>
+      <a href="Store/Store.html">Our Stores</a>
       <a href="contacts.html">Contacts</a>
-      <a href="login.html" class="login"><i>👤</i> Log-in</a>
+      <a href="profile.html" class="login"><i>👤</i> Account</a>
     </nav>
   </header>
 
@@ -113,6 +142,21 @@
         <button type="submit" class="btn-submit">Submit Booking</button>
         <button type="reset" class="btn-reset">Clear Form</button>
       </div>
+
+      <!-- Confirmation Preview Modal (kept inside form but will be shown by JS) -->
+      <div id="previewModal" class="preview-modal" aria-hidden="true">
+        <div class="preview-modal-content" role="dialog" aria-modal="true" aria-labelledby="previewTitle">
+          <h3 id="previewTitle">Confirm your booking</h3>
+          <div id="previewBody">
+            <!-- preview content filled by JS -->
+          </div>
+          <div class="preview-actions">
+            <button type="button" id="confirmBookingBtn" class="btn confirm">Confirm</button>
+            <button type="button" id="editBookingBtn" class="btn edit">Edit</button>
+          </div>
+        </div>
+      </div>
+
     </form>
 
     <div class="booking-info">
@@ -129,12 +173,17 @@
       <nav>
         <a href="#mainpage">Home</a>
         <a href="about.html">About</a>
-        <a href="stores.html">Our Stores</a>
+        <a href="Store/Store.html">Our Stores</a>
         <a href="contacts.html">Contacts</a>
-        <a href="login.html"><i>👤</i> Log-in</a>
+        <a href="login.html" class="login"><i>👤</i> Log-in</a>
       </nav>
       <p>Food & Drink · Virac, Philippines, 4800 | Contact Info: 0981 027 0704</p>
-      <p>© 2025 Cubiertos.food.hub</p>
+      <p>Copyright © 2025 Cubiertos.food.hub</p>
+    </div>
+    <div class="footer-socials">
+      <a href="https://www.facebook.com/profile.php?id=61555258696901" target="_blank"><img src="Facebook.png" alt="Facebook" /></a>
+      <a href="https://www.instagram.com/cubiertos2024/" target="_blank"><img src="Instagram.png" alt="Instagram" /></a>
+      <a href="https://mail.google.com/mail/u/0/#sent?compose=CllgCJTNqrcXTJzgQrjqbjtCXnqKDjzdGRPvdqdcFsXlDWgKNhcCtqcDSQcFtPLcvbmcdswCCcL" target="_blank"><img src="Mail.png" alt="YouTube" /></a>
     </div>
   </footer>
 
@@ -161,73 +210,171 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
+
+  // -- form references (using name selectors so no new IDs required)
   const bookingForm = document.getElementById("bookingForm");
+  const previewModal = document.getElementById("previewModal");
+  const previewBody = document.getElementById("previewBody");
+  const confirmBtn = document.getElementById("confirmBookingBtn");
+  const editBtn = document.getElementById("editBookingBtn");
 
-  bookingForm.addEventListener("submit", function (event) {
-    event.preventDefault();
+  // Helper: get field value by name (returns trimmed string)
+  function val(name) {
+    const el = bookingForm.querySelector(`[name="${name}"]`);
+    return el ? String(el.value || "").trim() : "";
+  }
 
-    // Collect form values
-    const name = bookingForm.querySelector('input[name="name"]').value;
-    const email = bookingForm.querySelector('input[name="email"]').value;
-    const phone = bookingForm.querySelector('input[name="phone"]').value;
-    const occasion = bookingForm.querySelector('select[name="occasion"]').value;
-    const guests = bookingForm.querySelector('input[name="guests"]').value;
-    const datetime = bookingForm.querySelector('input[name="datetime"]').value;
-    const pkg = bookingForm.querySelector('select[name="package"]').value;
-    const message = bookingForm.querySelector('textarea[name="message"]').value;
+  function valOrDash(name) {
+    const v = val(name);
+    return v === "" ? "—" : v;
+  }
 
-    // Choose service & amount for display
-    const service = occasion.charAt(0).toUpperCase() + occasion.slice(1);
+  function nicePackageLabel(code) {
+    if (!code) return "—";
+    if (code === "basic") return "Basic Package (₱2,000)";
+    if (code === "standard") return "Standard Package (₱5,000)";
+    if (code === "premium") return "Premium Package (₱10,000+)";
+    return code;
+  }
+
+  function niceOccasionLabel(code) {
+    if (!code) return "—";
+    // map common values to readable
+    const map = {
+      "dine-in": "Dine In",
+      "birthday": "Birthday",
+      "wedding": "Wedding",
+      "corporate": "Corporate Event",
+      "other": "Other"
+    };
+    return map[code] || code;
+  }
+
+  function formatDateTimeLocal(v) {
+    if (!v) return "—";
+    try {
+      const dt = new Date(v);
+      if (isNaN(dt)) return v;
+      return dt.toLocaleString();
+    } catch {
+      return v;
+    }
+  }
+
+  // OPEN PREVIEW: build readable preview and show modal
+  function openPreview() {
+    const previewLines = [
+      `Full Name: ${valOrDash("name")}`,
+      `Email: ${valOrDash("email")}`,
+      `Phone: ${valOrDash("phone")}`,
+      `Occasion: ${niceOccasionLabel(val("occasion"))}`,
+      `Number of Guests: ${valOrDash("guests")}`,
+      `Preferred Date & Time: ${formatDateTimeLocal(val("datetime"))}`,
+      `Package Choice: ${nicePackageLabel(val("package"))}`,
+      `Special Notes: ${valOrDash("message")}`
+    ];
+    previewBody.textContent = previewLines.join("\n");
+    previewModal.classList.add("show");
+    previewModal.setAttribute("aria-hidden", "false");
+  }
+
+  // CLOSE PREVIEW
+  function closePreview() {
+    previewModal.classList.remove("show");
+    previewModal.setAttribute("aria-hidden", "true");
+  }
+
+  // FORM submit: show preview instead of immediately saving
+  bookingForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    // optional: quick validation before preview (ensure required fields)
+    const requiredFields = ["name","email","phone","occasion","guests","datetime"];
+    for (const r of requiredFields) {
+      if (!val(r)) {
+        // focus first missing field and stop
+        const el = bookingForm.querySelector(`[name="${r}"]`);
+        if (el) el.focus();
+        alert("Please fill in all required fields before proceeding.");
+        return;
+      }
+    }
+    openPreview();
+  });
+
+  // EDIT -> close preview so they can change inputs
+  editBtn.addEventListener("click", function () {
+    closePreview();
+  });
+
+  // CONFIRM -> save booking to localStorage and show success message
+  confirmBtn.addEventListener("click", function () {
+    // compute amount from package selection
+    const pkg = val("package");
     let amount = 0;
     if (pkg === "basic") amount = 2000;
     else if (pkg === "standard") amount = 5000;
     else if (pkg === "premium") amount = 10000;
 
-    // Create a new order (admin.js expects these properties)
+    // create order object (admin uses 'ticket', 'name', 'contact', 'service', 'amount', 'status', ...)
+    const ticket = `T${Date.now().toString().slice(-6)}`;
     const newOrder = {
-      ticket: Date.now(), // unique ID
-      name: name,
-      contact: phone,
-      service: service,
+      ticket: ticket,
+      name: val("name"),
+      contact: val("phone"),
+      service: niceOccasionLabel(val("occasion")),
       amount: amount,
       status: "Pending",
-      datetime: datetime,
-      notes: message
+      datetime: val("datetime"),
+      notes: val("message"),
+      createdAt: new Date().toISOString()
     };
 
-    // Save to localStorage
-    let orders = JSON.parse(localStorage.getItem("orders")) || [];
+    // push to orders array in localStorage
+    const orders = JSON.parse(localStorage.getItem("orders")) || [];
     orders.push(newOrder);
     localStorage.setItem("orders", JSON.stringify(orders));
 
+    closePreview();
     alert("✅ Thank you for booking!\nYour reservation has been recorded.");
     bookingForm.reset();
-  });
-});
 
- window.addEventListener('scroll', function () {
-      const header = document.querySelector('header');
-      header.classList.toggle('scrolled', window.scrollY > 50);
-    });
-
-
-    let index = 0;
-    const slides = document.getElementsByClassName('mySlides');
-    function showSlides() {
-      for (let i = 0; i < slides.length; i++) {
-        slides[i].style.display = 'none';
-      }
-      index++;
-      if (index > slides.length) index = 1;
-      slides[index - 1].style.display = 'block';
-      setTimeout(showSlides, 2000);
+    // If admin functions exist on this page (they likely don't), call them safely
+    if (typeof renderOrders === "function") {
+      try { renderOrders(); } catch (err) { /* ignore */ }
     }
-    showSlides();
+    if (typeof renderHistory === "function") {
+      try { renderHistory(); } catch (err) { /* ignore */ }
+    }
+  });
 
+  // allow closing preview with ESC
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && previewModal.classList.contains("show")) {
+      closePreview();
+    }
+  });
+
+  // existing features from your file: header scroll and slideshow (kept)
+  window.addEventListener('scroll', function () {
+    const header = document.querySelector('header');
+    header.classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  // slideshow - safe-guard if .mySlides exist
+  let index = 0;
+  const slides = document.getElementsByClassName('mySlides');
+  function showSlides() {
+    if (!slides || slides.length === 0) return;
+    for (let i = 0; i < slides.length; i++) {
+      slides[i].style.display = 'none';
+    }
+    index++;
+    if (index > slides.length) index = 1;
+    slides[index - 1].style.display = 'block';
+    setTimeout(showSlides, 2000);
+  }
+  showSlides();
+
+}); // DOMContentLoaded end
 </script>
 
-
-
-</body>
-</html>
->>>>>>> ca5e629537aa0e567521797d83ab72acff84176e

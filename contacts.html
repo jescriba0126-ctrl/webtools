@@ -12,23 +12,25 @@
   <link rel="stylesheet" href="contacts.css" />
 </head>
 <body>
-  <header class="site-header" id="siteHeader">
-    <div class="site-wrap">
-      <div class="logo">
-        <a href="main.html" aria-label="Cubiertos home">
-          <img src="logo.jpg" alt="Cubiertos logo" />
-        </a>
-      </div>
 
-      <nav class="main-nav" aria-label="Primary navigation">
-        <a href="main.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="stores.html">Our Stores</a>
-        <a href="contacts.html" class="active">Contact</a>
-        <a href="login.html" class="login"><i class="fa-regular fa-user"></i> Log-in</a>
-      </nav>
+  <header>
+    <div class="logo">
+      <img src="logo.jpg" alt="Cubiertos Food Hub Logo">
     </div>
+    <nav>
+      <a href="main.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="Store/Images/Store.html">Our Stores</a>
+      <a href="contacts.html">Contacts</a>
+      <a href="login.html" class="login"><i>👤</i> Log-in</a>
+    </nav>
   </header>
+
+<div class="socials">
+    <a href="https://www.facebook.com/profile.php?id=61555258696901" target="_blank"><img src="Facebook.png" alt="Facebook" /></a>
+    <a href="https://www.instagram.com/cubiertos2024/" target="_blank"><img src="Instagram.png" alt="Instagram" /></a>
+    <a href="https://mail.google.com/mail/u/0/#sent?compose=CllgCJTNqrcXTJzgQrjqbjtCXnqKDjzdGRPvdqdcFsXlDWgKNhcCtqcDSQcFtPLcvbmcdswCCcL" target="_blank"><img src="Mail.png" alt="YouTube" /></a>
+  </div>
 
   <!-- Hero -->
   <section class="hero">
@@ -65,9 +67,9 @@
         <h3 id="stores-heading">Our Stores</h3>
         <ul class="stores-list">
           <li><strong>Cubiertos Virac</strong><br/><span class="muted">Along Imelda Blvd., Rawis — 0981 027 0704</span></li>
-          <!-- add more stores here if needed -->
+          
         </ul>
-        <a class="link-small" href="stores.html">View all stores</a>
+        
       </div>
 
       <div class="card socials-card">
@@ -148,18 +150,34 @@
       <p>Food & Drink · Virac, Philippines, 4800 | Contact Info: 0981 027 0704</p>
       <p>Copyright © 2025 Cubiertos.food.hub</p>
     </div>
-    <div class="footer-socials">
+   <div class="footer-socials">
       <a href="https://www.facebook.com/profile.php?id=61555258696901" target="_blank"><img src="Facebook.png" alt="Facebook" /></a>
       <a href="https://www.instagram.com/cubiertos2024/" target="_blank"><img src="Instagram.png" alt="Instagram" /></a>
-      <a href="https://youtube.com" target="_blank"><img src="Mail.png" alt="YouTube" /></a>
+      <a href="https://mail.google.com/mail/u/0/#sent?compose=CllgCJTNqrcXTJzgQrjqbjtCXnqKDjzdGRPvdqdcFsXlDWgKNhcCtqcDSQcFtPLcvbmcdswCCcL" target="_blank"><img src="Mail.png" alt="YouTube" /></a>
     </div>
   </footer>
 
 <script>
-  const header = document.getElementById('siteHeader');
-  window.addEventListener('scroll', () => {
-    header.classList.toggle('scrolled', window.scrollY > 40);
-  });
+  
+    window.addEventListener('scroll', function () {
+      const header = document.querySelector('header');
+      header.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+
+    let index = 0;
+    const slides = document.getElementsByClassName('mySlides');
+    function showSlides() {
+      for (let i = 0; i < slides.length; i++) {
+        slides[i].style.display = 'none';
+      }
+      index++;
+      if (index > slides.length) index = 1;
+      slides[index - 1].style.display = 'block';
+      setTimeout(showSlides, 2000);
+    }
+    showSlides();
+  
 
   const form = document.getElementById('contactForm');
   const status = document.getElementById('formStatus');

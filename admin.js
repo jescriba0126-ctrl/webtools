@@ -1,3 +1,5 @@
+
+// dito nangyayare yung pag kuha ng elements galing sa forms sa booking page
 const ordersTable = document.querySelector("#ordersTable tbody");
 const historyTable = document.querySelector("#historyTable tbody");
 const liveTab = document.getElementById("liveTab");
@@ -5,11 +7,11 @@ const historyTab = document.getElementById("historyTab");
 const liveOrders = document.getElementById("liveOrders");
 const orderHistory = document.getElementById("orderHistory");
 
-// ===== LOAD DATA =====
+// function neto para mag load galing sa local storage
 let orders = JSON.parse(localStorage.getItem("orders")) || [];
 let history = JSON.parse(localStorage.getItem("orderHistory")) || [];
 
-// ===== RENDER ORDERS =====
+// dito naka display yung live orders 
 function renderOrders() {
   ordersTable.innerHTML = "";
   if (orders.length === 0) {
@@ -22,6 +24,8 @@ function renderOrders() {
     const service = o.service || "—";
     const amount = o.amount ? `₱${parseFloat(o.amount).toLocaleString()}` : "₱0";
 
+
+    // dito nangyayare yung add orders sa admin
     tr.innerHTML = `
       <td>${o.ticket || "—"}</td>
       <td>${o.name || "—"}</td>
@@ -39,7 +43,7 @@ function renderOrders() {
   });
 }
 
-// ===== RENDER HISTORY =====
+// dito para sa history ng mga appointments or records
 function renderHistory() {
   historyTable.innerHTML = "";
   if (history.length === 0) {
@@ -65,7 +69,8 @@ function renderHistory() {
   });
 }
 
-// ===== UPDATE STATUS =====
+
+// dito yung button para sa complete orders
 function updateStatus(index, newStatus) {
   orders[index].status = newStatus;
 
@@ -74,6 +79,7 @@ function updateStatus(index, newStatus) {
     orders.splice(index, 1);
   }
 
+  // dito nangyayare yung save sa local storage
   localStorage.setItem("orders", JSON.stringify(orders));
   localStorage.setItem("orderHistory", JSON.stringify(history));
 
@@ -81,7 +87,8 @@ function updateStatus(index, newStatus) {
   renderHistory();
 }
 
-// ===== DELETE ORDER (LIVE) =====
+
+// dito nangyayare yung delete orders
 function deleteOrder(index) {
   if (confirm("Delete this live order?")) {
     orders.splice(index, 1);
@@ -90,7 +97,7 @@ function deleteOrder(index) {
   }
 }
 
-// ===== DELETE HISTORY (COMPLETED) =====
+
 function deleteHistory(index) {
   if (confirm("Delete this completed order?")) {
     history.splice(index, 1);
@@ -99,7 +106,8 @@ function deleteHistory(index) {
   }
 }
 
-// ===== TAB SWITCH =====
+
+
 liveTab.onclick = () => {
   liveTab.classList.add("active");
   historyTab.classList.remove("active");
@@ -114,13 +122,54 @@ historyTab.onclick = () => {
   orderHistory.style.display = "block";
 };
 
-// ===== LOGOUT =====
+
+
+// dito yung log out section
 function logout() {
   localStorage.removeItem("loggedInUser");
   alert("You have been logged out.");
   window.location.href = "login.html";
 }
 
-// ===== INITIAL RENDER =====
 renderOrders();
 renderHistory();
+
+// dito yung calendar render
+let navDate = new Date();
+
+function renderCalendar() {
+    const grid = document.getElementById('calendarGrid');
+    const display = document.getElementById('monthDisplay');
+    grid.innerHTML = "";
+
+    const month = navDate.getMonth();
+    const year = navDate.getFullYear();
+
+    display.innerText = navDate.toLocaleString('default', { month: 'long', year: 'numeric' });
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    // Add empty spaces for the first week
+    for (let i = 0; i < firstDay; i++) {
+        grid.appendChild(document.createElement('div'));
+    }
+
+    // Add the days
+    for (let i = 1; i <= daysInMonth; i++) {
+        const day = document.createElement('div');
+        day.innerText = i;
+        if (i === new Date().getDate() && month === new Date().getMonth()) {
+            day.classList.add('active-day');
+        }
+        grid.appendChild(day);
+    }
+}
+
+// Button clicks
+document.getElementById('prevMonth').onclick = () => { navDate.setMonth(navDate.getMonth() - 1); renderCalendar(); };
+document.getElementById('nextMonth').onclick = () => { navDate.setMonth(navDate.getMonth() + 1); renderCalendar(); };
+
+renderCalendar();
+
+// dito end neto
