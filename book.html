@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cubiertos Food Hub</title>
-  <link rel="stylesheet" href="book.css">
+  <title>Cubiertos Food Hub - Book</title>
+  <link rel="stylesheet" href="try.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -12,8 +12,6 @@
   <header>
     <div class="logo">
       <img src="logo.jpg" alt="Cubiertos Food Hub Logo">
-  
-   
     </div>
     <nav>
       <a href="main.html">Home</a>
@@ -21,28 +19,24 @@
       <a href="stores.html">Our Stores</a>
       <a href="contacts.html">Contacts</a>
       <a href="login.html" class="login"><i>👤</i> Log-in</a>
-    
     </nav>
   </header>
 
   <div class="socials">
-      <a href="https://www.facebook.com/profile.php?id=61555258696901" target="_blank"><img src="Facebook.png" alt="Facebook"></a>
-     <a href="https://www.instagram.com/cubiertos2024/" target="_blank"><img src="Instagram.png" alt="Instagram"></a>
-     <a href="https://youtube.com" target="_blank"><img src="Mail.png" alt="YouTube"></a>
-    </div>
+    <a href="#"><img src="Facebook.png" alt="Facebook"></a>
+    <a href="#"><img src="Instagram.png" alt="Instagram"></a>
+    <a href="#"><img src="Mail.png" alt="YouTube"></a>
+  </div>
 
-   <section id="mainpage">
   <section class="mainpage">
     <div class="mainpage-context">
       <h2>BOOK NOW<span><br>To Experience</span><br> a Memorable Day</h2>
-      <p>Every journey has its ups and downs <br>and Cubiertos is no exception.</p>
-      <a href="#container" class="book-btn">Make an appointment</a>
+      <p>Every journey has its ups and downs, and Cubiertos is no exception.</p>
+      <a href="#booking" class="book-btn">Make an appointment</a>
     </div>
   </section> 
-</section> 
 
-
-<section class="story-section">
+  <section class="story-section">
   <div class="mission-part">
     <div class="mission-text">
       <h2>Our Purpose</h2>
@@ -58,7 +52,11 @@
     <h3>🍴 Book an Appointment</h3>
     <p class="intro-text">Reserve your table for birthdays, weddings, or special events at <b>Cubiertos Food Hub</b>.</p>
 
+<<<<<<< HEAD
     <form class="booking-form">
+=======
+    <form id="bookingForm">
+>>>>>>> ca5e629537aa0e567521797d83ab72acff84176e
       <p>
         <i>Full Name</i><br>
         <input type="text" name="name" placeholder="Enter your full name" required>
@@ -125,25 +123,21 @@
   </div>
 </section>
 
-<footer>
+
+  <footer>
     <div class="footer-info">
       <nav>
         <a href="#mainpage">Home</a>
         <a href="about.html">About</a>
         <a href="stores.html">Our Stores</a>
         <a href="contacts.html">Contacts</a>
-        <a href="login.html" class="login"><i>👤</i> Log-in</a>
+        <a href="login.html"><i>👤</i> Log-in</a>
       </nav>
       <p>Food & Drink · Virac, Philippines, 4800 | Contact Info: 0981 027 0704</p>
-      <p>Copyright © 2025 Cubiertos.food.hub</p>
-  
-    <div class="footer-socials">
-      <a href="https://www.facebook.com/profile.php?id=61555258696901" target="_blank"><img src="Facebook.png" alt="Facebook" /></a>
-      <a href="https://www.instagram.com/cubiertos2024/" target="_blank"><img src="Instagram.png" alt="Instagram" /></a>
-      <a href="https://youtube.com" target="_blank"><img src="Mail.png" alt="YouTube" /></a>
+      <p>© 2025 Cubiertos.food.hub</p>
     </div>
-     </div>
   </footer>
+
 
  <script>
   window.addEventListener('scroll', function() {
@@ -164,3 +158,76 @@
     bookingForm.reset();
   });
 </script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const bookingForm = document.getElementById("bookingForm");
+
+  bookingForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    // Collect form values
+    const name = bookingForm.querySelector('input[name="name"]').value;
+    const email = bookingForm.querySelector('input[name="email"]').value;
+    const phone = bookingForm.querySelector('input[name="phone"]').value;
+    const occasion = bookingForm.querySelector('select[name="occasion"]').value;
+    const guests = bookingForm.querySelector('input[name="guests"]').value;
+    const datetime = bookingForm.querySelector('input[name="datetime"]').value;
+    const pkg = bookingForm.querySelector('select[name="package"]').value;
+    const message = bookingForm.querySelector('textarea[name="message"]').value;
+
+    // Choose service & amount for display
+    const service = occasion.charAt(0).toUpperCase() + occasion.slice(1);
+    let amount = 0;
+    if (pkg === "basic") amount = 2000;
+    else if (pkg === "standard") amount = 5000;
+    else if (pkg === "premium") amount = 10000;
+
+    // Create a new order (admin.js expects these properties)
+    const newOrder = {
+      ticket: Date.now(), // unique ID
+      name: name,
+      contact: phone,
+      service: service,
+      amount: amount,
+      status: "Pending",
+      datetime: datetime,
+      notes: message
+    };
+
+    // Save to localStorage
+    let orders = JSON.parse(localStorage.getItem("orders")) || [];
+    orders.push(newOrder);
+    localStorage.setItem("orders", JSON.stringify(orders));
+
+    alert("✅ Thank you for booking!\nYour reservation has been recorded.");
+    bookingForm.reset();
+  });
+});
+
+ window.addEventListener('scroll', function () {
+      const header = document.querySelector('header');
+      header.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+
+    let index = 0;
+    const slides = document.getElementsByClassName('mySlides');
+    function showSlides() {
+      for (let i = 0; i < slides.length; i++) {
+        slides[i].style.display = 'none';
+      }
+      index++;
+      if (index > slides.length) index = 1;
+      slides[index - 1].style.display = 'block';
+      setTimeout(showSlides, 2000);
+    }
+    showSlides();
+
+</script>
+
+
+
+</body>
+</html>
+>>>>>>> ca5e629537aa0e567521797d83ab72acff84176e

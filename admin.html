@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cubiertos Admin Dashboard</title>
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header id="adminHeader">
+    <div class="logo">
+      <img src="logo.jpg" alt="Logo" />
+      <h1><span>Admin</span> Account</h1>
+    </div>
+    <nav>
+      <a href="main.html">🏠 Home</a>
+      <button class="btn logout" onclick="logout()">🚪 Logout</button>
+    </nav>
+  </header>
+
+  <!-- MAIN -->
+  <main class="dashboard-container">
+    <div class="tabs">
+      <button id="liveTab" class="tab active">🧺 Live Orders</button>
+      <button id="historyTab" class="tab">📜 Order History</button>
+    </div>
+
+    <!-- LIVE ORDERS -->
+    <section id="liveOrders">
+      <div class="card">
+        <h2>Current Orders</h2>
+        <table id="ordersTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Contact</th>
+              <th>Service</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ORDER HISTORY -->
+    <section id="orderHistory" style="display:none;">
+      <div class="card">
+        <h2>Order History</h2>
+        <table id="historyTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Contact</th>
+              <th>Service</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="admin.js"></script>
+</body>
+</html>

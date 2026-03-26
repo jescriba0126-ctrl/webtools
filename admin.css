@@ -1,0 +1,198 @@
+/* ===== RESET ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  color: #222;
+  background: url("bodybg.jpg");
+  background-size: fill;
+  min-height: 100vh;
+}
+
+/* ===== HEADER ===== */
+#adminHeader {
+  width: 100%;
+  padding: 0.5rem 6%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: transparent;
+  transition: background-color 0.4s ease, box-shadow 0.4s ease;
+  z-index: 1000;
+}
+
+#adminHeader.scrolled {
+  background-color: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* ===== LOGO ===== */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}
+
+.logo h1 {
+  font-size: 1.8rem;
+  color: #283618;
+}
+
+.logo span {
+  color: #bc6c25;
+  font-style: italic;
+}
+
+/* ===== NAVIGATION ===== */
+nav a, nav .btn {
+  margin-left: 15px;
+  text-decoration: none;
+  font-weight: 500;
+  color: #283618;
+  transition: 0.3s;
+}
+
+nav a:hover {
+  color: #dda15e;
+}
+
+/* ===== BUTTONS ===== */
+.btn {
+  padding: 8px 18px;
+  border-radius: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+
+  color: #000000;
+}
+
+/* Hover effect for all buttons */
+.btn:hover {
+  background-color: #bc6c25;
+  border-color: #283618;
+  color: #fff;
+  transform: scale(1.05);
+}
+
+
+
+/* ===== MAIN ===== */
+.dashboard-container {
+  padding-top: 120px;
+  padding-bottom: 80px;
+  text-align: center;
+}
+
+/* ===== TABS ===== */
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
+  gap: 20px;
+}
+
+.tab {
+  padding: 12px 24px;
+  border-radius: 30px;
+  background: #f0f0f0;
+  border: 2px solid #bc6c25;
+  color: #283618;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.tab.active, .tab:hover {
+  background: #bc6c25;
+  color: #fff;
+  transform: scale(1.05);
+}
+
+/* ===== CARD ===== */
+.card {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 30px;
+  border-radius: 20px;
+  max-width: 1000px;
+  margin: auto;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+.card h2 {
+  color: #283618;
+  margin-bottom: 20px;
+}
+
+/* ===== TABLE ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+thead {
+  background: #dda15e;
+  color: #fff;
+}
+
+th, td {
+  padding: 14px;
+  border-bottom: 1px solid #ddd;
+  font-size: 0.95rem;
+}
+
+tbody tr:hover {
+  background: rgba(221, 161, 94, 0.1);
+}
+
+/* ===== STATUS BADGES ===== */
+.status {
+  padding: 6px 10px;
+  border-radius: 10px;
+  font-weight: 600;
+  color: white;
+}
+
+.status.pending { background: #f5b700; }
+.status.inprogress { background: #ff7b00; }
+.status.completed { background: #28a745; }
+
+/* ===== ACTION BUTTONS ===== */
+.btn.in-progress { background: #ff9800; color: white; }
+.btn.completed { background: #4caf50; color: white; }
+.btn.delete { background: #e53935; color: white; }
+
+.btn:hover {
+  opacity: 0.85;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .tab {
+    font-size: 0.9rem;
+    padding: 10px 16px;
+  }
+
+  th, td {
+    font-size: 0.85rem;
+  }
+
+  .logo h1 {
+    font-size: 1.3rem;
+  }
+}

@@ -15,6 +15,8 @@ body {
     background-image: url("background.jpg");
 }
 
+
+
 .container {
     position: relative;
     width: 850px;
@@ -175,3 +177,29 @@ form {
     box-shadow: none;
     color: white;
 }
+
+/* Style for the select dropdown (Admin/Customer) */
+.input-box select {
+    width: 100%;
+    padding: 13px 50px 13px 20px;
+    background: #eee;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    color: #333;
+    font-weight: 500;
+    appearance: none; /* removes default arrow */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23888' viewBox='0 0 16 16'%3E%3Cpath d='M1.5 5.5l6 6 6-6h-12z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 20px center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.input-box select:hover {
+    background-color: #e0e0e0;
+}
+

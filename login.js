@@ -1,29 +1,37 @@
-const container = document.querySelector('.container');
-const registerBtn = document.querySelector('.register-btn');
-const loginBtn = document.querySelector('.login-btn');
-
-registerBtn.addEventListener('click', () => {
-    container.classList.add('active');
-});
-
-loginBtn.addEventListener('click', () => {
-    container.classList.remove('active');
-});
-
+// Get the form and Create Account button
 const form = document.getElementById('loginForm');
+const createBtn = document.querySelector('.btn-secondary');
 
+// When the login form is submitted
 form.addEventListener('submit', function(event) {
-  event.preventDefault(); // para hindi mag-refresh ang page
+  event.preventDefault(); // prevent page reload
 
-  // kunin ang input values
-  const username = document.getElementById('username').value;
-  const password = document.getElementById('password').value;
+  // Get the input values
+  const username = document.getElementById('username').value.trim();
+  const password = document.getElementById('password').value.trim();
+  const loginType = document.getElementById('loginType').value;
 
-  // example login check (pwede mong palitan kung gusto mo)
-  if (username === "admin" && password === "1234") {
-    // kapag tama ang username at password, pupunta sa ibang HTML file
-    window.open("book.html", "_self");
-  } else {
-    alert("Invalid username or password!");
+  // Check login type and credentials
+  if (loginType === "admin") {
+    if (username === "admin" && password === "123") {
+      window.open("admin.html", "_self"); // redirect to admin page
+    } else {
+      alert("Invalid admin credentials!");
+    }
+  } 
+  else if (loginType === "customer") {
+    if (username === "costumer1" && password === "123") {
+      window.open("book.html", "_self"); // redirect to customer home page
+    } else {
+      alert("Invalid customer credentials!");
+    }
+  } 
+  else {
+    alert("Please select login type!");
   }
+});
+
+// When "Create Account" button is clicked
+createBtn.addEventListener('click', function() {
+  window.open("register.html", "_self"); // redirect to registration page
 });
