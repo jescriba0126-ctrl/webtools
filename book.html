@@ -6,35 +6,8 @@
   <title>Cubiertos Food Hub - Book</title>
   <link rel="stylesheet" href="book.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    /* Minimal styles for the preview modal so it shows correctly with your existing CSS */
-    .preview-modal {
-      position: fixed;
-      inset: 0;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      background: rgba(0,0,0,0.6);
-      z-index: 9999;
-      padding: 16px;
-    }
-    .preview-modal.show { display: flex; }
-    .preview-modal-content {
-      background: #fff;
-      border-radius: 10px;
-      padding: 18px;
-      width: 100%;
-      max-width: 540px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      color: #222;
-    }
-    .preview-modal-content h3 { margin: 0 0 10px; color:#283618; }
-    #previewBody { white-space: pre-wrap; line-height: 1.4; margin-bottom: 14px; }
-    .preview-actions { text-align: right; }
-    .preview-actions .btn { margin-left: 8px; padding: 8px 12px; border-radius: 8px; border: none; cursor: pointer; }
-    .preview-actions .btn.confirm { background: #2f7a2f; color: white; }
-    .preview-actions .btn.edit { background: #ddd; color: #222; }
-  </style>
+ 
+
 </head>
 <body>
 
@@ -82,9 +55,7 @@
     <p class="intro-text">Reserve your table for birthdays, weddings, or special events at <b>Cubiertos Food Hub</b>.</p>
 
 
-    <form class="booking-form">
-
-    <form id="bookingForm">
+<form id="bookingForm" class="booking-form" method="POST" action="book.php">
 
       <p>
         <i>Full Name</i><br>
@@ -201,11 +172,10 @@
 
   const bookingForm = document.querySelector('.booking-form');
 
-  bookingForm.addEventListener('submit', function(event) {
-    event.preventDefault(); 
-    alert("✅ Thank you for booking!\nYour receipt will be sent to your Gmail shortly.");
-    bookingForm.reset();
-  });
+bookingForm.addEventListener('submit', function(event) {
+  event.preventDefault(); // keep preview first
+  openPreview();
+});
 </script>
 
 <script>

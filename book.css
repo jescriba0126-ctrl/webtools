@@ -579,3 +579,30 @@ footer {
 p{
   font-size: 3vh;
 }
+
+ .preview-modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.6);
+      z-index: 9999;
+      padding: 16px;
+    }
+    .preview-modal.show { display: flex; }
+    .preview-modal-content {
+      background: #fff;
+      border-radius: 10px;
+      padding: 18px;
+      width: 100%;
+      max-width: 540px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      color: #222;
+    }
+    .preview-modal-content h3 { margin: 0 0 10px; color:#283618; }
+    #previewBody { white-space: pre-wrap; line-height: 1.4; margin-bottom: 14px; }
+    .preview-actions { text-align: right; }
+    .preview-actions .btn { margin-left: 8px; padding: 8px 12px; border-radius: 8px; border: none; cursor: pointer; }
+    .preview-actions .btn.confirm { background: #2f7a2f; color: white; }
+    .preview-actions .btn.edit { background: #ddd; color: #222; }
