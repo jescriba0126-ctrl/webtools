@@ -96,7 +96,7 @@ nav a:hover {
   color: #826f3c;
 }
 
-nav a::after {
+/* nav a::after {
   content: '';
   position: absolute;
   width: 0%;
@@ -109,7 +109,7 @@ nav a::after {
 
 nav a:hover::after {
   width: 100%;
-}
+} */
 
 /* CONTAINER */
 .about-container {
