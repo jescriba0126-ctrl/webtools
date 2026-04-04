@@ -4,37 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cubiertos Food Hub - Book</title>
-  <link rel="stylesheet" href="book.css">
+  <link rel="stylesheet" href="CSS/book.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    /* Minimal styles for the preview modal so it shows correctly with your existing CSS */
-    .preview-modal {
-      position: fixed;
-      inset: 0;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      background: rgba(0,0,0,0.6);
-      z-index: 9999;
-      padding: 16px;
-    }
-    .preview-modal.show { display: flex; }
-    .preview-modal-content {
-      background: #fff;
-      border-radius: 10px;
-      padding: 18px;
-      width: 100%;
-      max-width: 540px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      color: #222;
-    }
-    .preview-modal-content h3 { margin: 0 0 10px; color:#283618; }
-    #previewBody { white-space: pre-wrap; line-height: 1.4; margin-bottom: 14px; }
-    .preview-actions { text-align: right; }
-    .preview-actions .btn { margin-left: 8px; padding: 8px 12px; border-radius: 8px; border: none; cursor: pointer; }
-    .preview-actions .btn.confirm { background: #2f7a2f; color: white; }
-    .preview-actions .btn.edit { background: #ddd; color: #222; }
-  </style>
+ 
+
 </head>
 <body>
 
@@ -52,9 +25,9 @@
   </header>
 
   <div class="socials">
-    <a href="#"><img src="Facebook.png" alt="Facebook"></a>
-    <a href="#"><img src="Instagram.png" alt="Instagram"></a>
-    <a href="#"><img src="Mail.png" alt="YouTube"></a>
+    <a href="#"><img src="../IMAGES/Facebook.png" alt="Facebook"></a>
+    <a href="#"><img src="../IMAGES/Instagram.png" alt="Instagram"></a>
+    <a href="#"><img src="../IMAGES/Mail.png" alt="YouTube"></a>
   </div>
 
   <section class="mainpage">
@@ -72,7 +45,7 @@
       <p>At Cubiertos, our mission is simple — to bring warmth, comfort, and connection through food made from the heart. Every meal we serve celebrates home and togetherness, proving that good food isn’t just about taste — it’s about belonging.</p>
     </div>
     <div class="mission-img">
-      <img src="event.jpg" alt="Cubiertos Mission">
+      <img src="../IMAGES/event.jpg" alt="Cubiertos Mission">
     </div>
   </div>
 
@@ -81,7 +54,9 @@
     <h3>🍴 Book an Appointment</h3>
     <p class="intro-text">Reserve your table for birthdays, weddings, or special events at <b>Cubiertos Food Hub</b>.</p>
 
-    <form id="bookingForm">
+
+<form id="bookingForm" class="booking-form" method="POST" action="book.php">
+
       <p>
         <i>Full Name</i><br>
         <input type="text" name="name" placeholder="Enter your full name" required>
@@ -177,11 +152,31 @@
       <p>Copyright © 2025 Cubiertos.food.hub</p>
     </div>
     <div class="footer-socials">
-      <a href="https://www.facebook.com/profile.php?id=61555258696901" target="_blank"><img src="Facebook.png" alt="Facebook" /></a>
-      <a href="https://www.instagram.com/cubiertos2024/" target="_blank"><img src="Instagram.png" alt="Instagram" /></a>
-      <a href="https://mail.google.com/mail/u/0/#sent?compose=CllgCJTNqrcXTJzgQrjqbjtCXnqKDjzdGRPvdqdcFsXlDWgKNhcCtqcDSQcFtPLcvbmcdswCCcL" target="_blank"><img src="Mail.png" alt="YouTube" /></a>
+      <a href="https://www.facebook.com/profile.php?id=61555258696901" target="_blank"><img src="../IMAGES/Facebook.png" alt="Facebook" /></a>
+      <a href="https://www.instagram.com/cubiertos2024/" target="_blank"><img src="../IMAGES/Instagram.png" alt="Instagram" /></a>
+      <a href="https://mail.google.com/mail/u/0/#sent?compose=CllgCJTNqrcXTJzgQrjqbjtCXnqKDjzdGRPvdqdcFsXlDWgKNhcCtqcDSQcFtPLcvbmcdswCCcL" target="_blank"><img src="../IMAGES/Mail.png" alt="YouTube" /></a>
     </div>
   </footer>
+
+
+ <script>
+  window.addEventListener('scroll', function() {
+    const header = document.querySelector('header');
+    if (window.scrollY > 50) {
+      header.classList.add('scrolled');
+    } else {
+      header.classList.remove('scrolled');
+    }
+  });
+
+
+  const bookingForm = document.querySelector('.booking-form');
+
+bookingForm.addEventListener('submit', function(event) {
+  event.preventDefault(); // keep preview first
+  openPreview();
+});
+</script>
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
@@ -352,6 +347,3 @@ document.addEventListener("DOMContentLoaded", function () {
 
 }); // DOMContentLoaded end
 </script>
-
-</body>
-</html>

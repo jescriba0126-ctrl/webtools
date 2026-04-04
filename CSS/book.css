@@ -8,7 +8,7 @@
 body {
   font-family: 'Poppins', sans-serif;
   color: #222;
-  background-image: url("bodybg.jpg");
+  background-image: url("../IMAGES/bodybg.jpg");
 }
 
 
@@ -126,7 +126,7 @@ nav a:hover::after {
   padding: 0 8%; 
   text-align: center; 
   font-size: 7vh; 
-  background-image: url("slide1.png");
+  background-image: url("../IMAGES/slide1.png");  
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -291,6 +291,89 @@ nav a:hover::after {
 
 
 
+.booking-section {
+  position: relative;
+  z-index: 20;
+
+  padding: 50px 20px;
+}
+
+
+.booking-section * {
+  position: relative;
+  z-index: 21;
+}
+
+.mainpage::before,
+header::before,
+.story-section::before {
+  pointer-events: none; 
+}
+
+
+.booking-container {
+  max-width: 10000px;
+ 
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.booking-form input,
+.booking-form select,
+.booking-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+.booking-form input:focus,
+.booking-form select:focus,
+.booking-form textarea:focus {
+  border-color: #f77b2d;
+  outline: none;
+  box-shadow: 0 0 5px rgba(247, 123, 45, 0.5);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.btn-submit, .btn-reset {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.btn-submit {
+  background-color: #f77b2d;
+  color: white;
+}
+
+.btn-reset {
+  background-color: #ccc;
+  color: #333;
+}
+
+.btn-submit:hover {
+  background-color: #ff944d;
+}
+
+.btn-reset:hover {
+  background-color: #b3b3b3;
+}
+
+
 
 /* === BOOKING SECTION FIX === */
 .booking-section {
@@ -437,6 +520,19 @@ h4{
   margin-top: 7%;
    text-align: center;
   font-size: 5vh;
+
+}
+
+
+h3{
+  text-align: center;
+  font-size: 5vh;
+}
+
+h4{
+  margin-top: 7%;
+   text-align: center;
+  font-size: 5vh;
 }
 
 footer {
@@ -483,3 +579,30 @@ footer {
 p{
   font-size: 3vh;
 }
+
+ .preview-modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.6);
+      z-index: 9999;
+      padding: 16px;
+    }
+    .preview-modal.show { display: flex; }
+    .preview-modal-content {
+      background: #fff;
+      border-radius: 10px;
+      padding: 18px;
+      width: 100%;
+      max-width: 540px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      color: #222;
+    }
+    .preview-modal-content h3 { margin: 0 0 10px; color:#283618; }
+    #previewBody { white-space: pre-wrap; line-height: 1.4; margin-bottom: 14px; }
+    .preview-actions { text-align: right; }
+    .preview-actions .btn { margin-left: 8px; padding: 8px 12px; border-radius: 8px; border: none; cursor: pointer; }
+    .preview-actions .btn.confirm { background: #2f7a2f; color: white; }
+    .preview-actions .btn.edit { background: #ddd; color: #222; }
