@@ -641,46 +641,50 @@ font-size: 100vh;
 
 /* dito yung footer */
 footer {
-  width: 100vw; 
   background-color: #ffffff;
   text-align: center;
-  padding: 30px 20px;
+  padding: 10px 20px;
   color: #2d2d2d;
-  overflow: hidden;
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
-
+  border-radius: 0;
 }
 
+/* Logos */
 .footer-logos {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 15px;
 }
 
 .footer-logos img {
-  width: 70px;
+  width: 80px; 
   margin: 10px;
   border-radius: 12px;
 }
 
+/* Text */
 .footer-info {
-  font-size: 1px;
+  margin-top: 20px; 
+  font-size: 14px;
   line-height: 1.6;
- 
 }
 
+/* Social Icons */
 .footer-socials {
-  margin-top: 15px;
+  margin-top: 10px;
 }
 
 .footer-socials img {
-  width: 50px;
-  margin: 0 10px;
+  width: 35px;
+  margin: 0 5px;
 }
-
-p{
-  font-size: 3vh;
+footer nav a {
+  text-decoration: none;
+  color: #000000; 
+  margin: 0 15px; 
+  font-weight: 500;
+  font-size: 1.1rem; 
+  transition: color 0.3s ease; 
+}
+footer nav a:hover {
+  color: #e66d0a; 
 }

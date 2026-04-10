@@ -26,9 +26,34 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: transparent; 
+  background-color: transparent; /* start transparent */
   transition: background-color 0.4s ease, box-shadow 0.4s ease;
   z-index: 1000;
+}
+
+header nav {
+  display: flex;
+  align-items: center;
+}
+
+
+header nav a:hover {
+  color: #dda15e; 
+}
+
+header nav a::after {
+  content: '';
+  position: absolute;
+  width: 0%;
+  height: 3px;
+  background: #dda15e;
+  left: 0;
+  bottom: -4px;
+  transition: 0.3s;
+}
+
+header nav a:hover::after {
+  width: 100%;
 }
 
 
@@ -38,27 +63,53 @@ header.scrolled {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.logo img {
-  height: 100px;
-  width: auto;
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
+.logo img {
+  width: 150px;
+  height: auto;
+}
 
+.logo h1 {
+  font-size: 1.6rem;
+  color: #222;
+}
 
-nav a, nav .btn {
-  margin-left: 15px;
+.logo span {
+  color: #606c38;
+  font-style: italic;
+}
+nav a{
+  margin: 0 12px;
   text-decoration: none;
+  color: #222;
   font-weight: 500;
-  color: #283618;
+  font-size: 1rem;
+  position: relative;
   transition: 0.3s;
 }
 
 nav a:hover {
   color: #dda15e;
 }
-
-
-
+nav a::after {
+  content: '';
+  position: absolute;
+  width: 0%;
+  height: 3px;
+  background: #dda15e;
+  left: 0;
+  bottom: -4px;
+  transition: 0.3s;
+}
+nav a:hover::after {
+  width: 100%;
+}
 
 .login {
   color: #007bff;
@@ -211,12 +262,12 @@ iframe {
 }
 
 /* FOOTER */
-/* FOOTER */
 footer {
   background-color: #ffffff;
   text-align: center;
-  padding: 15px 10px; /* reduced from 40px / 5px */
+  padding: 10px 20px;
   color: #2d2d2d;
+  border-radius: 0;
 }
 
 /* Logos */
@@ -224,20 +275,19 @@ footer {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 10px;
 }
 
 .footer-logos img {
-  width: 60px; /* smaller */
-  margin: 5px;
-  border-radius: 10px;
+  width: 80px; /* smaller */
+  margin: 10px;
+  border-radius: 12px;
 }
 
 /* Text */
 .footer-info {
-  margin-top: 10px;
-  font-size: 14px; /* FIX: removed 3vh */
-  line-height: 1.4;
+  margin-top: 20px;
+  font-size: 14px;
+  line-height: 1.6;
 }
 
 /* Social Icons */
@@ -248,6 +298,20 @@ footer {
 .footer-socials img {
   width: 35px; /* smaller */
   margin: 0 5px;
+}
+
+footer nav a {
+  text-decoration: none;
+  color: #000000; 
+  margin: 0 15px; 
+  font-weight: 500;
+  font-size: 1.1rem; /* Added to match contacts.css nav size */
+  transition: color 0.3s ease; /* Added for smooth hover */
+}
+
+footer nav a:hover {
+  color: #e66d0a; /* Added to match the orange hover in contacts.css */
+ 
 }
 
 /* ANIMATION */
