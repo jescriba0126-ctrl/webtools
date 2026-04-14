@@ -23,10 +23,10 @@ include("connect.php");
       <img src="../IMAGES/logo.jpg" alt="Cubiertos Food Hub Logo">
     </div>
     <nav>
-      <a href="main.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="Store/Store.html">Our Stores</a>
-      <a href="contacts.html">Contacts</a>
+      <a href="../HTML/main.html">Home</a>
+      <a href="../HTML/about.html">About</a>
+      <a href="../HTML/Store.html">Our Stores</a>
+      <a href="../HTML/contacts.html">Contacts</a>
       <a href="../HTML/profile.html" class="login"><i>👤</i> Account</a>
     </nav>
   </header>
@@ -363,7 +363,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
        }
        ?> -->
-      </p>
+      </p>  
      
     </div>
 </body>
