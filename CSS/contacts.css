@@ -211,56 +211,58 @@ input:focus, textarea:focus{outline:none; box-shadow:0 8px 20px rgba(199,107,60,
 .map-wrap{border-radius:10px; overflow:hidden; height:300px}
 .map-wrap iframe{width:100%; height:100%; border:0; display:block}
 
-/* Footer */
+/* --- UNSQUISHED FOOTER --- */
 footer {
   background-color: #ffffff;
   text-align: center;
-  padding: 10px 20px;
+  padding: 40px 20px; /* Increased from 20px to 40px to give the white box more height */
   color: #2d2d2d;
-  border-radius: 0;
+  width: 100%;
+  margin-top: 40px;
+  clear: both;
 }
 
-/* Logos */
-.footer-logos {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.footer-logos img {
-  width: 80px; 
-  margin: 10px;
-  border-radius: 12px;
-}
-
-/* Text */
 .footer-info {
-  margin-top: 20px; 
   font-size: 14px;
-  line-height: 1.6;
 }
 
-/* Social Icons */
+.footer-info nav {
+  margin-bottom: 20px; /* Pushes the text away from the links */
+}
+
+.footer-info nav a {
+  text-decoration: none;
+  color: #222;
+  margin: 0 12px;
+  font-weight: 500; 
+  font-size: 1rem;
+  transition: color 0.3s;
+}
+
+.footer-info nav a:hover {
+  color: #e66d0a;
+}
+
+.footer-info p {
+  font-size: 16px;
+  color: #555;
+  line-height: 1.6;
+  margin-top: 8px; /* Gives space between the Address line and the Copyright line */
+}
+
 .footer-socials {
-  margin-top: 10px;
+  margin-top: 25px; /* Pushes the icons further down away from the text */
 }
 
 .footer-socials img {
   width: 35px;
-  margin: 0 5px;
-}
-footer nav a {
-  text-decoration: none;
-  color: #000000; 
-  margin: 0 15px; 
-  font-weight: 500;
-  font-size: 1.1rem; 
-  transition: color 0.3s ease; 
-}
-footer nav a:hover {
-  color: #e66d0a; 
+  margin: 0 8px;
+  transition: transform 0.3s;
 }
 
+.footer-socials img:hover {
+  transform: scale(1.1);
+}
 
 /* Responsiveness */
 @media (max-width:1000px){
