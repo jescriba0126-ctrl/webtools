@@ -1,0 +1,370 @@
+<?php
+session_start();
+include("connect.php");
+
+?>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cubiertos Food Hub - Book</title>
+  <link rel="stylesheet" href="../CSS/book.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+ 
+
+</head>
+<body>
+
+  <header>
+    <div class="logo">
+      <img src="../IMAGES/logo.jpg" alt="Cubiertos Food Hub Logo">
+    </div>
+    <nav>
+      <a href="../HTML/main.html">Home</a>
+      <a href="../HTML/about.html">About</a>
+      <a href="../HTML/Store.html">Our Stores</a>
+      <a href="../HTML/contacts.html">Contacts</a>
+      <a href="../HTML/profile.html" class="login"><i>👤</i> Account</a>
+    </nav>
+  </header>
+
+  <div class="socials">
+    <a href="#"><img src="../IMAGES/Facebook.png" alt="Facebook"></a>
+    <a href="#"><img src="../IMAGES/Instagram.png" alt="Instagram"></a>
+    <a href="#"><img src="../IMAGES/Mail.png" alt="YouTube"></a>
+  </div>
+
+  <section class="mainpage">
+    <div class="mainpage-context">
+      <h2>BOOK NOW<span><br>To Experience</span><br> a Memorable Day</h2>
+      <p>Every journey has its ups and downs, and Cubiertos is no exception.</p>
+      <a href="#booking" class="book-btn">Make an appointment</a>
+    </div>
+  </section> 
+
+  <section class="story-section">
+  <div class="mission-part">
+    <div class="mission-text">
+      <h2>Our Purpose</h2>
+      <p>At Cubiertos, our mission is simple — to bring warmth, comfort, and connection through food made from the heart. Every meal we serve celebrates home and togetherness, proving that good food isn’t just about taste — it’s about belonging.</p>
+    </div>
+    <div class="mission-img">
+      <img src="../IMAGES/event.jpg" alt="Cubiertos Mission">
+    </div>
+  </div>
+
+ <section id="booking" class="booking-section">
+  <div class="booking-container">
+    <h3>🍴 Book an Appointment</h3>
+    <p class="intro-text">Reserve your table for birthdays, weddings, or special events at <b>Cubiertos Food Hub</b>.</p>
+
+
+<form id="bookingForm" class="booking-form" method="POST" action="book.php">
+
+      <p>
+        <i>Full Name</i><br>
+        <input type="text" name="name" placeholder="Enter your full name" required>
+      </p>
+
+      <p>
+        <i>Email Address</i><br>
+        <input type="email" name="email" placeholder="Enter your email" required>
+      </p>
+
+      <p>
+        <i>Phone Number</i><br>
+        <input type="tel" name="phone" placeholder="e.g. 0981 027 0704" required>
+      </p>
+
+      <p>
+        <i>Type of Occasion</i><br>
+        <select name="occasion" required>
+          <option value="">-- Select Occasion --</option>
+          <option value="dine-in">Dine In</option>
+          <option value="birthday">Birthday</option>
+          <option value="wedding">Wedding</option>
+          <option value="corporate">Corporate Event</option>
+          <option value="other">Other</option>
+        </select>
+      </p>
+
+      <p>
+        <i>Number of Guests</i><br>
+        <input type="number" name="guests" placeholder="Enter number of guests" min="1" max="100" required>
+      </p>
+
+      <p>
+        <i>Preferred Date & Time</i><br>
+        <input type="datetime-local" name="datetime" required>
+      </p>
+
+      <p>
+        <i>Package Choice</i><br>
+        <select name="package">
+          <option value="">-- Choose a Package --</option>
+          <option value="basic">Basic Package (₱2,000 - Small Group)</option>
+          <option value="standard">Standard Package (₱5,000 - 10 Guests)</option>
+          <option value="premium">Premium Package (₱10,000+ - Events)</option>
+        </select>
+      </p>
+
+      <p>
+        <i>Special Notes</i><br>
+        <textarea name="message" rows="4" placeholder="Any special requests or details?"></textarea>
+      </p>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-submit">Submit Booking</button>
+        <button type="reset" class="btn-reset">Clear Form</button>
+      </div>
+
+      <!-- Confirmation Preview Modal (kept inside form but will be shown by JS) -->
+      <div id="previewModal" class="preview-modal" aria-hidden="true">
+        <div class="preview-modal-content" role="dialog" aria-modal="true" aria-labelledby="previewTitle">
+          <h3 id="previewTitle">Confirm your booking</h3>
+          <div id="previewBody">
+            <!-- preview content filled by JS -->
+          </div>
+          <div class="preview-actions">
+            <button type="button" id="confirmBookingBtn" class="btn confirm">Confirm</button>
+            <button type="button" id="editBookingBtn" class="btn edit">Edit</button>
+          </div>
+        </div>
+      </div>
+
+    </form>
+
+    <div class="booking-info">
+      <h4>📞 Need Help?</h4>
+      <p>Contact us at <b>0981 027 0704</b><br>
+      or visit <em>Imelda Blvd., Rawis, Virac, Catanduanes</em></p>
+    </div>
+  </div>
+</section>
+
+
+  <footer>
+    <div class="footer-info">
+      <nav>
+        <a href="#mainpage">Home</a>
+        <a href="about.html">About</a>
+        <a href="Store.html">Our Stores</a>
+        <a href="contacts.html">Contacts</a>
+        <a href="login.html" class="login"><i>👤</i> Log-in</a>
+      </nav>
+      <p>Food & Drink · Virac, Philippines, 4800 | Contact Info: 0981 027 0704</p>
+      <p>Copyright © 2025 Cubiertos.food.hub</p>
+    </div>
+    <div class="footer-socials">
+      <a href="https://www.facebook.com/profile.php?id=61555258696901" target="_blank"><img src="../IMAGES/Facebook.png" alt="Facebook" /></a>
+      <a href="https://www.instagram.com/cubiertos2024/" target="_blank"><img src="../IMAGES/Instagram.png" alt="Instagram" /></a>
+      <a href="https://mail.google.com/mail/u/0/#sent?compose=CllgCJTNqrcXTJzgQrjqbjtCXnqKDjzdGRPvdqdcFsXlDWgKNhcCtqcDSQcFtPLcvbmcdswCCcL" target="_blank"><img src="../IMAGES/Mail.png" alt="YouTube" /></a>
+    </div>
+  </footer>
+
+
+ <script>
+  window.addEventListener('scroll', function() {
+    const header = document.querySelector('header');
+    if (window.scrollY > 50) {
+      header.classList.add('scrolled');
+    } else {
+      header.classList.remove('scrolled');
+    }
+  });
+
+
+  const bookingForm = document.querySelector('.booking-form');
+
+bookingForm.addEventListener('submit', function(event) {
+  event.preventDefault(); // keep preview first
+  openPreview();
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  // -- form references (using name selectors so no new IDs required)
+  const bookingForm = document.getElementById("bookingForm");
+  const previewModal = document.getElementById("previewModal");
+  const previewBody = document.getElementById("previewBody");
+  const confirmBtn = document.getElementById("confirmBookingBtn");
+  const editBtn = document.getElementById("editBookingBtn");
+
+  // Helper: get field value by name (returns trimmed string)
+  function val(name) {
+    const el = bookingForm.querySelector(`[name="${name}"]`);
+    return el ? String(el.value || "").trim() : "";
+  }
+
+  function valOrDash(name) {
+    const v = val(name);
+    return v === "" ? "—" : v;
+  }
+
+  function nicePackageLabel(code) {
+    if (!code) return "—";
+    if (code === "basic") return "Basic Package (₱2,000)";
+    if (code === "standard") return "Standard Package (₱5,000)";
+    if (code === "premium") return "Premium Package (₱10,000+)";
+    return code;
+  }
+
+  function niceOccasionLabel(code) {
+    if (!code) return "—";
+    // map common values to readable
+    const map = {
+      "dine-in": "Dine In",
+      "birthday": "Birthday",
+      "wedding": "Wedding",
+      "corporate": "Corporate Event",
+      "other": "Other"
+    };
+    return map[code] || code;
+  }
+
+  function formatDateTimeLocal(v) {
+    if (!v) return "—";
+    try {
+      const dt = new Date(v);
+      if (isNaN(dt)) return v;
+      return dt.toLocaleString();
+    } catch {
+      return v;
+    }
+  }
+
+  // OPEN PREVIEW: build readable preview and show modal
+  function openPreview() {
+    const previewLines = [
+      `Full Name: ${valOrDash("name")}`,
+      `Email: ${valOrDash("email")}`,
+      `Phone: ${valOrDash("phone")}`,
+      `Occasion: ${niceOccasionLabel(val("occasion"))}`,
+      `Number of Guests: ${valOrDash("guests")}`,
+      `Preferred Date & Time: ${formatDateTimeLocal(val("datetime"))}`,
+      `Package Choice: ${nicePackageLabel(val("package"))}`,
+      `Special Notes: ${valOrDash("message")}`
+    ];
+    previewBody.textContent = previewLines.join("\n");
+    previewModal.classList.add("show");
+    previewModal.setAttribute("aria-hidden", "false");
+  }
+
+  // CLOSE PREVIEW
+  function closePreview() {
+    previewModal.classList.remove("show");
+    previewModal.setAttribute("aria-hidden", "true");
+  }
+
+  // FORM submit: show preview instead of immediately saving
+  bookingForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    // optional: quick validation before preview (ensure required fields)
+    const requiredFields = ["name","email","phone","occasion","guests","datetime"];
+    for (const r of requiredFields) {
+      if (!val(r)) {
+        // focus first missing field and stop
+        const el = bookingForm.querySelector(`[name="${r}"]`);
+        if (el) el.focus();
+        alert("Please fill in all required fields before proceeding.");
+        return;
+      }
+    }
+    openPreview();
+  });
+
+  // EDIT -> close preview so they can change inputs
+  editBtn.addEventListener("click", function () {
+    closePreview();
+  });
+
+  // CONFIRM -> save booking to localStorage and show success message
+  confirmBtn.addEventListener("click", function () {
+    // compute amount from package selection
+    const pkg = val("package");
+    let amount = 0;
+    if (pkg === "basic") amount = 2000;
+    else if (pkg === "standard") amount = 5000;
+    else if (pkg === "premium") amount = 10000;
+
+    // create order object (admin uses 'ticket', 'name', 'contact', 'service', 'amount', 'status', ...)
+    const ticket = `T${Date.now().toString().slice(-6)}`;
+    const newOrder = {
+      ticket: ticket,
+      name: val("name"),
+      contact: val("phone"),
+      service: niceOccasionLabel(val("occasion")),
+      amount: amount,
+      status: "Pending",
+      datetime: val("datetime"),
+      notes: val("message"),
+      createdAt: new Date().toISOString()
+    };
+
+    // push to orders array in localStorage
+    const orders = JSON.parse(localStorage.getItem("orders")) || [];
+    orders.push(newOrder);
+    localStorage.setItem("orders", JSON.stringify(orders));
+
+    closePreview();
+    alert("✅ Thank you for booking!\nYour reservation has been recorded.");
+    bookingForm.reset();
+
+    // If admin functions exist on this page (they likely don't), call them safely
+    if (typeof renderOrders === "function") {
+      try { renderOrders(); } catch (err) { /* ignore */ }
+    }
+    if (typeof renderHistory === "function") {
+      try { renderHistory(); } catch (err) { /* ignore */ }
+    }
+  });
+
+  // allow closing preview with ESC
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && previewModal.classList.contains("show")) {
+      closePreview();
+    }
+  });
+
+  // existing features from your file: header scroll and slideshow (kept)
+  window.addEventListener('scroll', function () {
+    const header = document.querySelector('header');
+    header.classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  // slideshow - safe-guard if .mySlides exist
+  let index = 0;
+  const slides = document.getElementsByClassName('mySlides');
+  function showSlides() {
+    if (!slides || slides.length === 0) return;
+    for (let i = 0; i < slides.length; i++) {
+      slides[i].style.display = 'none';
+    }
+    index++;
+    if (index > slides.length) index = 1;
+    slides[index - 1].style.display = 'block';
+    setTimeout(showSlides, 2000);
+  }
+  showSlides();
+
+}); // DOMContentLoaded end
+</script>
+ <!-- <?php 
+       if(isset($_SESSION['email'])){
+        $email=$_SESSION['email'];
+        $query=mysqli_query($conn, "SELECT users.* FROM `users` WHERE users.email='$email'");
+        while($row=mysqli_fetch_array($query)){
+            echo $row['firstName'].' '.$row['lastName'];
+        }
+       }
+       ?> -->
+      </p>  
+     
+    </div>
+</body>
+</html>
