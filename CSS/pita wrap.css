@@ -1,9 +1,15 @@
 body {
   margin: 0;
+<<<<<<< HEAD
   font-family: "Poppins", sans-serif;
   background-color: #f6f6f6;
   color: #333;
   background-image: url("../IMAGES/bodybg.jpg");
+=======
+  font-family: 'Poppins', sans-serif;
+  background-color: #f6f6f6;
+  color: #333;
+>>>>>>> a751e6dded2ab7a95e8673bc0f380c1234abeb54
 }
 
 .menu-section {
@@ -41,7 +47,11 @@ body {
   padding: 20px;
   width: 90%;
   max-width: 1100px;
+<<<<<<< HEAD
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+=======
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+>>>>>>> a751e6dded2ab7a95e8673bc0f380c1234abeb54
 }
 
 .back-btn {
@@ -72,7 +82,11 @@ body {
   border-radius: 12px;
   width: 230px;
   padding: 15px;
+<<<<<<< HEAD
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+=======
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+>>>>>>> a751e6dded2ab7a95e8673bc0f380c1234abeb54
   transition: transform 0.2s;
 }
 
