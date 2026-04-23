@@ -1,8 +1,25 @@
+<<<<<<< HEAD
+=======
 
+>>>>>>> a751e6dded2ab7a95e8673bc0f380c1234abeb54
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+<<<<<<< HEAD
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background-image: url("../IMAGES/bodybg.jpg");
+}
+
+.menu {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(5px); /* optional glass effect */
+}
+
+=======
   font-family: 'Poppins', sans-serif;
 }
 
@@ -14,18 +31,29 @@ body {
 }
 
 /* Header */
+>>>>>>> a751e6dded2ab7a95e8673bc0f380c1234abeb54
 header {
   width: 100%;
   padding: 0.5rem 6%;
   position: fixed;
   top: 0;
   left: 0;
+<<<<<<< HEAD
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: transparent;
+  transition:
+    background-color 0.4s ease,
+    box-shadow 0.4s ease;
+=======
 
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: transparent; 
   transition: background-color 0.4s ease, box-shadow 0.4s ease;
+>>>>>>> a751e6dded2ab7a95e8673bc0f380c1234abeb54
   z-index: 1000;
 }
 
@@ -57,6 +85,15 @@ header.scrolled {
 }
 
 nav a {
+<<<<<<< HEAD
+  margin: 0 10px;
+  text-decoration: none;
+  color: #222;
+  font-weight: 500;
+  font-size: 1rem;
+  position: relative;
+  transition: 0.3s;
+=======
   margin: 0 15px;
   text-decoration: none;
   color: #333;
@@ -64,6 +101,7 @@ nav a {
   font-weight: 500;
   position: relative;
   transition: color 0.3s;
+>>>>>>> a751e6dded2ab7a95e8673bc0f380c1234abeb54
 }
 
 nav a:hover {
@@ -71,7 +109,11 @@ nav a:hover {
 }
 
 nav a::after {
+<<<<<<< HEAD
+  content: "";
+=======
   content: '';
+>>>>>>> a751e6dded2ab7a95e8673bc0f380c1234abeb54
   position: absolute;
   width: 0%;
   height: 3px;
@@ -85,6 +127,37 @@ nav a:hover::after {
   width: 100%;
 }
 
+<<<<<<< HEAD
+.w3-content {
+  max-width: 1200px;
+  width: 90%;
+  margin: 40px auto;
+}
+
+.mySlides {
+  width: 100%;
+  border-radius: 50px;
+  margin-top: 1%;
+  animation: fade 1.2s ease-in;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+    transform: scale(1.02);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ================= HERO ================= */
+.hero {
+  position: relative;
+  height: 70vh;
+  overflow: hidden;
+=======
   .w3-content {
       max-width: 1200px;
       width: 90%;
@@ -162,27 +235,57 @@ nav a:hover::after {
   position: relative;
   text-align: center;
   color: #4e5026;
+>>>>>>> a751e6dded2ab7a95e8673bc0f380c1234abeb54
 }
 
 .hero-bg {
   width: 100%;
+<<<<<<< HEAD
+  height: 100%;
+  object-fit: cover;
+=======
   height: 380px;
   object-fit: cover;
   border-bottom-left-radius: 60px;
   border-bottom-right-radius: 60px;
+>>>>>>> a751e6dded2ab7a95e8673bc0f380c1234abeb54
 }
 
 .hero-overlay {
   position: absolute;
+<<<<<<< HEAD
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+=======
   top: 0; left: 0;
   width: 100%; height: 99%;
   background: rgba(255,255,255,0.5);
   border-bottom-left-radius: 60px;
   border-bottom-right-radius: 60px;
+>>>>>>> a751e6dded2ab7a95e8673bc0f380c1234abeb54
 }
 
 .hero-text {
   position: absolute;
+<<<<<<< HEAD
+  bottom: 20%;
+  left: 100px;
+  color: white;
+}
+
+.hero-text h1 {
+  font-size: 50px;
+}
+
+.hero-text span {
+  color: #5b8b57;
+}
+
+/* ================= SOCIALS ================= */
+=======
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -206,6 +309,7 @@ nav a:hover::after {
 }
 
 
+>>>>>>> a751e6dded2ab7a95e8673bc0f380c1234abeb54
 .socials {
   position: fixed;
   left: 20px;
@@ -227,8 +331,15 @@ nav a:hover::after {
   border-radius: 50%;
   background: #fff;
   padding: 8px;
+<<<<<<< HEAD
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition:
+    transform 0.3s,
+    background 0.3s;
+=======
   box-shadow: 0 2px 8px rgba(0,0,0,0.2);
   transition: transform 0.3s, background 0.3s;
+>>>>>>> a751e6dded2ab7a95e8673bc0f380c1234abeb54
 }
 
 .socials img:hover {
@@ -236,6 +347,60 @@ nav a:hover::after {
   background-color: #ffffff;
 }
 
+<<<<<<< HEAD
+/* ================= MENU SECTION ================= */
+.menu {
+  padding: 60px 80px;
+  background: #faf7f2; /* clean restaurant background */
+}
+
+/* GROUPING (THIS REPLACES YOUR DIVIDERS) */
+.menu-group {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 50px;
+}
+
+/* SINGLE CENTER ITEM (MAIN COURSE) */
+.menu-group.single {
+  justify-content: center;
+}
+
+/* ================= MENU CARD ================= */
+.menu-card {
+  flex: 1;
+  border-radius: 18px;
+  overflow: hidden;
+  position: relative;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  background: white;
+}
+
+/* hover effect */
+.menu-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* images */
+.menu-card img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  display: block;
+}
+
+/* MAIN COURSE BIG CARD */
+.menu-card.wide img {
+  height: 320px;
+}
+
+/* ================= TITLE OVER IMAGE ================= */
+.menu-btn {
+  text-decoration: none;
+=======
 
 
 .menu {
@@ -265,10 +430,24 @@ nav a:hover::after {
   object-fit: cover;
   display: block;
   border-radius: 25px;
+>>>>>>> a751e6dded2ab7a95e8673bc0f380c1234abeb54
 }
 
 .menu-title {
   position: absolute;
+<<<<<<< HEAD
+  bottom: 0;
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+/* ================= FOOTER ================= */
+=======
   bottom: 15px;
   left: 25px;
   background-color: #4e5026;
@@ -301,16 +480,25 @@ nav a:hover::after {
 
 
 /* Footer */
+>>>>>>> a751e6dded2ab7a95e8673bc0f380c1234abeb54
 footer {
   background-color: #ffffff;
   text-align: center;
   padding: 10px 20px;
+<<<<<<< HEAD
+  color: #2d2d2d;
+  border-radius: 0;
+}
+
+/* Logos */
+=======
   color: #2d2d2d; 
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   border-radius: 0; 
 }
 
+>>>>>>> a751e6dded2ab7a95e8673bc0f380c1234abeb54
 .footer-logos {
   display: flex;
   justify-content: center;
@@ -323,12 +511,37 @@ footer {
   border-radius: 12px;
 }
 
+<<<<<<< HEAD
+/* Text */
+=======
+>>>>>>> a751e6dded2ab7a95e8673bc0f380c1234abeb54
 .footer-info {
   margin-top: 20px;
   font-size: 14px;
   line-height: 1.6;
 }
 
+<<<<<<< HEAD
+/* Social Icons */
+.footer-socials {
+  margin-top: 10px;
+}
+
+.footer-socials img {
+  width: 35px;
+  margin: 0 5px;
+}
+footer nav a {
+  text-decoration: none;
+  color: #000000;
+  margin: 0 15px;
+  font-weight: 500;
+  font-size: 1.1rem;
+  transition: color 0.3s ease;
+}
+footer nav a:hover {
+  color: #e66d0a;
+=======
 .footer-socials {
   margin-top: 15px;
 }
@@ -336,4 +549,5 @@ footer {
 .footer-socials img {
   width: 50px;
   margin: 0 10px;
+>>>>>>> a751e6dded2ab7a95e8673bc0f380c1234abeb54
 }
