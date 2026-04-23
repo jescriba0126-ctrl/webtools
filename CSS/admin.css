@@ -1,0 +1,373 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  color: #222;
+  background: url("../IMAGES/bodybg.jpg");
+  background-size: fill;
+  min-height: 100vh;
+}
+
+
+#adminHeader {
+  width: 100%;
+  padding: 0.5rem 6%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: transparent;
+  transition: background-color 0.4s ease, box-shadow 0.4s ease;
+  z-index: 1000;
+}
+
+#adminHeader.scrolled {
+  background-color: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}
+
+.logo h1 {
+  font-size: 1.8rem;
+  color: #283618;
+}
+
+.logo span {
+  color: #bc6c25;
+  font-style: italic;
+}
+
+
+nav a, nav .btn {
+  margin-left: 15px;
+  text-decoration: none;
+  font-weight: 500;
+  color: #283618;
+  transition: 0.3s;
+}
+
+nav a:hover {
+  color: #dda15e;
+}
+
+
+.btn {
+  padding: 8px 18px;
+  border-radius: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+
+  color: #000000;
+}
+
+
+.btn:hover {
+  background-color: #bc6c25;
+  border-color: #283618;
+  color: #fff;
+  transform: scale(1.05);
+}
+
+
+
+
+.dashboard-container {
+  padding-top: 120px;
+  padding-bottom: 80px;
+  text-align: center;
+}
+
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
+  gap: 20px;
+}
+
+.tab {
+  padding: 12px 24px;
+  border-radius: 30px;
+  background: #f0f0f0;
+  border: 2px solid #bc6c25;
+  color: #283618;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.tab.active, .tab:hover {
+  background: #bc6c25;
+  color: #fff;
+  transform: scale(1.05);
+}
+
+/* ===== CARD ===== */
+.card {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 30px;
+  border-radius: 20px;
+  max-width: 1000px;
+  margin: auto;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+.card h2 {
+  color: #283618;
+  margin-bottom: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+thead {
+  background: #dda15e;
+  color: #fff;
+}
+
+th, td {
+  padding: 14px;
+  border-bottom: 1px solid #ddd;
+  font-size: 0.95rem;
+}
+
+tbody tr:hover {
+  background: rgba(221, 161, 94, 0.1);
+}
+
+
+.status {
+  padding: 6px 10px;
+  border-radius: 10px;
+  font-weight: 600;
+  color: white;
+}
+
+.status.pending { background: #ffffff; }
+.status.inprogress { background: #ffffff; }
+.status.completed { background: #ffffff; }
+
+
+.btn.in-progress { background: #ff9800; color: white; }
+.btn.completed { background: #4caf50; color: white; }
+.btn.delete { background: #e53935; color: white; }
+
+.btn:hover {
+  opacity: 0.85;
+}
+
+
+@media (max-width: 768px) {
+  .tab {
+    font-size: 0.9rem;
+    padding: 10px 16px;
+  }
+
+  th, td {
+    font-size: 0.85rem;
+  }
+
+  .logo h1 {
+    font-size: 1.3rem;
+  }
+}
+
+/* updated styles for the daily capacity and select date*/
+.admin-status-bar {
+    padding: 20px 6%;
+    margin-top: 100px; /* Space for your fixed header */
+}
+
+/* This creates the large white card */
+.combined-status-card {
+    background: white;
+    border-radius: 30px;
+    display: flex; /* This puts left and right side-by-side */
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    max-width: 1100px;
+    margin: 0 auto;
+    align-items: stretch; /* Makes the divider full height */
+}
+
+.status-section {
+    flex: 1; /* Gives equal space to both sides */
+    padding: 0 20px;
+}
+
+/* The Vertical Line */
+.vertical-divider {
+    width: 2px;
+    background-color: #eee;
+    margin: 0 30px;
+}
+
+.section-title {
+    font-size: 1.6rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* Progress Bar Colors */
+.progress-container {
+    background: #e9ecef;
+    height: 15px;
+    border-radius: 10px;
+    margin: 20px 0;
+    overflow: hidden;
+}
+
+.progress-fill {
+    background: #bc6c25; /* Your orange theme color */
+    height: 100%;
+    width: 0%; /* JS will change this */
+    transition: width 0.5s ease;
+}
+
+/* Button Styling */
+.btn-set-limit {
+    background: #bc6c25;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.label-text { color: #555; margin-top: 20px; }
+.capacity-value { font-size: 2.2rem; font-weight: bold; margin-bottom: 20px; }
+
+.progress-container {
+    background: #e9ecef;
+    height: 18px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.progress-fill {
+    background: #bc6c25; /* Your Theme Orange */
+    height: 100%;
+    transition: width 0.4s ease;
+}
+
+.capacity-footer {
+    display: flex;
+    justify-content: space-between;
+    color: #333;
+}
+
+.progress-bar {
+    background: #e0e0e0;
+    height: 15px;
+    border-radius: 10px;
+    margin: 15px 0;
+}
+
+.progress-bar .fill {
+    background: #bc6c25;
+    height: 100%;
+    border-radius: 10px;
+    width: 65%; /* Example */
+}
+
+
+/* The box containing the numbers */
+.calendar-box {
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 15px;
+    max-width: 320px;
+    margin: 0 auto;
+    background: #fff;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+/* Header buttons (< and >) */
+.calendar-header button {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #bc6c25;
+    padding: 0 10px;
+}
+
+/* The Day Labels (Su, Mo, Tu...) */
+.calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* 7 equal columns */
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.75rem;
+    color: #888;
+    margin-bottom: 8px;
+}
+
+/* The actual numbers grid */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* 7 equal columns */
+    gap: 2px; /* Small space between numbers */
+    text-align: center;
+}
+
+.calendar-grid div {
+    padding: 10px 0;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    transition: background 0.2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Hover effect */
+.calendar-grid div:hover:not(:empty) {
+    background-color: #f8f9fa;
+}
+
+/* The Selected/Today Circle */
+.active-day {
+    background-color: #bc6c25 !important;
+    color: white !important;
+    font-weight: bold;
+    border-radius: 50% !important; /* Makes it a clean circle */
+    width: 35px;
+    height: 35px;
+    margin: auto;
+}
+/* End of the updated code */
+
