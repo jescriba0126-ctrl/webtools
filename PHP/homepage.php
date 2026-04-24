@@ -23,11 +23,11 @@ include("connect.php");
       <img src="../IMAGES/logo.jpg" alt="Cubiertos Food Hub Logo">
     </div>
     <nav>
-      <a href="../HTML/main.html">Home</a>
-      <a href="../HTML/about.html">About</a>
-      <a href="../HTML/Store.html">Our Stores</a>
-      <a href="../HTML/contacts.html">Contacts</a>
-      <a href="../HTML/profile.html" class="login"><i>👤</i> Account</a>
+      <a href="main.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="Store.html">Our Stores</a>
+      <a href="contacts.html">Contacts</a>
+      <a href="profile.html" class="login"><i>👤</i> Account</a>
     </nav>
   </header>
 
@@ -52,16 +52,15 @@ include("connect.php");
       <p>At Cubiertos, our mission is simple — to bring warmth, comfort, and connection through food made from the heart. Every meal we serve celebrates home and togetherness, proving that good food isn’t just about taste — it’s about belonging.</p>
     </div>
     <div class="mission-img">
-      <img src="../IMAGES/event.jpg" alt="Cubiertos Mission">
+        <img src="../IMAGES/event.jpg" alt="Cubiertos Mission">
+      </div>
     </div>
-  </div>
+  </section> <section id="booking" class="booking-section"> </section>
 
- <section id="booking" class="booking-section">
+<section id="booking" class="booking-section">
   <div class="booking-container">
     <h3>🍴 Book an Appointment</h3>
     <p class="intro-text">Reserve your table for birthdays, weddings, or special events at <b>Cubiertos Food Hub</b>.</p>
-
-
 <form id="bookingForm" class="booking-form" method="POST" action="book.php">
 
       <p>
@@ -136,7 +135,6 @@ include("connect.php");
       </div>
 
     </form>
-
     <div class="booking-info">
       <h4>📞 Need Help?</h4>
       <p>Contact us at <b>0981 027 0704</b><br>
@@ -145,25 +143,25 @@ include("connect.php");
   </div>
 </section>
 
+    <footer>
+  <div class="footer-info">
+    <nav>
+      <a href="main.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="Store.html">Our Stores</a>
+      <a href="contacts.html">Contacts</a>
+      <a href="login.html" class="login"><i>👤</i> Log-in</a>
+    </nav>
+    <p>Food & Drink · Virac, Philippines, 4800 | Contact Info: 0981 027 0704</p>
+    <p>Copyright © 2025 Cubiertos.food.hub</p>
+  </div>
+  <div class="footer-socials">
+    <a href="https://www.facebook.com/profile.php?id=61555258696901" target="_blank"><img src="../IMAGES/Facebook.png" alt="Facebook" /></a>
+    <a href="https://www.instagram.com/cubiertos2024/" target="_blank"><img src="../IMAGES/Instagram.png" alt="Instagram" /></a>
+    <a href="https://mail.google.com/mail/u/0/#sent?compose=CllgCJTNqrcXTJzgQrjqbjtCXnqKDjzdGRPvdqdcFsXlDWgKNhcCtqcDSQcFtPLcvbmcdswCCcL" target="_blank"><img src="../IMAGES/Mail.png" alt="Mail" /></a>
+  </div>
+</footer>
 
-  <footer>
-    <div class="footer-info">
-      <nav>
-        <a href="#mainpage">Home</a>
-        <a href="about.html">About</a>
-        <a href="Store.html">Our Stores</a>
-        <a href="contacts.html">Contacts</a>
-        <a href="login.html" class="login"><i>👤</i> Log-in</a>
-      </nav>
-      <p>Food & Drink · Virac, Philippines, 4800 | Contact Info: 0981 027 0704</p>
-      <p>Copyright © 2025 Cubiertos.food.hub</p>
-    </div>
-    <div class="footer-socials">
-      <a href="https://www.facebook.com/profile.php?id=61555258696901" target="_blank"><img src="../IMAGES/Facebook.png" alt="Facebook" /></a>
-      <a href="https://www.instagram.com/cubiertos2024/" target="_blank"><img src="../IMAGES/Instagram.png" alt="Instagram" /></a>
-      <a href="https://mail.google.com/mail/u/0/#sent?compose=CllgCJTNqrcXTJzgQrjqbjtCXnqKDjzdGRPvdqdcFsXlDWgKNhcCtqcDSQcFtPLcvbmcdswCCcL" target="_blank"><img src="../IMAGES/Mail.png" alt="YouTube" /></a>
-    </div>
-  </footer>
 
 
  <script>

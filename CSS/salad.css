@@ -1,5 +1,9 @@
 body {
   margin: 0;
+  font-family: "Poppins", sans-serif;
+  background-color: #f6f6f6;
+  color: #333;
+  background-image: url("../IMAGES/bodybg.jpg");
   font-family: 'Poppins', sans-serif;
   background-color: #f6f6f6;
   color: #333;
@@ -40,6 +44,8 @@ body {
   padding: 20px;
   width: 90%;
   max-width: 1100px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
@@ -71,6 +77,7 @@ body {
   border-radius: 12px;
   width: 230px;
   padding: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   transition: transform 0.2s;
 }

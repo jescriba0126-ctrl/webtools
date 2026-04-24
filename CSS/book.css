@@ -536,35 +536,31 @@ h4{
 }
 
 footer {
-  width: 100vw; 
   background-color: #ffffff;
   text-align: center;
-  padding: 30px 20px;
+  padding: 20px 10px;
   color: #2d2d2d;
-  overflow: hidden;
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
-
-}
-
-.footer-logos {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 15px;
-}
-
-.footer-logos img {
-  width: 70px;
-  margin: 10px;
-  border-radius: 12px;
+  width: 100%; 
+  margin-top: 40px;
 }
 
 .footer-info {
-  font-size: 1px;
+  margin-top: 15px;
+  font-size: 14px; 
   line-height: 1.6;
- 
+}
+
+.footer-info nav a {
+  text-decoration: none;
+  color: #222;
+  margin: 0 12px;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: color 0.3s;
+}
+
+.footer-info nav a:hover {
+  color: #e66d0a; /* The orange color from your contacts page */
 }
 
 .footer-socials {
@@ -572,12 +568,21 @@ footer {
 }
 
 .footer-socials img {
-  width: 50px;
-  margin: 0 10px;
+  width: 35px; /* Smaller size like the contacts page */
+  margin: 0 8px;
+  transition: transform 0.3s;
 }
 
-p{
-  font-size: 3vh;
+.footer-socials img:hover {
+  transform: scale(1.1);
+}
+
+
+
+p {
+  font-size: 16px; 
+  color: #555;
+  line-height: 1.6;
 }
 
  .preview-modal {
