@@ -1,0 +1,296 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* BACKGROUND IMAGE */
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("../IMAGES/restaurantbg.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(6px);
+    transform: scale(1.1);
+    z-index: -2;
+}
+
+/* DARK OVERLAY */
+body::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        135deg,
+        rgba(221,161,94,0.35),
+        rgba(0,0,0,0.55)
+    );
+    z-index: -1;
+}
+
+/* MAIN CONTAINER */
+.container {
+    position: relative;
+    width: 850px;
+    height: 650px;
+    background: #fff;
+    border-radius: 30px;
+    box-shadow: 0 0 30px rgba(0,0,0,.2);
+    overflow: hidden;
+}
+
+/* FORM BOX */
+.form-box {
+    position: absolute;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #333;
+    text-align: center;
+    padding: 40px 30px;
+    z-index: 1;
+    transition: .6s ease-in-out 1.2s,
+                visibility 0s 1s;
+}
+
+.container.active .form-box {
+    right: 50%;
+}
+
+/* REGISTER FORM */
+.form-box.register {
+    visibility: hidden;
+    overflow-y: auto;
+    padding-top: 70px;
+    padding-bottom: 40px;
+}
+
+.container.active .form-box.register {
+    visibility: visible;
+    z-index: 2;
+}
+
+form {
+    width: 100%;
+}
+
+/* TITLES */
+.container h1 {
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+/* LOGIN INPUT SPACING */
+.form-box.login .input-box {
+    position: relative;
+    margin: 30px 0;
+}
+
+/* REGISTER INPUT SPACING */
+.form-box.register .input-box {
+    position: relative;
+    margin: 12px 0;
+}
+
+/* INPUT FIELDS */
+.input-box input,
+.input-box select {
+    width: 100%;
+    padding: 11px 45px 11px 16px;
+    background: #eee;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
+}
+
+/* PLACEHOLDER */
+.input-box input::placeholder {
+    color: #888;
+    font-weight: 400;
+}
+
+/* ICONS */
+.input-box i {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #888;
+}
+
+/* BUTTON */
+.btn {
+    width: 100%;
+    height: 44px;
+    background: #dda15e;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,.1);
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: black;
+    font-weight: 600;
+    margin-top: 15px;
+    transition: 0.3s ease;
+}
+
+.btn:hover {
+    background: #c98d4f;
+}
+
+/* TOGGLE BOX */
+.toggle-box {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+/* SLIDING PANEL */
+.toggle-box::before {
+    content: '';
+    position: absolute;
+    left: -250%;
+    width: 300%;
+    height: 100%;
+    background: #dda15e;
+    border-radius: 150px;
+    z-index: 2;
+    transition: 1.8s ease-in-out;
+}
+
+.container.active .toggle-box::before {
+    left: 50%;
+}
+
+/* TOGGLE PANELS */
+.toggle-panel {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+    transition: .6s ease-in-out;
+}
+
+/* LEFT PANEL */
+.toggle-panel.toggle-left {
+    left: 0;
+    transition-delay: .6s;
+}
+
+.container.active .toggle-panel.toggle-left {
+    left: -50%;
+    transition-delay: .6s;
+}
+
+/* RIGHT PANEL */
+.toggle-panel.toggle-right {
+    right: -50%;
+    transition-delay: .6s;
+}
+
+.container.active .toggle-panel.toggle-right {
+    right: 0;
+    transition-delay: 1.2s;
+}
+
+/* PANEL TEXT */
+.toggle-panel p {
+    margin-bottom: 20px;
+}
+
+/* PANEL BUTTON */
+.toggle-panel .btn {
+    width: 160px;
+    height: 46px;
+    background: transparent;
+    border: 2px solid white;
+    box-shadow: none;
+    color: white;
+}
+
+/* SELECT DROPDOWN */
+.input-box select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23888' viewBox='0 0 16 16'%3E%3Cpath d='M1.5 5.5l6 6 6-6h-12z'/%3E%3C/svg%3E");
+
+    background-repeat: no-repeat;
+    background-position: right 20px center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.input-box select:hover {
+    background-color: #e0e0e0;
+}
+
+/* SCROLLBAR */
+.form-box.register::-webkit-scrollbar {
+    width: 5px;
+}
+
+.form-box.register::-webkit-scrollbar-thumb {
+    background: #dda15e;
+    border-radius: 10px;
+}
+
+/* RESPONSIVE */
+@media screen and (max-width: 768px) {
+
+    .container {
+        width: 95%;
+        height: auto;
+        min-height: 700px;
+    }
+
+    .form-box {
+        width: 100%;
+        height: 100%;
+    }
+
+    .toggle-panel {
+        display: none;
+    }
+
+    .container.active .form-box {
+        right: 0;
+    }
+}

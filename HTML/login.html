@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Login Page</title>
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../CSS/login.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <!-- LOGIN -->
+      <div class="form-box login">
+        <form action="../PHP/register.php" method="POST">
+          <h1>LOGIN</h1>
+
+          <div class="input-box">
+            <input type="email" name="email" placeholder="Email" required />
+            <i class="bx bxs-envelope"></i>
+          </div>
+
+          <div class="input-box">
+            <input
+              type="password"
+              name="password"
+              id="loginPassword"
+              placeholder="Password"
+              required
+            />
+            <i
+              class="bx bxs-lock-alt"
+              style="cursor: pointer"
+              onclick="togglePassword('loginPassword', this)"
+            ></i>
+          </div>
+
+          <button type="submit" name="signIn" class="btn">LOGIN</button>
+        </form>
+      </div>
+
+      <!-- REGISTER -->
+      <!-- REGISTER -->
+<div class="form-box register">
+    <form action="../PHP/register.php" method="POST">
+        <h1>Registration</h1>
+
+        <!-- ✅ Split into two fields -->
+        <div class="input-box">
+            <input type="text" name="firstName" placeholder="First Name" required />
+            <i class="bx bxs-user"></i>
+        </div>
+
+        <div class="input-box">
+            <input type="text" name="lastName" placeholder="Last Name" required />
+            <i class="bx bxs-user"></i>
+        </div>
+
+        <div class="input-box">
+            <input type="email" name="email" placeholder="Email" required />
+            <i class="bx bxs-envelope"></i>
+        </div>
+
+        <div class="input-box">
+            <select name="gender" required>
+                <option value="" disabled selected>Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+                <option value="Prefer not to say">Prefer not to say</option>
+            </select>
+            <i class="bx bxs-group"></i>
+        </div>
+
+        <div class="input-box">
+            <input type="password" name="password" id="regPassword" placeholder="Password" required />
+            <i class="bx bxs-lock-alt" style="cursor:pointer"
+               onclick="togglePassword('regPassword', this)"></i>
+        </div>
+
+        <div class="input-box">
+            <input type="password" name="confirmPassword" id="regConfirmPassword" placeholder="Retype Password" required />
+            <i class="bx bxs-lock-alt" style="cursor:pointer"
+               onclick="togglePassword('regConfirmPassword', this)"></i>
+        </div>
+
+        <button type="submit" name="signUp" class="btn">Register</button>
+    </form>
+</div>
+
+      <!-- TOGGLE -->
+      <div class="toggle-box">
+        <div class="toggle-panel toggle-left">
+          <h1>Hello, Welcome</h1>
+          <p>Don't have an account?</p>
+          <button type="button" class="btn register-btn">Register</button>
+        </div>
+
+        <div class="toggle-panel toggle-right">
+          <h1>Welcome Back!</h1>
+          <p>Already have an account?</p>
+          <button type="button" class="btn login-btn">Login</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function togglePassword(inputId, icon) {
+        const inp = document.getElementById(inputId);
+        const isHidden = inp.type === "password";
+        inp.type = isHidden ? "text" : "password";
+        icon.className = isHidden ? "bx bxs-lock-open-alt" : "bx bxs-lock-alt";
+      }
+
+      const container = document.querySelector(".container");
+      const registerBtn = document.querySelector(".register-btn");
+      const loginBtn = document.querySelector(".login-btn");
+
+      if (registerBtn) {
+        registerBtn.addEventListener("click", () => {
+          container.classList.add("active");
+        });
+      }
+
+      if (loginBtn) {
+        loginBtn.addEventListener("click", () => {
+          container.classList.remove("active");
+        });
+      }
+    </script>
+  </body>
+</html>

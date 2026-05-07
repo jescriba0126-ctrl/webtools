@@ -1,0 +1,298 @@
+:root {
+    --forest-green: #1B2B1E; /* Deep Forest Green */
+    --moss-green: #4D5D3B;   /* Moss Green */
+    --cream: #F9F7F2;        /* Organic Cream Base */
+    --ochre: #B58D3D;        /* Warm Ochre Accent */
+    --ochre-glow: rgba(181, 141, 61, 0.25);
+    --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background: var(--cream) url('image-content/bodybg2.jpg') repeat;
+    background-blend-mode: multiply; /* Enhances the paper/linen texture */
+    font-family: 'Inter', sans-serif;
+    color: var(--forest-green);
+}
+
+/* --- 1. TYPOGRAPHY (HERITAGE SERIF) --- */
+.heritage-heading {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    color: var(--forest-green);
+    letter-spacing: -1px;
+    text-shadow: 3px 3px 0px rgba(181, 141, 61, 0.1); /* Subtle Ochre Depth */
+}
+
+.header-intro{
+    font-weight: 500; /* Increased from 400 */
+    color: #0d140e;   /* Deeper Forest-Black for contrast */
+    letter-spacing: 0.2px;
+    line-height: 1.8;
+    margin-bottom: 25px;
+}
+
+h1.heritage-heading { font-size: 6.5rem; margin-bottom: 20px; }
+h2.heritage-heading { font-size: 4rem; margin-bottom: 15px; }
+
+/* --- 2. THE DIRECTOR QUOTE --- */
+.director-quote {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 2.8rem;
+    color: var(--moss-green);
+    line-height: 1.4;
+    margin-bottom: 20px;
+}
+
+.big-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: 6rem;
+    color: var(--ochre);
+    opacity: 0.4;
+    display: block;
+    height: 40px;
+}
+
+/* --- 3. SIDEBAR (STRUCTURAL GRADIENT) --- */
+.sidebar-structural {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 75px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.side-icons { display: flex; flex-direction: column; gap: 40px; }
+
+.social-icon img { 
+    width: 25px; 
+    filter: sepia(1) saturate(5) hue-rotate(350deg); /* Warm Ochre look */
+    transition: var(--transition); 
+}
+
+.social-icon:hover img { 
+    transform: scale(1.2) rotate(5deg);
+    filter: brightness(0) saturate(100%) invert(13%) sepia(14%) saturate(913%) hue-rotate(85deg) brightness(91%) contrast(91%); /* Turns Forest Green on hover */
+}
+
+
+/* --- 4. ORGANIC IMAGERY --- */
+.main-content { padding: 120px 10% 60px 150px; }
+
+.organic-image {
+    width: 100%;
+    border-radius: 40px; /* Deep organic corners */
+    transition: var(--transition);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+
+.organic-image:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px var(--ochre-glow);
+}
+
+
+/* --- 6. LAYOUT --- */
+.quote-block {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 80px;
+    margin: 120px 0;
+    align-items: center;
+}
+
+/* --- ASYMMETRIC TEAM GRID LAYOUT --- */
+.team-editorial-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr; /* Visuals take more space on the left */
+    gap: 40px;
+    margin-top: 150px;
+    padding-bottom: 100px;
+    align-items: center;
+    position: relative;
+}
+
+/* Staggered Visuals Container */
+.team-grid-visuals {
+    position: relative;
+    height: 850px; /* Provides height for the absolute staggered positioning */
+}
+
+.team-img-frame {
+    position: absolute;
+    transition: var(--transition);
+    z-index: 2;
+}
+
+/* Image 1: Top-Left Quadrant */
+.top-left {
+    top: 0;
+    left: 0;
+    width: 75%;
+}
+
+/* Image 2: Center Overlap (The Dynamic Shift) */
+.center-overlap {
+    top: 250px;
+    right: 0;
+    width: 65%;
+    z-index: 4; /* Sits on top of the other two */
+    border: 15px solid var(--cream); /* Creates a 'cutout' effect during overlap */
+    border-radius: 45px; /* Matches the 30px-40px organic feel */
+}
+
+/* Image 3: Bottom-Left Quadrant */
+.bottom-left {
+    bottom: 0;
+    left: 0%;
+    width: 75%;
+}
+
+/* CONTENT BLOCK (Middle-Right Alignment) */
+.team-editorial-content {
+    padding-left: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.body-text-bold {
+    font-weight: 700; /* Bolder for prominence */
+    color: var(--forest-green);
+    letter-spacing: 0.2px;
+    line-height: 1.6;
+    margin-top: 20px;
+    max-width: 400px;
+}
+
+/* --- REFINED INTERACTIVITY --- */
+.team-img-frame:hover {
+    transform: scale(1.05);
+    z-index: 10; /* Brings hovered image to the very front */
+    box-shadow: 0 30px 60px var(--ochre-glow);
+}
+
+/* Consistency update for all Team Images */
+.team-img-frame img {
+    border: 2px solid var(--forest-green); /* Brand Identity Border */
+    display: block;
+}
+
+/* Ensuring mobile responsiveness */
+@media (max-width: 1024px) {
+    .team-editorial-grid {
+        grid-template-columns: 1fr;
+    }
+    .team-grid-visuals {
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+    .team-img-frame {
+        position: static;
+        width: 100% !important;
+        border: none;
+    }
+}
+
+/* --- WHITE BOX SUBTEXT STYLING --- */
+.text-container-box {
+    background: rgba(255, 255, 255, 0.65); /* Semi-transparent white */
+    backdrop-filter: blur(8px);            /* Softens the paper texture behind the text */
+    padding: 30px 40px;                    /* Generous internal spacing */
+    border-radius: 20px;                   /* Organic rounded corners */
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03); /* Extremely subtle lift */
+    margin-top: 20px;
+    max-width: 750px;                      /* Keeps the box from stretching too wide */
+}
+
+/* Adjustments for "The Team" box specifically */
+.team-editorial-content .text-container-box {
+    max-width: 450px;                      /* Matches the narrower column on the right */
+    padding: 25px 30px;
+}
+
+/* Ensure the text inside doesn't have extra bottom margins */
+.text-container-box p:last-child {
+    margin-bottom: 0;
+}
+
+/* --- REFINED SPACING --- */
+.hero-header {
+    margin-bottom: 100px; /* Added space before the first image */
+}
+
+.heritage-heading {
+    margin-bottom: 30px; /* Space between title and the new white box */
+}
+
+/* --- HEADER HORIZONTAL EXPANSION --- */
+.hero-header-horizontal {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+/* Forces the box to expand horizontally across the main content area */
+.full-width-box {
+    max-width: 100% !important; 
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Splits text into two columns horizontally */
+    gap: 40px;
+    padding: 40px 60px;
+}
+
+/* --- UNIFIED WHITE QUOTE BOX --- */
+.quote-block-container {
+    margin: 100px 0;
+    width: 100%;
+}
+
+.white-quote-box {
+    background: rgba(255, 255, 255, 0.7); /* Match your other boxes */
+    backdrop-filter: blur(12px);
+    padding: 60px;
+    border-radius: 40px;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr; /* Quote takes slightly more space */
+    gap: 60px;
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.05);
+}
+
+/* Make the image side bigger */
+.side-img-large {
+    width: 100%;
+    transform: scale(1.05); /* Slightly pops the image out of the box grid */
+}
+
+.side-img-large img {
+    height: 500px; /* Increased height */
+    object-fit: cover;
+}
+
+/* --- MOBILE RESPONSIVENESS --- */
+@media (max-width: 1100px) {
+    .full-width-box {
+        grid-template-columns: 1fr; /* Stacks text on mobile */
+    }
+    
+    .white-quote-box {
+        grid-template-columns: 1fr;
+        padding: 30px;
+    }
+    
+    .side-img-large {
+        transform: none;
+    }
+}
