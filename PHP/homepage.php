@@ -27,7 +27,7 @@ include("connect.php");
       <a href="about.html">About</a>
       <a href="Store.html">Our Stores</a>
       <a href="contacts.html">Contacts</a>
-      <a href="../HTML/profile.html" class="login"><i>👤</i> Account</a>
+      <a href="profile.php" class="login"><i>👤</i> Account</a>
     </nav>
   </header>
 

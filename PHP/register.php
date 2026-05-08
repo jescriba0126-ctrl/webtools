@@ -87,7 +87,7 @@ if(isset($_POST['signIn'])){
         // ================= USER =================
         else{
 
-            header("Location: http://localhost/webtools-main/PHP/profile.php");
+            header("Location: http://localhost/webtools-main/PHP/homepage.php");
             exit();
 
         }
