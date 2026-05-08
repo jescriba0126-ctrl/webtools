@@ -40,23 +40,22 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
     <section class="stats-grid">
 
         <div class="stat-card">
-            <h3>Total Bookings</h3>
-            <p id="totalBookings">0</p>
-        </div>
+     <h3>Total Bookings</h3>
+    <p id="stats_totalBookings">0</p> </div>
 
         <div class="stat-card">
             <h3>Pending</h3>
-            <p id="pendingBookings">0</p>
+            <p id="stats_pendingBookings">0</p>
         </div>
 
         <div class="stat-card">
             <h3>Completed</h3>
-            <p id="completedBookings">0</p>
+            <p id="stats_completedBookings">0</p>
         </div>
 
         <div class="stat-card">
             <h3>Total Revenue</h3>
-            <p>₱<span id="totalRevenue">0</span></p>
+            <p>₱<span id="stats_totalRevenue">0</span></p>
         </div>
 
     </section>
@@ -189,35 +188,34 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
         <!-- TOTAL -->
         <div class="overview-card total">
             <h3>Total Bookings</h3>
-            <p id="totalBookings">0</p>
-            <span class="tag">All Reservations</span>
+            <p id="ov_totalBookings">0</p> <span class="tag">All Reservations</span>
         </div>
 
         <!-- PENDING -->
         <div class="overview-card pending">
             <h3>Pending</h3>
-            <p id="pendingBookings">0</p>
+            <p id="ov_pendingBookings">0</p>
             <span class="tag">Waiting Approval</span>
         </div>
 
         <!-- APPROVED -->
         <div class="overview-card approved">
             <h3>Approved</h3>
-            <p id="approvedBookings">0</p>
+            <p id="ov_approvedBookings">0</p>
             <span class="tag">Confirmed Orders</span>
         </div>
 
         <!-- COMPLETED -->
         <div class="overview-card completed">
             <h3>Completed</h3>
-            <p id="completedBookings">0</p>
+            <p id="ov_completedBookings">0</p>
             <span class="tag">Finished Events</span>
         </div>
 
         <!-- REVENUE -->
         <div class="overview-card revenue">
             <h3>Total Revenue</h3>
-            <p>₱<span id="totalRevenue">0</span></p>
+            <p>₱<span id="ov_totalRevenue">0</span></p>
             <span class="tag">Earned Income</span>
         </div>
 
@@ -227,21 +225,21 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
             <div class="status-flow">
 
                 <div class="flow-step">
-                    <span id="pendingFlow">0</span>
+                    <span id="ov_pendingFlow">0</span>
                     <small>Pending</small>
                 </div>
 
                 <div class="arrow">→</div>
 
                 <div class="flow-step">
-                    <span id="approvedFlow">0</span>
+                    <span id="ov_approvedFlow">0</span>
                     <small>Approved</small>
                 </div>
 
                 <div class="arrow">→</div>
 
                 <div class="flow-step">
-                    <span id="completedFlow">0</span>
+                    <span id="ov_completedFlow">0</span>
                     <small>Completed</small>
                 </div>
   
@@ -353,11 +351,19 @@ function loadOrders(){
 
     });
 
-    document.getElementById("totalBookings").textContent =
-        orders.length;
+    const statsTotalEl = document.getElementById("stats_totalBookings");
+    const ovTotalEl = document.getElementById("ov_totalBookings");
+    
+    if (statsTotalEl) statsTotalEl.textContent = orders.length;
+    if (ovTotalEl) ovTotalEl.textContent = orders.length;
 
-    document.getElementById("pendingBookings").textContent =
-        pending;
+    const statsPendingEl = document.getElementById("stats_pendingBookings");
+    const ovPendingEl = document.getElementById("pendingBookings"); 
+    const flowPendingEl = document.getElementById("pendingFlow");
+
+    if (statsPendingEl) statsPendingEl.textContent = pending;
+    if (ovPendingEl) ovPendingEl.textContent = pending;
+    if (flowPendingEl) flowPendingEl.textContent = pending;
 
     document.getElementById("completedBookings").textContent =
         completed;
