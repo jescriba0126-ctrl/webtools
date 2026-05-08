@@ -358,8 +358,8 @@ function loadOrders(){
     if (ovTotalEl) ovTotalEl.textContent = orders.length;
 
     const statsPendingEl = document.getElementById("stats_pendingBookings");
-    const ovPendingEl = document.getElementById("pendingBookings"); 
-    const flowPendingEl = document.getElementById("pendingFlow");
+    const ovPendingEl = document.getElementById("ov_pendingBookings"); 
+    const flowPendingEl = document.getElementById("ov_pendingFlow");   
 
     if (statsPendingEl) statsPendingEl.textContent = pending;
     if (ovPendingEl) ovPendingEl.textContent = pending;
