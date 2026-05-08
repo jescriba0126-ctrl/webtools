@@ -257,7 +257,13 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
 
 </main>
 
-
+<div id="startup-loader">
+    <div class="loader-content">
+        <h1 class="loader-title">Cubiertos <span>Food Hub</span></h1>
+        <p class="loader-text">Loading Dashboard...</p>
+        <div class="spinner"></div>
+    </div>
+</div>
 
 <script>
 

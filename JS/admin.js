@@ -362,3 +362,15 @@ document.getElementById("filterStatus").addEventListener("change", renderOrders)
 
 // ================= INIT =================
 renderAll();
+
+// ================= STARTUP LOADER CLEANUP =================
+window.addEventListener('load', function() {
+    // Wait 2.3 seconds (1.5s delay + 0.8s fade out time) to match the CSS
+    setTimeout(function() {
+        const loader = document.getElementById('startup-loader');
+        if (loader) {
+            // Completely removes the loader so you can click the dashboard
+            loader.style.display = 'none'; 
+        }
+    }, 2300); 
+});

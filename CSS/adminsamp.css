@@ -791,3 +791,68 @@ td:nth-child(5)::after{
     background: #9e9e9e;
     color: white;
 }
+
+/* ================= STARTUP LOADER ANIMATION ================= */
+#startup-loader {
+    position: fixed;
+    top: 0; 
+    left: 0; 
+    width: 100vw; 
+    height: 100vh;
+    background-color: #f8f8f8; 
+    z-index: 9999; /* Keeps the loader on top of everything */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Solid for 1.5s, then takes 0.8s to fade out */
+    animation: fadeOutLoader 0.8s ease-in-out 1.5s forwards; 
+}
+
+.loader-content {
+    text-align: center;
+    animation: slideUp 0.8s ease-out;
+}
+
+.loader-title {
+    font-size: 2.5rem;
+    color: #283618;
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+
+.loader-title span {
+    color: #bc6c25;
+}
+
+.loader-text {
+    color: #666;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+}
+
+.spinner {
+    width: 45px; 
+    height: 45px;
+    border: 5px solid #e0e0e0;
+    border-top: 5px solid #bc6c25;
+    border-radius: 50%;
+    margin: 0 auto;
+    animation: spin 1s linear infinite;
+}
+
+/* --- KEYFRAMES --- */
+@keyframes spin { 
+    0% { transform: rotate(0deg); } 
+    100% { transform: rotate(360deg); } 
+}
+
+@keyframes slideUp { 
+    0% { opacity: 0; transform: translateY(30px); } 
+    100% { opacity: 1; transform: translateY(0); } 
+}
+
+@keyframes fadeOutLoader { 
+    0% { opacity: 1; visibility: visible; } 
+    100% { opacity: 0; visibility: hidden; } 
+}
