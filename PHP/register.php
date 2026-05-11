@@ -53,7 +53,7 @@ if(isset($_POST['signUp'])){
 
 
 // ================= SIGN IN =================
-if(isset($_POST['signIn'])){
+if(isset($_POST['signIn']))
 
     $email    = mysqli_real_escape_string($conn, $_POST['email']);
     $password = md5($_POST['password']);
@@ -99,6 +99,20 @@ if(isset($_POST['signIn'])){
 
         die("Incorrect Email or Password!");
 
+    $email=$_POST['email'];
+    $password=md5($_POST['password']);
+    
+    $sql="SELECT * FROM users WHERE email='$email' AND password='$password'";
+    $result=$conn->query($sql);
+    
+    if($result->num_rows>0){
+        session_start();
+        $row=$result->fetch_assoc();
+        $_SESSION['email']=$row['email'];
+        header("Location: http://localhost/webtools-main/PHP/homepage.php");
+        exit();
+    } else {
+        die("Not Found, Incorrect Email or Password"); (new profile)
     }
 }
 ?>
