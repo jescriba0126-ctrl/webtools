@@ -60,19 +60,28 @@ if (isset($_POST['submitReview'])) {
     }
 }
 
-// ── Fetch user data ──
-$stmt = $conn->prepare("SELECT username, email, full_name, phone, address, birthday FROM users WHERE email=?");
+// ── Fetch user data (now includes firstName, lastName) ──
+$stmt = $conn->prepare("SELECT firstName, lastName, email, full_name, phone, address, birthday FROM users WHERE email=?");
 $stmt->bind_param("s", $email);
 $stmt->execute();
 $user = $stmt->get_result()->fetch_assoc();
 $stmt->close();
 
-// ── Fetch orders ──
-$stmt = $conn->prepare("SELECT item_name, quantity, total_price, status, order_date FROM orders WHERE user_email=? ORDER BY order_date DESC");
-$stmt->bind_param("s", $email);
-$stmt->execute();
-$orders = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-$stmt->close();
+// ── Auto-fill full_name from firstName + lastName if not set yet ──
+if (empty($user['full_name']) && !empty($user['firstName'])) {
+    $user['full_name'] = trim($user['firstName'] . ' ' . $user['lastName']);
+}
+
+// ── Fetch bookings ──
+$bookings = [];
+$tableCheck = $conn->query("SHOW TABLES LIKE 'bookings'");
+if ($tableCheck && $tableCheck->num_rows > 0) {
+    $stmt = $conn->prepare("SELECT ticket, occasion, package, event_datetime, total_amount, payment_type, amount_paid, status FROM bookings WHERE user_email=? ORDER BY created_at DESC");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $bookings = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+}
 
 // ── Fetch existing review ──
 $stmt = $conn->prepare("SELECT rating, comment FROM reviews WHERE user_email=? ORDER BY created_at DESC LIMIT 1");
@@ -94,17 +103,20 @@ $is_birthday = ($bday_value === date("Y-m-d"));
 function statusBadge($status) {
     $map = [
         'pending'   => ['Pending',   '#b45309', '#fef3c7'],
-        'confirmed' => ['Confirmed', '#1d6fa4', '#e0f0fb'],
-        'preparing' => ['Preparing', '#7c3aed', '#ede9fe'],
-        'delivered' => ['Delivered', '#15803d', '#dcfce7'],
+        'approved'  => ['Approved',  '#1d6fa4', '#e0f0fb'],
+        'completed' => ['Completed', '#15803d', '#dcfce7'],
         'cancelled' => ['Cancelled', '#b91c1c', '#fee2e2'],
     ];
     $s = strtolower($status);
     [$label, $color, $bg] = $map[$s] ?? [ucfirst($status), '#555', '#f3f4f6'];
     return "<span style=\"background:$bg;color:$color;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;\">$label</span>";
 }
-function val($v)       { return !empty($v) ? htmlspecialchars($v) : ''; }
-function ph($v, $lbl)  { return empty($v)  ? "<span class=\"empty\">$lbl</span>" : htmlspecialchars($v); }
+function val($v)      { return !empty($v) ? htmlspecialchars($v) : ''; }
+function ph($v, $lbl) { return empty($v)  ? "<span class=\"empty\">$lbl</span>" : htmlspecialchars($v); }
+
+// ── Display name (firstName for hero, full name for profile) ──
+$display_first = htmlspecialchars($user['firstName'] ?? 'User');
+$default_fullname = val($user['full_name'] ?: trim(($user['firstName'] ?? '') . ' ' . ($user['lastName'] ?? '')));
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -148,7 +160,8 @@ function ph($v, $lbl)  { return empty($v)  ? "<span class=\"empty\">$lbl</span>"
                     </svg>
                 </div>
                 <div>
-                    <div class="hero-name"><?= htmlspecialchars($user['username']) ?></div>
+                    <!-- firstName shown as display name next to avatar -->
+                    <div class="hero-name"><?= $display_first ?></div>
                     <span class="hero-badge">🌱 New Customer</span>
                     <?php if ($is_birthday): ?>
                         <span class="hero-badge" style="margin-left:6px;">🎂 Happy Birthday!</span>
@@ -187,15 +200,17 @@ function ph($v, $lbl)  { return empty($v)  ? "<span class=\"empty\">$lbl</span>"
                 <form method="POST" action="profile.php" id="profileForm">
                     <input type="hidden" name="updateProfile" value="1">
 
+                    <!-- FULL NAME (auto-filled from firstName + lastName) -->
                     <div class="field">
                         <div class="field-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
                         <div class="field-body">
                             <div class="field-label">Full name</div>
-                            <div class="field-value" id="v-name"><?= ph($user['full_name'], 'Not set') ?></div>
-                            <input class="field-input" id="i-name" name="full_name" value="<?= val($user['full_name']) ?>" placeholder="e.g. Juan dela Cruz" />
+                            <div class="field-value" id="v-name"><?= ph($user['full_name'] ?: trim(($user['firstName'] ?? '').' '.($user['lastName'] ?? '')), 'Not set') ?></div>
+                            <input class="field-input" id="i-name" name="full_name" value="<?= $default_fullname ?>" placeholder="e.g. Juan dela Cruz" />
                         </div>
                     </div>
 
+                    <!-- EMAIL (read-only) -->
                     <div class="field">
                         <div class="field-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
                         <div class="field-body">
@@ -204,6 +219,7 @@ function ph($v, $lbl)  { return empty($v)  ? "<span class=\"empty\">$lbl</span>"
                         </div>
                     </div>
 
+                    <!-- PHONE -->
                     <div class="field">
                         <div class="field-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.69 3.22 2 2 0 0 1 3.68 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.65a16 16 0 0 0 6 6l1.02-1.02a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
                         <div class="field-body">
@@ -213,6 +229,7 @@ function ph($v, $lbl)  { return empty($v)  ? "<span class=\"empty\">$lbl</span>"
                         </div>
                     </div>
 
+                    <!-- ADDRESS -->
                     <div class="field">
                         <div class="field-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
                         <div class="field-body">
@@ -222,12 +239,16 @@ function ph($v, $lbl)  { return empty($v)  ? "<span class=\"empty\">$lbl</span>"
                         </div>
                     </div>
 
+                    <!-- BIRTHDAY -->
                     <div class="field">
                         <div class="field-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
                         <div class="field-body">
                             <div class="field-label">Birthday</div>
                             <div class="field-value" id="v-bday"><?= !empty($bday_display) ? $bday_display : '<span class="empty">Not set</span>' ?></div>
                             <input class="field-input" id="i-bday" name="birthday" type="date" value="<?= val($bday_value) ?>" />
+                            <?php if (!empty($bday_value)): ?>
+                                <div class="promo-tag">🎁 Birthday promo unlocked!</div>
+                            <?php endif; ?>
                         </div>
                     </div>
 
@@ -278,37 +299,44 @@ function ph($v, $lbl)  { return empty($v)  ? "<span class=\"empty\">$lbl</span>"
         <!-- RIGHT COL -->
         <div class="right-col">
 
-            <!-- ORDER HISTORY -->
+            <!-- BOOKING HISTORY -->
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                        Order history
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                        Booking History
                     </div>
-                    <?php if (count($orders) > 0): ?>
-                        <span class="order-count"><?= count($orders) ?> order<?= count($orders) > 1 ? 's' : '' ?></span>
+                    <?php if (count($bookings) > 0): ?>
+                        <span class="order-count"><?= count($bookings) ?> booking<?= count($bookings) > 1 ? 's' : '' ?></span>
                     <?php endif; ?>
                 </div>
 
-                <?php if (empty($orders)): ?>
+                <?php if (empty($bookings)): ?>
                     <div class="order-empty">
                         <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="display:block;margin:0 auto 10px;color:#ccc;"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
-                        <p>No orders yet.<br>Start exploring our stores!</p>
-                        <a href="../HTML/menu.html" class="browse-btn">Browse stores</a>
+                        <p>No bookings yet.<br>Book an event with us!</p>
+                        <a href="book.php" class="browse-btn">Book now</a>
                     </div>
                 <?php else: ?>
                     <div class="order-list">
-                        <?php foreach ($orders as $order): ?>
+                        <?php foreach ($bookings as $b): ?>
                             <div class="order-row">
                                 <div class="order-info">
-                                    <div class="order-name"><?= htmlspecialchars($order['item_name']) ?></div>
+                                    <div class="order-name">
+                                        <?= htmlspecialchars($b['occasion']) ?>
+                                        <span style="font-size:11px;color:#aaa;font-weight:400;margin-left:6px;">#<?= htmlspecialchars($b['ticket']) ?></span>
+                                    </div>
                                     <div class="order-meta">
-                                        Qty: <?= (int)$order['quantity'] ?> &nbsp;·&nbsp;
-                                        ₱<?= number_format($order['total_price'], 2) ?> &nbsp;·&nbsp;
-                                        <?= date("M j, Y", strtotime($order['order_date'])) ?>
+                                        <?= ucfirst($b['package']) ?> &nbsp;·&nbsp;
+                                        ₱<?= number_format($b['total_amount'], 2) ?> &nbsp;·&nbsp;
+                                        <?= date("M j, Y", strtotime($b['event_datetime'])) ?>
+                                    </div>
+                                    <div class="order-meta" style="margin-top:2px;">
+                                        Paid: ₱<?= number_format($b['amount_paid'], 2) ?>
+                                        (<?= $b['payment_type'] === 'full' ? 'Full payment' : 'Downpayment' ?>)
                                     </div>
                                 </div>
-                                <div><?= statusBadge($order['status']) ?></div>
+                                <div><?= statusBadge($b['status']) ?></div>
                             </div>
                         <?php endforeach; ?>
                     </div>

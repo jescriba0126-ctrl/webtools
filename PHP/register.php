@@ -39,31 +39,21 @@ if(isset($_POST['signUp'])){
     ";
 
     if($conn->query($insertQuery) == TRUE){
-
         header("Location: http://localhost/webtools-main/HTML/login.html");
         exit();
-
     } else {
-
         die("Error: " . $conn->error);
-
     }
 }
 
 
-
 // ================= SIGN IN =================
-if(isset($_POST['signIn']))
+if(isset($_POST['signIn'])){  // <-- was missing the opening {
 
     $email    = mysqli_real_escape_string($conn, $_POST['email']);
     $password = md5($_POST['password']);
 
-    $sql = "
-        SELECT * FROM users
-        WHERE email='$email'
-        AND password='$password'
-    ";
-
+    $sql = "SELECT * FROM users WHERE email='$email' AND password='$password'";
     $result = $conn->query($sql);
 
     // LOGIN SUCCESS
@@ -76,43 +66,22 @@ if(isset($_POST['signIn']))
         $_SESSION['firstName'] = $row['firstName'];
         $_SESSION['role']      = $row['role'];
 
-        // ================= ADMIN =================
+        // ADMIN
         if($row['role'] == 'admin'){
-
             header("Location: http://localhost/webtools-main/PHP/admin.php");
             exit();
-
         }
-
-        // ================= USER =================
+        // USER
         else{
-
             header("Location: http://localhost/webtools-main/PHP/homepage.php");
             exit();
-
         }
 
     }
-
     // LOGIN FAILED
     else{
-
         die("Incorrect Email or Password!");
-
-    $email=$_POST['email'];
-    $password=md5($_POST['password']);
-    
-    $sql="SELECT * FROM users WHERE email='$email' AND password='$password'";
-    $result=$conn->query($sql);
-    
-    if($result->num_rows>0){
-        session_start();
-        $row=$result->fetch_assoc();
-        $_SESSION['email']=$row['email'];
-        header("Location: http://localhost/webtools-main/PHP/homepage.php");
-        exit();
-    } else {
-        die("Not Found, Incorrect Email or Password"); (new profile)
     }
+
 }
 ?>
