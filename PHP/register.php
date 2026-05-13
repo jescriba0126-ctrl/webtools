@@ -53,6 +53,7 @@ if(isset($_POST['signUp'])){
 
 
 // ================= SIGN IN =================
+// ================= SIGN IN =================
 if(isset($_POST['signIn'])){
 
     $email    = mysqli_real_escape_string($conn, $_POST['email']);
@@ -76,7 +77,7 @@ if(isset($_POST['signIn'])){
         $_SESSION['firstName'] = $row['firstName'];
         $_SESSION['role']      = $row['role'];
 
-        // ================= ADMIN =================
+        // ADMIN
         if($row['role'] == 'admin'){
 
             header("Location: http://localhost/webtools-main/PHP/admin.php");
@@ -84,7 +85,7 @@ if(isset($_POST['signIn'])){
 
         }
 
-        // ================= USER =================
+        // USER
         else{
 
             header("Location: http://localhost/webtools-main/PHP/homepage.php");
@@ -101,4 +102,5 @@ if(isset($_POST['signIn'])){
 
     }
 }
+
 ?>

@@ -63,6 +63,7 @@ if(isset($_POST['submitReview'])){
             <img src="../IMAGES/logo.jpg" alt="Cubiertos Food Hub Logo" />
         </div>
         <nav>
+            <link rel="icon" type="image/jpg" href="/IMAGES/logo.jpg">
             <a href="homepage.php" class="back-booking">Back to Booking</a>
             <a href="../PHP/logout.php">Logout</a>
         </nav>

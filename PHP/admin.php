@@ -12,18 +12,74 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Cubiertos Admin Dashboard</title>
 
   <link rel="stylesheet" href="../CSS/adminsamp.css">
+  <link rel="icon" type="image/jpg" href="/IMAGES/logo.jpg">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
+<div class="sidebar">
+
+    <div class="sidebar-logo">
+        <img src="../IMAGES/logo.jpg" alt="">
+        <h2>Cubiertos</h2>
+    </div>
+
+    <ul class="sidebar-menu">
+
+        <li class="active">
+            <a href="#">
+                <span></span>
+                Dashboard
+            </a>
+        </li>
+
+        <li>
+            <a href="#">
+                <span></span>
+                Appointments
+            </a>
+        </li>
+
+        <li>
+            <a href="#">
+                <span></span>
+                Venues
+            </a>
+        </li>
+
+        <li>
+    <a href="calendar.php">
+        <span></span>
+        Calendar
+    </a>
+</li>
+        <li>
+            <a href="customer.php">
+                <span></span>
+                Customers
+            </a>
+        </li>
+
+        <li>
+            <a href="report.php">
+                <span></span>
+                Reports
+            </a>
+        </li>
+
+    </ul>
+
+</div>
+
 
 <header id="adminHeader">
 
     <div class="logo">
-        <img src="../IMAGES/logo.jpg" alt="">
+  
         <h1><span>Admin</span> Dashboard</h1>
     </div>
 
@@ -37,28 +93,84 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
 <main class="dashboard-container">
 
     <!-- STATS -->
-    <section class="stats-grid">
+     <section class="dashboard-overview">
 
-        <div class="stat-card">
-     <h3>Total Bookings</h3>
-    <p id="stats_totalBookings">0</p> </div>
+    <div class="overview-title">
+        <h2>Booking Dashboard Overview</h2>
+        <p>Real-time monitoring of all reservation statuses</p>
+    </div>
 
-        <div class="stat-card">
+    <div class="overview-grid">
+
+        <!-- TOTAL -->
+        <div class="overview-card total">
+            <h3>Total Bookings</h3>
+            <p id="ov_totalBookings">0</p> <span class="tag">All Reservations</span>
+        </div>
+
+        <!-- PENDING -->
+        <div class="overview-card pending">
             <h3>Pending</h3>
-            <p id="stats_pendingBookings">0</p>
+            <p id="ov_pendingBookings">0</p>
+            <span class="tag">Waiting Approval</span>
         </div>
 
-        <div class="stat-card">
+        <!-- APPROVED -->
+        <div class="overview-card approved">
+            <h3>Approved</h3>
+            <p id="ov_approvedBookings">0</p>
+            <span class="tag">Confirmed Orders</span>
+        </div>
+
+        <!-- COMPLETED -->
+        <div class="overview-card completed">
             <h3>Completed</h3>
-            <p id="stats_completedBookings">0</p>
+            <p id="ov_completedBookings">0</p>
+            <span class="tag">Finished Events</span>
         </div>
 
-        <div class="stat-card">
+        <!-- CANCELLED -->
+<div class="overview-card cancelled">
+    <h3>Cancelled</h3>
+    <p id="ov_cancelledBookings">0</p>
+    <span class="tag">Cancelled Reservations</span>
+</div>
+
+        <!-- REVENUE -->
+        <div class="overview-card revenue">
             <h3>Total Revenue</h3>
-            <p>₱<span id="stats_totalRevenue">0</span></p>
+            <p>₱<span id="ov_totalRevenue">0</span></p>
+            <span class="tag">Earned Income</span>
         </div>
 
-    </section>
+         <!-- ACTIVE STATUS FLOW -->
+        <div class="overview-card flow">
+            <h3>Active Booking Flow</h3>
+            <div class="status-flow">
+
+                <div class="flow-step">
+                    <span id="ov_pendingFlow">0</span>
+                    <small>Pending</small>
+                </div>
+
+                <div class="arrow">→</div>
+
+                <div class="flow-step">
+                    <span id="ov_approvedFlow">0</span>
+                    <small>Approved</small>
+                </div>
+
+                <div class="arrow">→</div>
+
+                <div class="flow-step">
+                    <span id="ov_completedFlow">0</span>
+                    <small>Completed</small>
+                </div>
+  
+            </div>
+        </div>
+
+    </div>
 
     <!-- CAPACITY -->
     <section class="admin-status-bar">
@@ -137,7 +249,6 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
         <div class="table-controls">
 
     <div class="search-box">
-        <i>🔍</i>
         <input type="text"
         id="searchOrder"
         placeholder="Search customer name...">
@@ -149,6 +260,7 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
             <option value="Pending">Pending</option>
             <option value="Approved">Approved</option>
             <option value="Completed">Completed</option>
+            
         </select>
     </div>
 
@@ -158,16 +270,17 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
         <table id="ordersTable">
 
             <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Contact</th>
-                    <th>Service</th>
-                    <th>Guests</th>
-                    <th>Amount</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
+              <tr>
+    <th>#</th>
+    <th>Name</th>
+    <th>Contact</th>
+    <th>Service</th>
+    <th>Guests</th>
+    <th>Amount</th>
+    <th>Payment</th>
+    <th>Status</th>
+    <th>Action</th>
+</tr>
             </thead>
 
             <tbody></tbody>
@@ -176,77 +289,6 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
 
     </section>
 
-    <section class="dashboard-overview">
-
-    <div class="overview-title">
-        <h2>Booking Dashboard Overview</h2>
-        <p>Real-time monitoring of all reservation statuses</p>
-    </div>
-
-    <div class="overview-grid">
-
-        <!-- TOTAL -->
-        <div class="overview-card total">
-            <h3>Total Bookings</h3>
-            <p id="ov_totalBookings">0</p> <span class="tag">All Reservations</span>
-        </div>
-
-        <!-- PENDING -->
-        <div class="overview-card pending">
-            <h3>Pending</h3>
-            <p id="ov_pendingBookings">0</p>
-            <span class="tag">Waiting Approval</span>
-        </div>
-
-        <!-- APPROVED -->
-        <div class="overview-card approved">
-            <h3>Approved</h3>
-            <p id="ov_approvedBookings">0</p>
-            <span class="tag">Confirmed Orders</span>
-        </div>
-
-        <!-- COMPLETED -->
-        <div class="overview-card completed">
-            <h3>Completed</h3>
-            <p id="ov_completedBookings">0</p>
-            <span class="tag">Finished Events</span>
-        </div>
-
-        <!-- REVENUE -->
-        <div class="overview-card revenue">
-            <h3>Total Revenue</h3>
-            <p>₱<span id="ov_totalRevenue">0</span></p>
-            <span class="tag">Earned Income</span>
-        </div>
-
-        <!-- ACTIVE STATUS FLOW -->
-        <div class="overview-card flow">
-            <h3>Active Booking Flow</h3>
-            <div class="status-flow">
-
-                <div class="flow-step">
-                    <span id="ov_pendingFlow">0</span>
-                    <small>Pending</small>
-                </div>
-
-                <div class="arrow">→</div>
-
-                <div class="flow-step">
-                    <span id="ov_approvedFlow">0</span>
-                    <small>Approved</small>
-                </div>
-
-                <div class="arrow">→</div>
-
-                <div class="flow-step">
-                    <span id="ov_completedFlow">0</span>
-                    <small>Completed</small>
-                </div>
-  
-            </div>
-        </div>
-
-    </div>
 
 </section>
     </div>
