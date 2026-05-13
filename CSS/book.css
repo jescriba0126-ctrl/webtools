@@ -916,6 +916,7 @@ footer{
 
   box-shadow:
   0 10px 25px rgba(188,108,37,0.12);
+
 }
 
 .payment-icon{
@@ -960,7 +961,7 @@ footer{
   line-height:1.5;
 }
 
-/* ================= RESPONSIVE ================= */
+
 
 @media(max-width:768px){
 

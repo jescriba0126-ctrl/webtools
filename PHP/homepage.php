@@ -10,7 +10,7 @@ include("connect.php");
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cubiertos Food Hub - Book</title>
+  <title>Cubiertos Food Hub Book</title>
   <link rel="stylesheet" href="../CSS/book.css">
   <link rel="icon" type="image/jpg" href="/IMAGES/logo.jpg">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
@@ -365,7 +365,7 @@ include("connect.php");
             <span class="payment-card">
 
               <div class="payment-icon">
-                💎
+                
               </div>
 
               <div>
@@ -391,7 +391,7 @@ include("connect.php");
             <span class="payment-card">
 
               <div class="payment-icon">
-                💵
+                
               </div>
 
               <div>
@@ -443,7 +443,7 @@ include("connect.php");
     <!-- INFO -->
     <div class="booking-info">
 
-      <h4>📞 Need Help?</h4>
+      <h4>Need Help?</h4>
 
       <p>
         Contact us at
