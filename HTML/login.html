@@ -38,6 +38,16 @@
           </div>
 
           <button type="submit" name="signIn" class="btn">LOGIN</button>
+          <div class="remember-forgot">
+  <label>
+    <input type="checkbox" name="remember" />
+    Remember Me
+  </label>
+
+  <a href="../PHP/forgot-password.php">
+    Forgot Password?
+  </a>
+</div>
         </form>
       </div>
 
@@ -86,7 +96,13 @@
                onclick="togglePassword('regConfirmPassword', this)"></i>
         </div>
 
-        <button type="submit" name="signUp" class="btn">Register</button>
+        <button type="submit" name="signUp" class="btn">
+    Register
+</button>
+
+<a href="../HTML/main.html" class="back-home-btn">
+    ← Back to Home
+</a>
     </form>
 </div>
 
@@ -96,6 +112,7 @@
           <h1>Hello, Welcome</h1>
           <p>Don't have an account?</p>
           <button type="button" class="btn register-btn">Register</button>
+          <a href="../HTML/main.html" class="back-home-btn"></a>
         </div>
 
         <div class="toggle-panel toggle-right">
@@ -129,6 +146,7 @@
           container.classList.remove("active");
         });
       }
+
     </script>
   </body>
 </html>

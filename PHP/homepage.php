@@ -12,6 +12,7 @@ include("connect.php");
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cubiertos Food Hub - Book</title>
   <link rel="stylesheet" href="../CSS/book.css">
+  <link rel="icon" type="image/jpg" href="/IMAGES/logo.jpg">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
  
 
@@ -23,12 +24,12 @@ include("connect.php");
       <img src="../IMAGES/logo.jpg" alt="Cubiertos Food Hub Logo">
     </div>
     <nav>
-      <a href="main.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="Store.html">Our Stores</a>
-      <a href="contacts.html">Contacts</a>
-      <a href="../PHP/profile.php" class="login"><i></i> Account</a>
-    </nav>
+        <a href="../HTML/main.html">Home</a>
+        <a href="../HTML/about.html">About</a>
+        <a href="../HTML/Store.html">Our Stores</a>
+        <a href="../HTML/contacts.html">Contacts</a>
+        <a href="profile.php" class="login"><i>👤</i> Profile</a>
+      </nav>
   </header>
 
   <div class="socials">
@@ -55,313 +56,598 @@ include("connect.php");
         <img src="../IMAGES/event.jpg" alt="Cubiertos Mission">
       </div>
     </div>
-  </section> <section id="booking" class="booking-section"> </section>
+  </section> 
 
-<section id="booking" class="booking-section">
-  <div class="booking-container">
-    <h3>🍴 Book an Appointment</h3>
-    <p class="intro-text">Reserve your table for birthdays, weddings, or special events at <b>Cubiertos Food Hub</b>.</p>
-<form id="bookingForm" class="booking-form" method="POST" action="book.php">
+  <section class="testimonial-section">
 
-      <p>
-        <i>Full Name</i><br>
-        <input type="text" name="name" placeholder="Enter your full name" required>
-      </p>
+  <div class="testimonial-header">
+    <h2>What Our Guests Say</h2>
+    <p>Real experiences shared by customers who celebrated with Cubiertos Food Hub.</p>
+  </div>
 
-      <p>
-        <i>Email Address</i><br>
-        <input type="email" name="email" placeholder="Enter your email" required>
-      </p>
+  <div class="testimonial-container">
 
-      <p>
-        <i>Phone Number</i><br>
-        <input type="tel" name="phone" placeholder="e.g. 0981 027 0704" required>
-      </p>
-
-      <p>
-        <i>Type of Occasion</i><br>
-        <select name="occasion" required>
-          <option value="">-- Select Occasion --</option>
-          <option value="dine-in">Dine In</option>
-          <option value="birthday">Birthday</option>
-          <option value="wedding">Wedding</option>
-          <option value="corporate">Corporate Event</option>
-          <option value="other">Other</option>
-        </select>
-      </p>
-
-      <p>
-        <i>Number of Guests</i><br>
-        <input type="number" name="guests" placeholder="Enter number of guests" min="1" max="100" required>
-      </p>
-
-      <p>
-        <i>Preferred Date & Time</i><br>
-        <input type="datetime-local" name="datetime" required>
-      </p>
-
-      <p>
-        <i>Package Choice</i><br>
-        <select name="package">
-          <option value="">-- Choose a Package --</option>
-          <option value="basic">Basic Package (₱2,000 - Small Group)</option>
-          <option value="standard">Standard Package (₱5,000 - 10 Guests)</option>
-          <option value="premium">Premium Package (₱10,000+ - Events)</option>
-        </select>
-      </p>
-
-      <p>
-        <i>Special Notes</i><br>
-        <textarea name="message" rows="4" placeholder="Any special requests or details?"></textarea>
-      </p>
-
-      <div class="form-actions">
-        <button type="submit" class="btn-submit">Submit Booking</button>
-        <button type="reset" class="btn-reset">Clear Form</button>
-      </div>
-
-      <!-- Confirmation Preview Modal (kept inside form but will be shown by JS) -->
-      <div id="previewModal" class="preview-modal" aria-hidden="true">
-        <div class="preview-modal-content" role="dialog" aria-modal="true" aria-labelledby="previewTitle">
-          <h3 id="previewTitle">Confirm your booking</h3>
-          <div id="previewBody">
-            <!-- preview content filled by JS -->
-          </div>
-          <div class="preview-actions">
-            <button type="button" id="confirmBookingBtn" class="btn confirm">Confirm</button>
-            <button type="button" id="editBookingBtn" class="btn edit">Edit</button>
-          </div>
+    <div class="testimonial-card">
+      <div class="testimonial-top">
+        <img src="../IMAGES/user1.jpg" alt="Customer">
+        <div>
+          <h3>Maria Santos</h3>
+          <span>Birthday Celebration</span>
         </div>
       </div>
 
-    </form>
-    <div class="booking-info">
-      <h4>📞 Need Help?</h4>
-      <p>Contact us at <b>0981 027 0704</b><br>
-      or visit <em>Imelda Blvd., Rawis, Virac, Catanduanes</em></p>
+      <p>
+        “The ambiance was warm and elegant. The food was amazing and the staff were very accommodating throughout our celebration.”
+      </p>
+
+      <div class="stars">★★★★★</div>
     </div>
+
+    <div class="testimonial-card featured">
+      <div class="testimonial-top">
+        <img src="../IMAGES/user2.jpg" alt="Customer">
+        <div>
+          <h3>John Ramirez</h3>
+          <span>Wedding Reception</span>
+        </div>
+      </div>
+
+      <p>
+        “Cubiertos made our wedding unforgettable. Everything from the setup to the service exceeded our expectations.”
+      </p>
+
+      <div class="stars">★★★★★</div>
+    </div>
+
+    <div class="testimonial-card">
+      <div class="testimonial-top">
+        <img src="../IMAGES/user3.jpg" alt="Customer">
+        <div>
+          <h3>Angela Cruz</h3>
+          <span>Family Gathering</span>
+        </div>
+      </div>
+
+      <p>
+        “One of the best dining experiences in Catanduanes. Cozy atmosphere, delicious food, and excellent customer service.”
+      </p>
+
+      <div class="stars">★★★★★</div>
+    </div>
+
   </div>
+
 </section>
 
-    <footer>
-  <div class="footer-info">
-    <nav>
-      <a href="main.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="Store.html">Our Stores</a>
-      <a href="contacts.html">Contacts</a>
-      <a href="login.html" class="login"><i>👤</i> Log-in</a>
-    </nav>
-    <p>Food & Drink · Virac, Philippines, 4800 | Contact Info: 0981 027 0704</p>
-    <p>Copyright © 2025 Cubiertos.food.hub</p>
+
+
+<!-- ================= BOOKING FORM ================= -->
+<section id="booking" class="booking-section">
+
+  <div class="booking-container">
+
+    <h3>🍴 Book an Appointment</h3>
+
+    <p class="intro-text">
+      Reserve your table for birthdays, weddings,
+      or special events at
+      <b>Cubiertos Food Hub</b>.
+    </p>
+
+    <!-- ================= FORM ================= -->
+
+    <form
+      id="bookingForm"
+      class="booking-form"
+      method="POST"
+    >
+
+      <!-- FULL NAME -->
+      <p>
+        <i>Full Name</i><br>
+
+        <input
+          type="text"
+          name="name"
+          placeholder="Enter your full name"
+          required
+        >
+      </p>
+
+      <!-- EMAIL -->
+      <p>
+        <i>Email Address</i><br>
+
+        <input
+          type="email"
+          name="email"
+          placeholder="Enter your email"
+          required
+        >
+      </p>
+
+      <!-- PHONE -->
+      <p>
+        <i>Phone Number</i><br>
+
+        <input
+          type="tel"
+          name="phone"
+          placeholder="e.g. 0981 027 0704"
+          required
+        >
+      </p>
+
+      <!-- OCCASION -->
+      <p>
+        <i>Type of Occasion</i><br>
+
+        <select
+          name="occasion"
+          required
+        >
+
+          <option value="">
+            -- Select Occasion --
+          </option>
+
+          <option value="dine-in">
+            Dine In
+          </option>
+
+          <option value="birthday">
+            Birthday
+          </option>
+
+          <option value="wedding">
+            Wedding
+          </option>
+
+          <option value="corporate">
+            Corporate Event
+          </option>
+
+          <option value="other">
+            Other
+          </option>
+
+        </select>
+      </p>
+
+      <!-- GUESTS -->
+      <p>
+        <i>Number of Guests</i><br>
+
+        <input
+          type="number"
+          name="guests"
+          placeholder="Enter number of guests"
+          min="1"
+          max="100"
+          required
+        >
+      </p>
+
+      <!-- DATE -->
+      <p>
+        <i>Preferred Date & Time</i><br>
+
+        <input
+          type="datetime-local"
+          name="datetime"
+          required
+        >
+      </p>
+
+      <!-- PACKAGE -->
+      <p>
+        <i>Package Choice</i><br>
+
+        <select name="package">
+
+          <option value="">
+            -- Choose a Package --
+          </option>
+
+          <option value="basic">
+            Basic Package (₱2,000 - Small Group)
+          </option>
+
+          <option value="standard">
+            Standard Package (₱5,000 - 10 Guests)
+          </option>
+
+          <option value="premium">
+            Premium Package (₱10,000+ - Events)
+          </option>
+
+        </select>
+      </p>
+
+      <!-- ================= PAYMENT ================= -->
+
+      <div class="payment-wrapper">
+
+        <i class="payment-title">
+          Preferred Payment Method
+        </i>
+
+        <div class="payment-methods">
+
+          <!-- GCASH -->
+          <label class="payment-option">
+
+            <input
+              type="radio"
+              name="payment"
+              value="GCash"
+              required
+            >
+
+            <span class="payment-card">
+
+              <div class="payment-icon">
+                📱
+              </div>
+
+              <div>
+                <h4>GCash</h4>
+                <small>
+                  Fast mobile payment
+                </small>
+              </div>
+
+            </span>
+
+          </label>
+
+          <!-- MAYA -->
+          <label class="payment-option">
+
+            <input
+              type="radio"
+              name="payment"
+              value="Maya"
+            >
+
+            <span class="payment-card">
+
+              <div class="payment-icon">
+                💳
+              </div>
+
+              <div>
+                <h4>Maya</h4>
+                <small>
+                  Digital wallet payment
+                </small>
+              </div>
+
+            </span>
+
+          </label>
+
+          <!-- BANK -->
+          <label class="payment-option">
+
+            <input
+              type="radio"
+              name="payment"
+              value="Online Banking"
+            >
+
+            <span class="payment-card">
+
+              <div class="payment-icon">
+                🏦
+              </div>
+
+              <div>
+                <h4>Online Banking</h4>
+                <small>
+                  BPI, BDO, Metrobank
+                </small>
+              </div>
+
+            </span>
+
+          </label>
+
+          <!-- CARD -->
+          <label class="payment-option">
+
+            <input
+              type="radio"
+              name="payment"
+              value="Credit / Debit Card"
+            >
+
+            <span class="payment-card">
+
+              <div class="payment-icon">
+                💎
+              </div>
+
+              <div>
+                <h4>Credit / Debit Card</h4>
+                <small>
+                  Visa & Mastercard
+                </small>
+              </div>
+
+            </span>
+
+          </label>
+
+          <!-- CASH -->
+          <label class="payment-option">
+
+            <input
+              type="radio"
+              name="payment"
+              value="Cash"
+            >
+
+            <span class="payment-card">
+
+              <div class="payment-icon">
+                💵
+              </div>
+
+              <div>
+                <h4>Cash Payment</h4>
+                <small>
+                  Pay at the venue
+                </small>
+              </div>
+
+            </span>
+
+          </label>
+
+        </div>
+      </div>
+
+      <!-- NOTES -->
+      <p>
+        <i>Special Notes</i><br>
+
+        <textarea
+          name="message"
+          rows="4"
+          placeholder="Any special requests or details?"
+        ></textarea>
+      </p>
+
+      <!-- BUTTONS -->
+      <div class="form-actions">
+
+        <button
+          type="submit"
+          class="btn-submit"
+        >
+          Submit Booking
+        </button>
+
+        <button
+          type="reset"
+          class="btn-reset"
+        >
+          Clear Form
+        </button>
+
+      </div>
+
+    </form>
+
+    <!-- INFO -->
+    <div class="booking-info">
+
+      <h4>📞 Need Help?</h4>
+
+      <p>
+        Contact us at
+        <b>0981 027 0704</b>
+        <br>
+
+        or visit
+
+        <em>
+          Imelda Blvd., Rawis,
+          Virac, Catanduanes
+        </em>
+      </p>
+
+    </div>
+
   </div>
-  <div class="footer-socials">
-    <a href="https://www.facebook.com/profile.php?id=61555258696901" target="_blank"><img src="../IMAGES/Facebook.png" alt="Facebook" /></a>
-    <a href="https://www.instagram.com/cubiertos2024/" target="_blank"><img src="../IMAGES/Instagram.png" alt="Instagram" /></a>
-    <a href="https://mail.google.com/mail/u/0/#sent?compose=CllgCJTNqrcXTJzgQrjqbjtCXnqKDjzdGRPvdqdcFsXlDWgKNhcCtqcDSQcFtPLcvbmcdswCCcL" target="_blank"><img src="../IMAGES/Mail.png" alt="Mail" /></a>
-  </div>
-</footer>
 
+</section>
 
-
- <script>
-  window.addEventListener('scroll', function() {
-    const header = document.querySelector('header');
-    if (window.scrollY > 50) {
-      header.classList.add('scrolled');
-    } else {
-      header.classList.remove('scrolled');
-    }
-  });
-
-
-  const bookingForm = document.querySelector('.booking-form');
-
-bookingForm.addEventListener('submit', function(event) {
-  event.preventDefault(); // keep preview first
-  openPreview();
-});
-</script>
+<!-- ================= JS ================= -->
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
 
-  // -- form references (using name selectors so no new IDs required)
-  const bookingForm = document.getElementById("bookingForm");
-  const previewModal = document.getElementById("previewModal");
-  const previewBody = document.getElementById("previewBody");
-  const confirmBtn = document.getElementById("confirmBookingBtn");
-  const editBtn = document.getElementById("editBookingBtn");
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
-  // Helper: get field value by name (returns trimmed string)
-  function val(name) {
-    const el = bookingForm.querySelector(`[name="${name}"]`);
-    return el ? String(el.value || "").trim() : "";
-  }
+    const bookingForm =
+        document.getElementById(
+            "bookingForm"
+        );
 
-  function valOrDash(name) {
-    const v = val(name);
-    return v === "" ? "—" : v;
-  }
+    // ================= GET VALUE =================
 
-  function nicePackageLabel(code) {
-    if (!code) return "—";
-    if (code === "basic") return "Basic Package (₱2,000)";
-    if (code === "standard") return "Standard Package (₱5,000)";
-    if (code === "premium") return "Premium Package (₱10,000+)";
-    return code;
-  }
+    function val(name) {
 
-  function niceOccasionLabel(code) {
-    if (!code) return "—";
-    // map common values to readable
-    const map = {
-      "dine-in": "Dine In",
-      "birthday": "Birthday",
-      "wedding": "Wedding",
-      "corporate": "Corporate Event",
-      "other": "Other"
-    };
-    return map[code] || code;
-  }
+        const el =
+            bookingForm.querySelector(
+                `[name="${name}"]`
+            );
 
-  function formatDateTimeLocal(v) {
-    if (!v) return "—";
-    try {
-      const dt = new Date(v);
-      if (isNaN(dt)) return v;
-      return dt.toLocaleString();
-    } catch {
-      return v;
+        return el
+            ? String(el.value).trim()
+            : "";
     }
-  }
 
-  // OPEN PREVIEW: build readable preview and show modal
-  function openPreview() {
-    const previewLines = [
-      `Full Name: ${valOrDash("name")}`,
-      `Email: ${valOrDash("email")}`,
-      `Phone: ${valOrDash("phone")}`,
-      `Occasion: ${niceOccasionLabel(val("occasion"))}`,
-      `Number of Guests: ${valOrDash("guests")}`,
-      `Preferred Date & Time: ${formatDateTimeLocal(val("datetime"))}`,
-      `Package Choice: ${nicePackageLabel(val("package"))}`,
-      `Special Notes: ${valOrDash("message")}`
-    ];
-    previewBody.textContent = previewLines.join("\n");
-    previewModal.classList.add("show");
-    previewModal.setAttribute("aria-hidden", "false");
-  }
+    // ================= PACKAGE PRICE =================
 
-  // CLOSE PREVIEW
-  function closePreview() {
-    previewModal.classList.remove("show");
-    previewModal.setAttribute("aria-hidden", "true");
-  }
+    function getAmount(packageType) {
 
-  // FORM submit: show preview instead of immediately saving
-  bookingForm.addEventListener("submit", function (e) {
-    e.preventDefault();
-    // optional: quick validation before preview (ensure required fields)
-    const requiredFields = ["name","email","phone","occasion","guests","datetime"];
-    for (const r of requiredFields) {
-      if (!val(r)) {
-        // focus first missing field and stop
-        const el = bookingForm.querySelector(`[name="${r}"]`);
-        if (el) el.focus();
-        alert("Please fill in all required fields before proceeding.");
-        return;
-      }
-    }
-    openPreview();
-  });
-
-  // EDIT -> close preview so they can change inputs
-  editBtn.addEventListener("click", function () {
-    closePreview();
-  });
-
-  // CONFIRM -> save booking to localStorage and show success message
-  confirmBtn.addEventListener("click", function () {
-    // compute amount from package selection
-    const pkg = val("package");
-    let amount = 0;
-    if (pkg === "basic") amount = 2000;
-    else if (pkg === "standard") amount = 5000;
-    else if (pkg === "premium") amount = 10000;
-
-    // create order object (admin uses 'ticket', 'name', 'contact', 'service', 'amount', 'status', ...)
-    const ticket = `T${Date.now().toString().slice(-6)}`;
-    const newOrder = {
-      ticket: ticket,
-      name: val("name"),
-      contact: val("phone"),
-      service: niceOccasionLabel(val("occasion")),
-      amount: amount,
-      status: "Pending",
-      datetime: val("datetime"),
-      notes: val("message"),
-      createdAt: new Date().toISOString()
-    };
-
-    // push to orders array in localStorage
-    const orders = JSON.parse(localStorage.getItem("orders")) || [];
-    orders.push(newOrder);
-    localStorage.setItem("orders", JSON.stringify(orders));
-
-    closePreview();
-    alert("✅ Thank you for booking!\nYour reservation has been recorded.");
-    bookingForm.reset();
-
-    // If admin functions exist on this page (they likely don't), call them safely
-    if (typeof renderOrders === "function") {
-      try { renderOrders(); } catch (err) { /* ignore */ }
-    }
-    if (typeof renderHistory === "function") {
-      try { renderHistory(); } catch (err) { /* ignore */ }
-    }
-  });
-
-  // allow closing preview with ESC
-  document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape" && previewModal.classList.contains("show")) {
-      closePreview();
-    }
-  });
-
-  // existing features from your file: header scroll and slideshow (kept)
-  window.addEventListener('scroll', function () {
-    const header = document.querySelector('header');
-    header.classList.toggle('scrolled', window.scrollY > 50);
-  });
-
-  // slideshow - safe-guard if .mySlides exist
-  let index = 0;
-  const slides = document.getElementsByClassName('mySlides');
-  function showSlides() {
-    if (!slides || slides.length === 0) return;
-    for (let i = 0; i < slides.length; i++) {
-      slides[i].style.display = 'none';
-    }
-    index++;
-    if (index > slides.length) index = 1;
-    slides[index - 1].style.display = 'block';
-    setTimeout(showSlides, 2000);
-  }
-  showSlides();
-
-}); // DOMContentLoaded end
-</script>
- <!-- <?php 
-       if(isset($_SESSION['email'])){
-        $email=$_SESSION['email'];
-        $query=mysqli_query($conn, "SELECT users.* FROM `users` WHERE users.email='$email'");
-        while($row=mysqli_fetch_array($query)){
-            echo $row['firstName'].' '.$row['lastName'];
+        if (packageType === "basic") {
+            return 2000;
         }
-       }
-       ?> -->
-      </p>  
+
+        if (packageType === "standard") {
+            return 5000;
+        }
+
+        if (packageType === "premium") {
+            return 10000;
+        }
+
+        return 0;
+    }
+
+    // ================= OCCASION LABEL =================
+
+    function niceOccasionLabel(code) {
+
+        const map = {
+
+            "dine-in": "Dine In",
+
+            "birthday": "Birthday",
+
+            "wedding": "Wedding",
+
+            "corporate": "Corporate Event",
+
+            "other": "Other"
+        };
+
+        return map[code] || code;
+    }
+
+    // ================= SUBMIT =================
+
+    bookingForm.addEventListener(
+        "submit",
+        function (e) {
+
+        e.preventDefault();
+
+        // ================= PAYMENT =================
+
+        const selectedPayment =
+            bookingForm.querySelector(
+                'input[name="payment"]:checked'
+            );
+
+        const paymentMethod =
+            selectedPayment
+            ? selectedPayment.value
+            : "Not Selected";
+
+        // ================= PACKAGE =================
+
+        const selectedPackage =
+            val("package");
+
+        const amount =
+            getAmount(selectedPackage);
+
+        // ================= TICKET =================
+
+        const ticket =
+            "T" +
+            Date.now()
+                .toString()
+                .slice(-6);
+
+        // ================= ORDER =================
+
+        const newOrder = {
+
+            ticket: ticket,
+
+            name: val("name"),
+
+            contact: val("phone"),
+
+            email: val("email"),
+
+            service:
+                niceOccasionLabel(
+                    val("occasion")
+                ),
+
+            guests:
+                Number(val("guests")) || 0,
+
+            amount: amount,
+
+            payment: paymentMethod,
+
+            package: selectedPackage,
+
+            status: "Pending",
+
+            datetime: val("datetime"),
+
+            notes: val("message"),
+
+            createdAt:
+                new Date().toISOString()
+        };
+
+        // ================= DEBUG =================
+
+        console.log(
+            "NEW ORDER:",
+            newOrder
+        );
+
+        // ================= GET ORDERS =================
+
+        let orders =
+            JSON.parse(
+                localStorage.getItem(
+                    "orders"
+                )
+            ) || [];
+
+        // ================= SAVE =================
+
+        orders.push(newOrder);
+
+        localStorage.setItem(
+            "orders",
+            JSON.stringify(orders)
+        );
+
+        console.log(
+            "UPDATED ORDERS:",
+            orders
+        );
+
+        // ================= SUCCESS =================
+
+        alert(
+            "✅ Booking Submitted Successfully!"
+        );
+
+        // ================= RESET =================
+
+        bookingForm.reset();
+
+    });
+
+});
+
+</script>
+    
      
     </div>
 </body>
