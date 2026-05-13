@@ -74,14 +74,33 @@ if (empty($user['full_name']) && !empty($user['firstName'])) {
 
 // ── Fetch bookings ──
 $bookings = [];
+
 $tableCheck = $conn->query("SHOW TABLES LIKE 'bookings'");
+
 if ($tableCheck && $tableCheck->num_rows > 0) {
-    $stmt = $conn->prepare("SELECT ticket, occasion, package, event_datetime, total_amount, payment_type, amount_paid, status FROM bookings WHERE user_email=? ORDER BY created_at DESC");
+
+    $stmt = $conn->prepare("
+        SELECT 
+            ticket,
+            occasion,
+            package,
+            booking_datetime,
+            amount,
+            payment_method,
+            status
+        FROM bookings
+        WHERE email=?
+        ORDER BY created_at DESC
+    ");
+
     $stmt->bind_param("s", $email);
     $stmt->execute();
+
     $bookings = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+
     $stmt->close();
 }
+
 
 // ── Fetch existing review ──
 $stmt = $conn->prepare("SELECT rating, comment FROM reviews WHERE user_email=? ORDER BY created_at DESC LIMIT 1");
@@ -327,15 +346,15 @@ $default_fullname = val($user['full_name'] ?: trim(($user['firstName'] ?? '') . 
                                         <span style="font-size:11px;color:#aaa;font-weight:400;margin-left:6px;">#<?= htmlspecialchars($b['ticket']) ?></span>
                                     </div>
                                     <div class="order-meta">
-                                        <?= ucfirst($b['package']) ?> &nbsp;·&nbsp;
-                                        ₱<?= number_format($b['total_amount'], 2) ?> &nbsp;·&nbsp;
-                                        <?= date("M j, Y", strtotime($b['event_datetime'])) ?>
-                                    </div>
-                                    <div class="order-meta" style="margin-top:2px;">
-                                        Paid: ₱<?= number_format($b['amount_paid'], 2) ?>
-                                        (<?= $b['payment_type'] === 'full' ? 'Full payment' : 'Downpayment' ?>)
-                                    </div>
-                                </div>
+    <?= ucfirst($b['package']) ?> &nbsp;·&nbsp;
+    ₱<?= number_format($b['amount'], 2) ?> &nbsp;·&nbsp;
+    <?= date("M j, Y", strtotime($b['booking_datetime'])) ?>
+</div>
+
+<div class="order-meta" style="margin-top:2px;">
+    Payment Method:
+    <?= htmlspecialchars($b['payment_method']) ?>
+</div>
                                 <div><?= statusBadge($b['status']) ?></div>
                             </div>
                         <?php endforeach; ?>
