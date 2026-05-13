@@ -126,7 +126,7 @@ include("connect.php");
 
   <div class="booking-container">
 
-    <h3>🍴 Book an Appointment</h3>
+    <h3>Book an Appointment</h3>
 
     <p class="intro-text">
       Reserve your table for birthdays, weddings,
