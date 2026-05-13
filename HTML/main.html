@@ -17,19 +17,41 @@
 </head>
   <body>
     <!-- HEADER -->
-    <header>
-      <div class="logo">
-        <img src="../IMAGES/logo.jpg" alt="Cubiertos Food Hub Logo" />
-      </div>
-      <nav>
-        <a href="#mainpage">Home</a>
-        <a href="/HTML/about.html">About</a>
-        <a href="/HTML/Store.html">Our Stores</a>
-        <a href="/HTML/contacts.html">Contacts</a>
-        <a href="/HTML/login.html" class="login"><i>👤</i> Log-in</a>
-      </nav>
-    </header>
+   <header class="glass-header">
+  <div class="nav-container">
 
+    <!-- LOGO -->
+    <a href="../HTML/main.html" class="logo">
+      <img src="../IMAGES/logo.jpg" alt="Cubiertos Logo">
+
+      <div class="logo-text">
+        <h2>Cubiertos</h2>
+        <span>FOOD HUB</span>
+      </div>
+    </a>
+
+    <!-- NAVIGATION -->
+    <nav class="navbar">
+      <a href="../HTML/main.html" class="active">Home</a>
+      <a href="../HTML/about.html">About</a>
+      <a href="../HTML/Store.html">Stores</a>
+      <a href="../HTML/contacts.html">Contacts</a>
+      <a href="../HTML/menu.html">Menu</a>
+    </nav>
+
+
+      <a href="../HTML/login.html" class="login-btn">
+        Book Now
+      </a>
+    </div>
+
+    <!-- MOBILE MENU -->
+    <div class="menu-toggle" id="menuToggle">
+      ☰
+    </div>
+
+  </div>
+</header>
     <!-- floating buttons dun sa may check our -->
     <div class="contact-box">
       <p>CHECK OUR</p>
@@ -96,7 +118,7 @@
       <div class="page3">
         <div class="card">
           <img src="../IMAGES/mojos 1.png" alt="Pasta Duo Delight" />
-          <h3>🍝 Pasta Duo Delight with Crispy Chips</h3>
+          <h3> Pasta Duo Delight with Crispy Chips</h3>
           <p>
             This meal includes a creamy pasta duo served with toasted bread: one
             plate features spaghetti topped with an egg in white sauce, while
@@ -108,7 +130,7 @@
 
         <div class="card">
           <img src="../IMAGES/Fries.jpg" alt="Burger and Fries" />
-          <h3>🍔 Lunch Meal – Burger & Fries</h3>
+          <h3> Lunch Meal Burger & Fries</h3>
           <p>
             This meal features a hearty serving of baked pasta with rich tomato
             sauce and melted cheese, paired with toasted bread on the side.
@@ -136,10 +158,10 @@
             </div>
             <div class="review-details">
               <p class="meal-name">
-                Breakfast Meal – Pasta with Egg, Garlic Bread & Wrap
+                Breakfast Meal  Pasta with Egg, Garlic Bread & Wrap
               </p>
               <p class="reviewer-info">
-                <span class="rating">★ 4.8</span> – Reviewed by Anna M.
+                <span class="rating">★ 4.8</span>  Reviewed by Anna M.
               </p>
               <p class="review-text">
                 "Their creamy pasta topped with a perfectly cooked sunny-side
@@ -164,9 +186,9 @@
               />
             </div>
             <div class="review-details">
-              <p class="meal-name">🍔 Lunch Meal – Burger & Fries</p>
+              <p class="meal-name"> Lunch Meal Burger & Fries</p>
               <p class="reviewer-info">
-                <span class="rating">★ 4.7</span> – Reviewed by Mark D.
+                <span class="rating">★ 4.7</span> Reviewed by Mark D.
               </p>
               <p class="review-text">
                 “The burger is juicy with soft buns, served with golden, crispy
@@ -183,6 +205,132 @@
         </div>
       </main>
     </section>
+
+    <div class="floating-food-card card-1">
+  <img src="../IMAGES/mojos 1.png" alt="">
+  <div>
+    <h4>Creamy Pasta</h4>
+    <p>Best Seller</p>
+  </div>
+</div>
+
+<div class="floating-food-card card-2">
+  <img src="../IMAGES/Fries.jpg" alt="">
+  <div>
+    <h4>Burger Combo</h4>
+    <p>Customer Favorite</p>
+  </div>
+</div>
+
+<!-- STATS SECTION -->
+<section class="quick-stats">
+  <div class="quick-box">
+    <h2>1K+</h2>
+    <p>Happy Customers</p>
+  </div>
+
+  <div class="quick-box">
+    <h2>25+</h2>
+    <p>Food Choices</p>
+  </div>
+
+  <div class="quick-box">
+    <h2>4.9 ★</h2>
+    <p>Customer Rating</p>
+  </div>
+
+  <div class="quick-box">
+    <h2>Fast</h2>
+    <p>Booking Service</p>
+  </div>
+</section>
+
+<!-- WHY CHOOSE US -->
+<section class="why-us">
+  <div class="why-left">
+    <img src="../IMAGES/team.png" alt="">
+  </div>
+
+  <div class="why-right">
+    <span class="mini-title">WHY CHOOSE US</span>
+
+    <h2>
+      We Serve More Than Just Food
+    </h2>
+
+    <p>
+      Cubiertos Food Hub combines delicious meals, cozy dining,
+      and excellent customer experience to make every visit special.
+    </p>
+
+    <div class="why-features">
+
+      <div class="why-card">
+        <span></span>
+        <div>
+          <h4>Fresh Ingredients</h4>
+          <p>Prepared daily with quality ingredients.</p>
+        </div>
+      </div>
+
+      <div class="why-card">
+        <span></span>
+        <div>
+          <h4>Fast Service</h4>
+          <p>Quick booking and smooth ordering process.</p>
+        </div>
+      </div>
+
+      <div class="why-card">
+        <span></span>
+        <div>
+          <h4>Friendly Atmosphere</h4>
+          <p>Comfortable place for families and friends.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SPECIAL OFFER -->
+<section class="promo-banner">
+
+  <div class="promo-content">
+    <span>LIMITED OFFER</span>
+
+    <h2>
+      Get 15% OFF on your first booking
+    </h2>
+
+    <p>
+      Enjoy delicious meals and reserve your table online today.
+    </p>
+
+    <a href="login.html" class="promo-btn">
+      Claim Promo
+    </a>
+  </div>
+
+</section>
+
+<!-- GALLERY -->
+<section class="food-gallery">
+
+  <h2 class="section-title">FOOD GALLERY</h2>
+  <div class="title-bar"></div>
+
+  <div class="gallery-grid">
+
+    <img src="../IMAGES/mojos 1.png" alt="">
+    <img src="../IMAGES/Fries.jpg" alt="">
+    <img src="../IMAGES/slide1.png" alt="">
+    <img src="../IMAGES/slide2.png" alt="">
+    <img src="../IMAGES/slide3.png" alt="">
+    <img src="../IMAGES/slide4.png" alt="">
+
+  </div>
+</section>
 
     <!-- HERO CALL-TO-ACTION -->
     <section class="hero">
@@ -202,13 +350,13 @@
     <!-- FOOTER -->
     <footer>
       <div class="footer-info">
-       <nav>
-        <a href="#mainpage">Home</a>
-        <a href="/HTML/about.html">About</a>
-        <a href="/HTML/Store.html">Our Stores</a>
-        <a href="/HTML/contacts.html">Contacts</a>
-        <a href="/HTML/login.html" class="login"><i>👤</i> Log-in</a>
-      </nav>
+        <nav>
+          <a href="main.html">Home</a>
+          <a href="about.html">About</a>
+          <a href="Store/Store.html">Our Stores</a>
+          <a href="contacts.html">Contacts</a>
+          <a href="login.html"><i>👤</i> Log-in</a>
+        </nav>
         <p>
           Food & Drink · Virac, Philippines, 4800 | Contact Info: 0981 027 0704
         </p>

@@ -22,7 +22,7 @@ body{
     background:#f8f8f8;
     color:var(--text);
     min-height:100vh;
-    background-image:url("../IMAGES/bodybg.jpg");
+    background-image:url("../IMAGES/newbg.jpg");
 
     display:flex;
 }

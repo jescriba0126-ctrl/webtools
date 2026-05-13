@@ -61,30 +61,56 @@ include("connect.php");
     <div class="testimonial-container">
       <div class="testimonial-card">
         <div class="testimonial-top">
-          <img src="../IMAGES/user1.jpg" alt="Customer">
-          <div><h3>Maria Santos</h3><span>Birthday Celebration</span></div>
+          <img src="../IMAGES/customer1.jpg" alt="Customer">
+          <div><h3>lance_vs_zombies@017</h3><span>Birthday Celebration</span></div>
         </div>
         <p>"The ambiance was warm and elegant. The food was amazing and the staff were very accommodating throughout our celebration."</p>
         <div class="stars">★★★★★</div>
       </div>
       <div class="testimonial-card featured">
         <div class="testimonial-top">
-          <img src="../IMAGES/user2.jpg" alt="Customer">
-          <div><h3>John Ramirez</h3><span>Wedding Reception</span></div>
+          <img src="../IMAGES/customer2.jpg" alt="Customer">
+          <div><h3>pplyant_</h3><span>Wedding Reception</span></div>
         </div>
         <p>"Cubiertos made our wedding unforgettable. Everything from the setup to the service exceeded our expectations."</p>
         <div class="stars">★★★★★</div>
       </div>
       <div class="testimonial-card">
         <div class="testimonial-top">
-          <img src="../IMAGES/user3.jpg" alt="Customer">
-          <div><h3>Angela Cruz</h3><span>Family Gathering</span></div>
+          <img src="../IMAGES/customer3.jpg" alt="Customer">
+          <div><h3>spro.usv</h3><span>Family Gathering</span></div>
         </div>
         <p>"One of the best dining experiences in Catanduanes. Cozy atmosphere, delicious food, and excellent customer service."</p>
         <div class="stars">★★★★★</div>
       </div>
     </div>
   </section>
+
+  <!-- ================= BOOKING STATS ================= -->
+
+<section class="booking-stats">
+
+  <div class="stat-card">
+    <h3>500+</h3>
+    <p>Successful Events</p>
+  </div>
+
+  <div class="stat-card">
+    <h3>4.9★</h3>
+    <p>Customer Satisfaction</p>
+  </div>
+
+  <div class="stat-card">
+    <h3>24/7</h3>
+    <p>Reservation Support</p>
+  </div>
+
+  <div class="stat-card">
+    <h3>100%</h3>
+    <p>Freshly Prepared Meals</p>
+  </div>
+
+</section>
 
   <!-- ================= BOOKING FORM ================= -->
   <section id="booking" class="booking-section">
@@ -179,54 +205,137 @@ include("connect.php");
           </select>
         </p>
 
-        <!-- PAYMENT -->
-        <div class="payment-wrapper">
-          <i class="payment-title">Preferred Payment Method</i>
-          <div class="payment-methods">
+        <!-- ================= PAYMENT ================= -->
 
-            <label class="payment-option">
-              <input type="radio" name="payment" value="GCash" required>
-              <span class="payment-card">
-                <div class="payment-icon">📱</div>
-                <div><h4>GCash</h4><small>Fast mobile payment</small></div>
-              </span>
-            </label>
+<div class="payment-wrapper">
 
-            <label class="payment-option">
-              <input type="radio" name="payment" value="Maya">
-              <span class="payment-card">
-                <div class="payment-icon">💳</div>
-                <div><h4>Maya</h4><small>Digital wallet payment</small></div>
-              </span>
-            </label>
+  <div class="section-top">
+    <h4>Choose Payment Method</h4>
+    <p>Select your preferred payment option for reservation confirmation.</p>
+  </div>
 
-            <label class="payment-option">
-              <input type="radio" name="payment" value="Online Banking">
-              <span class="payment-card">
-                <div class="payment-icon">🏦</div>
-                <div><h4>Online Banking</h4><small>BPI, BDO, Metrobank</small></div>
-              </span>
-            </label>
+  <div class="payment-methods modern-payment">
 
-            <label class="payment-option">
-              <input type="radio" name="payment" value="Credit / Debit Card">
-              <span class="payment-card">
-                <div class="payment-icon">💳</div>
-                <div><h4>Credit / Debit Card</h4><small>Visa &amp; Mastercard</small></div>
-              </span>
-            </label>
+    <!-- GCASH -->
+    <label class="payment-option">
+      <input type="radio" name="payment" value="GCash" required>
 
-            <label class="payment-option">
-              <input type="radio" name="payment" value="Cash">
-              <span class="payment-card">
-                <div class="payment-icon">💵</div>
-                <div><h4>Cash Payment</h4><small>Pay at the venue</small></div>
-              </span>
-            </label>
+      <span class="payment-card">
 
+        <div class="payment-left">
+          <div class="payment-icon">📱</div>
+
+          <div class="payment-info">
+            <h4>GCash</h4>
+            <small>
+              Secure mobile wallet payment for fast reservation confirmation.
+            </small>
           </div>
         </div>
 
+        <div class="payment-check">
+          ✓
+        </div>
+
+      </span>
+    </label>
+
+    <!-- CASH -->
+    <label class="payment-option">
+      <input type="radio" name="payment" value="Cash">
+
+      <span class="payment-card">
+
+        <div class="payment-left">
+          <div class="payment-icon">💵</div>
+
+          <div class="payment-info">
+            <h4>Cash Payment</h4>
+            <small>
+              Pay directly at Cubiertos Food Hub during your reservation.
+            </small>
+          </div>
+        </div>
+
+        <div class="payment-check">
+          ✓
+        </div>
+
+      </span>
+    </label>
+
+  </div>
+
+  <!-- GCASH DETAILS -->
+  <div class="gcash-box" id="gcashBox">
+
+    <div class="gcash-content">
+
+  <div class="gcash-layout">
+
+    <!-- LEFT SIDE -->
+    <div class="gcash-info-side">
+
+      <div class="gcash-header">
+        <div class="gcash-icon">📲</div>
+
+        <div>
+          <h4>GCash Reservation Details</h4>
+          <p>Send your reservation payment to:</p>
+        </div>
+      </div>
+
+      <div class="gcash-details">
+
+        <div class="detail-item">
+          <span>Account Name</span>
+          <strong>Cubiertos Food Hub</strong>
+        </div>
+
+        <div class="detail-item">
+          <span>GCash Number</span>
+          <strong>0981 027 0704</strong>
+        </div>
+
+      </div>
+
+      <div class="upload-proof">
+
+        <label>Upload Payment Screenshot</label>
+
+        <input
+          type="file"
+          name="proof"
+          accept="image/*"
+        >
+
+      </div>
+
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="gcash-qr-side">
+
+      <div class="qr-card">
+
+        <h4>Scan QR Code</h4>
+
+        <img
+          src="../IMAGES/gcash.jpg"
+          alt="GCash QR Code"
+        >
+
+        <p>
+          Scan using your GCash app for faster payment processing.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
         <!-- NOTES -->
         <p>
           <i>Special Notes</i><br>
@@ -314,6 +423,27 @@ include("connect.php");
     });
 
   });
+
+  // ================= GCASH TOGGLE =================
+
+const gcashRadio = document.querySelector('input[value="GCash"]');
+const cashRadio  = document.querySelector('input[value="Cash"]');
+const gcashBox   = document.getElementById("gcashBox");
+
+function toggleGCashBox() {
+
+  if (gcashRadio.checked) {
+    gcashBox.style.display = "block";
+  } else {
+    gcashBox.style.display = "none";
+  }
+
+}
+
+gcashRadio.addEventListener("change", toggleGCashBox);
+cashRadio.addEventListener("change", toggleGCashBox);
+
+toggleGCashBox();
   </script>
 
 </body>
