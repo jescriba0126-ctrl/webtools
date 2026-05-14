@@ -104,12 +104,12 @@ body::before {
   text-decoration: none;
 }
 
-.logo img{
-  width:58px;
-  height:58px;
+.logo img {
+  width: 55px;
+  height: auto;
 
-  border-radius:16px;
-  object-fit:cover;
+  border-radius: 12px;
+  object-fit: contain;
 
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
 }
@@ -120,18 +120,30 @@ body::before {
     justify-content: center;
 }
 
-.logo-text h2{
-  color:#283618;
-  font-size:1.3rem;
-  font-weight:700;
-  line-height:1;
+.logo-text {
+    display: flex;
+    flex-direction: column; /* Stack Cubiertos and Food Hub vertically */
+    justify-content: center;
 }
 
-.logo-text span{
-  font-size:0.7rem;
-  letter-spacing:4px;
-  color:#bc6c25;
-  font-weight:600;
+.logo-text h2 {
+  color: #283618;
+  font-family: 'Caveat', cursive;
+  font-size: 2.4rem;
+  font-weight: 700;
+  line-height:  1.1;
+}
+
+.logo-text span {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 4px;
+  color: #bc6c25;
+  font-weight: 600;
+  margin-top: -5px;
+  display: block;
+  margin-top: -5px; /* Pulls "Food Hub" slightly closer to the brand name */
+  text-transform: uppercase;
 }
 
 /* ============================= */
@@ -909,84 +921,71 @@ footer {
   color: #dda15e;
 }
 
-/* =========================
-   RESPONSIVE
-========================= */
-@media (max-width: 992px) {
-
-  .mainpage-context h2 {
-    font-size: 3.6rem;
-  }
-
-  .hero-content h1 {
-    font-size: 2.8rem;
-  }
-
-  .hero-image img {
-    width: 380px;
-  }
+.footer-contact {
+  font-size: 0.82rem;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.55);
 }
 
-@media (max-width: 768px) {
-
-  header {
-    padding: 12px 5%;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  nav {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .mainpage {
-    min-height: auto;
-    padding: 120px 8% 80px;
-  }
-
-  .mainpage-context h2 {
-    font-size: 2.8rem;
-  }
-
-  .page2 {
-    font-size: 2rem;
-  }
-
-  .review-content {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .review-image-container {
-    width: 100%;
-    height: 240px;
-  }
-
-  .hero {
-    min-height: auto;
-    padding: 70px 25px;
-  }
-
-  .hero-content h1 {
-    font-size: 2.2rem;
-  }
-
-  .hero-image {
-    position: relative;
-    right: auto;
-    margin-top: 40px;
-  }
-
-  .hero-image img {
-    width: 100%;
-  }
-
-  .socials,
-  .contact-box {
-    display: none;
-  }
+.footer-contact strong {
+  color: rgba(255, 255, 255, 0.8);
+  display: block;
+  margin-bottom: 6px;
 }
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.78rem;
+}
+
+.footer-socials {
+  display: flex;
+  gap: 16px;
+}
+
+.footer-socials a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition:
+    border-color 0.2s,
+    background 0.2s;
+  /* override any inherited background from .socials img */
+  background: transparent;
+  backdrop-filter: none;
+  box-shadow: none;
+  padding: 0;
+}
+
+.footer-socials a:hover {
+  border-color: #dda15e;
+  background: rgba(221, 161, 94, 0.1);
+  transform: none;
+}
+
+.footer-socials img {
+  width: 16px;
+  height: 16px;
+  /* override the circular socials img rule */
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+  backdrop-filter: none;
+  box-shadow: none;
+  filter: brightness(0) invert(1) opacity(0.7);
+  transition: none;
+}
+
+.footer-socials img:hover {
+  transform: none;
+}
+
 /* =========================
    FLOATING FOOD CARDS
 ========================= */
@@ -996,13 +995,13 @@ footer {
   align-items: center;
   gap: 12px;
 
-  background: rgba(255,255,255,0.92);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(12px);
 
   padding: 14px;
   border-radius: 20px;
 
-  box-shadow: 0 12px 25px rgba(0,0,0,0.12);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
 
   animation: floatCard 4s ease-in-out infinite;
 }
@@ -1113,7 +1112,7 @@ footer {
 .why-left img {
   width: 100%;
   border-radius: 40px;
-  box-shadow: 0 20px 45px rgba(0,0,0,0.15);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
 }
 
 .why-left::before {
@@ -1132,7 +1131,7 @@ footer {
   display: inline-block;
   padding: 8px 18px;
   border-radius: 30px;
-  background: rgba(221,161,94,0.15);
+  background: rgba(221, 161, 94, 0.15);
   color: #bc6c25;
   font-weight: 700;
   font-size: 0.8rem;
@@ -1167,7 +1166,7 @@ footer {
   padding: 20px;
   border-radius: 24px;
 
-  box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
 
   transition: 0.3s ease;
 }
@@ -1198,8 +1197,7 @@ footer {
   margin: 100px auto;
 
   background:
-    linear-gradient(rgba(0,0,0,0.45),
-    rgba(0,0,0,0.45)),
+    linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
     url("../IMAGES/slide2.png");
 
   background-size: cover;
@@ -1231,7 +1229,7 @@ footer {
 }
 
 .promo-content p {
-  color: rgba(255,255,255,0.85);
+  color: rgba(255, 255, 255, 0.85);
   line-height: 1.8;
 }
 
