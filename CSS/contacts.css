@@ -191,15 +191,16 @@ body {
 /* ========================================= */
 
 .hero {
-  width: 86%; /* Changed from 92% to match main page layout */
+  width: 86%; 
   min-height: 88vh;
-  margin: 120px auto 60px; /* Matched top/bottom spacing to main page */
+  margin: 120px auto 60px; 
   border-radius: 40px;
   position: relative;
   overflow: hidden;
   display: flex;
   align-items: center;
-  padding: 0 7%; /* Matched inner padding to main page */
+  justify-content: center; /* ADDED: Centers the content block horizontally */
+  padding: 0 7%; 
 
   background:
     linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
@@ -214,6 +215,10 @@ body {
 .hero-content {
   max-width: 700px;
   z-index: 2;
+  text-align: center; /* ADDED: Centers the text itself */
+  display: flex; /* ADDED: Flexbox for better structural alignment */
+  flex-direction: column; /* ADDED: Stacks heading and paragraph */
+  align-items: center; /* ADDED: Ensures perfect center alignment */
 }
 
 .hero-badge {
@@ -553,56 +558,136 @@ textarea {
   border: none;
 }
 
+/* ========================================= */
 /* FOOTER */
+/* ========================================= */
 footer {
-  background-color: #ffffff;
-  text-align: center;
-  padding: 10px 20px;
-  color: #2d2d2d;
-  border-radius: 0;
+  background: #1a1a14;
+  padding: 56px 80px 36px;
+  color: rgba(255, 255, 255, 0.55);
+  margin-top: 0;
+  border-top: none;
 }
 
-/* Logos */
-.footer-logos {
+.footer-top {
   display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 40px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 32px;
 }
 
-.footer-logos img {
-  width: 80px; /* smaller */
-  margin: 10px;
-  border-radius: 12px;
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 
-/* Text */
-.footer-info {
-  margin-top: 20px;
-  font-size: 14px;
-  line-height: 1.6;
+.footer-brand img {
+  width: 100px;
+  filter: brightness(0) invert(1) opacity(0.8);
 }
 
-/* Social Icons */
+.footer-tagline {
+  font-size: 0.82rem;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.4);
+  max-width: 200px;
+  line-height: 1.5;
+  font-family: "Playfair Display", serif;
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-links a {
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.875rem;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover {
+  color: #dda15e;
+}
+
+.footer-contact {
+  font-size: 0.82rem;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.footer-contact strong {
+  color: rgba(255, 255, 255, 0.8);
+  display: block;
+  margin-bottom: 6px;
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.78rem;
+}
+
 .footer-socials {
-  margin-top: 10px;
+  display: flex;
+  gap: 16px;
+}
+
+.footer-socials a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition:
+    border-color 0.2s,
+    background 0.2s;
+  background: transparent;
+  backdrop-filter: none;
+  box-shadow: none;
+  padding: 0;
+}
+
+.footer-socials a:hover {
+  border-color: #dda15e;
+  background: rgba(221, 161, 94, 0.1);
 }
 
 .footer-socials img {
-  width: 35px; /* smaller */
-  margin: 0 5px;
+  width: 16px;
+  height: 16px;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+  backdrop-filter: none;
+  box-shadow: none;
+  filter: brightness(0) invert(1) opacity(0.7);
 }
 
-footer nav a {
-  text-decoration: none;
-  color: #000000;
-  margin: 0 15px;
-  font-weight: 500;
-  font-size: 1.1rem; /* Added to match contacts.css nav size */
-  transition: color 0.3s ease; /* Added for smooth hover */
-}
+/* Responsive fixes for the footer */
+@media (max-width: 900px) {
+  footer {
+    padding: 40px 30px 24px;
+  }
 
-footer nav a:hover {
-  color: #e66d0a; /* Added to match the orange hover in contacts.css */
+  .footer-top {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 14px;
+    text-align: center;
+  }
 }
 
 /* ========================================= */
