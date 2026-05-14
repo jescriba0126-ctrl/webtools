@@ -334,7 +334,7 @@ $default_fullname = val($user['full_name'] ?: trim(($user['firstName'] ?? '') . 
                     <div class="order-empty">
                         <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="display:block;margin:0 auto 10px;color:#ccc;"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
                         <p>No bookings yet.<br>Book an event with us!</p>
-                        <a href="book.php" class="browse-btn">Book now</a>
+                        <a href="homepage.php" class="browse-btn">Book now</a>
                     </div>
                 <?php else: ?>
                     <div class="order-list">

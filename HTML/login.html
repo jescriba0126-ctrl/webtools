@@ -1,152 +1,490 @@
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
     <title>Login Page</title>
+
     <link
-      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
-      rel="stylesheet"
+        href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+        rel="stylesheet"
     />
+
     <link rel="stylesheet" href="../CSS/login.css" />
-  </head>
+</head>
 
-  <body>
-    <div class="container">
-      <!-- LOGIN -->
-      <div class="form-box login">
+<body>
+
+<div class="container">
+
+    <!-- LOGIN -->
+    <div class="form-box login">
+
         <form action="../PHP/register.php" method="POST">
-          <h1>LOGIN</h1>
 
-          <div class="input-box">
-            <input type="email" name="email" placeholder="Email" required />
-            <i class="bx bxs-envelope"></i>
-          </div>
+            <h1>LOGIN</h1>
 
-          <div class="input-box">
-            <input
-              type="password"
-              name="password"
-              id="loginPassword"
-              placeholder="Password"
-              required
-            />
-            <i
-              class="bx bxs-lock-alt"
-              style="cursor: pointer"
-              onclick="togglePassword('loginPassword', this)"
-            ></i>
-          </div>
+            <div class="input-box">
 
-          <button type="submit" name="signIn" class="btn">LOGIN</button>
-          <div class="remember-forgot">
-  <label>
-    <input type="checkbox" name="remember" />
-    Remember Me
-  </label>
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    required
+                />
 
-  <a href="../PHP/forgot-password.php">
-    Forgot Password?
-  </a>
-</div>
+                <i class="bx bxs-envelope"></i>
+
+            </div>
+
+            <div class="input-box">
+
+                <input
+                    type="password"
+                    name="password"
+                    id="loginPassword"
+                    placeholder="Password"
+                    required
+                />
+
+                <i
+                    class="bx bxs-lock-alt"
+                    style="cursor:pointer"
+                    onclick="togglePassword('loginPassword', this)"
+                ></i>
+
+            </div>
+
+            <button
+                type="submit"
+                name="signIn"
+                class="btn"
+            >
+                LOGIN
+            </button>
+
+            <div class="remember-forgot">
+
+                <label>
+                    <input type="checkbox" name="remember">
+                    Remember Me
+                </label>
+
+                <a href="../PHP/forgot-password.php">
+                    Forgot Password?
+                </a>
+
+            </div>
+
         </form>
-      </div>
 
-      <!-- REGISTER -->
-      <!-- REGISTER -->
-<div class="form-box register">
-    <form action="../PHP/register.php" method="POST">
-        <h1>Registration</h1>
-
-        <!-- ✅ Split into two fields -->
-        <div class="input-box">
-            <input type="text" name="firstName" placeholder="First Name" required />
-            <i class="bx bxs-user"></i>
-        </div>
-
-        <div class="input-box">
-            <input type="text" name="lastName" placeholder="Last Name" required />
-            <i class="bx bxs-user"></i>
-        </div>
-
-        <div class="input-box">
-            <input type="email" name="email" placeholder="Email" required />
-            <i class="bx bxs-envelope"></i>
-        </div>
-
-        <div class="input-box">
-            <select name="gender" required>
-                <option value="" disabled selected>Select Gender</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
-                <option value="Prefer not to say">Prefer not to say</option>
-            </select>
-            <i class="bx bxs-group"></i>
-        </div>
-
-        <div class="input-box">
-            <input type="password" name="password" id="regPassword" placeholder="Password" required />
-            <i class="bx bxs-lock-alt" style="cursor:pointer"
-               onclick="togglePassword('regPassword', this)"></i>
-        </div>
-
-        <div class="input-box">
-            <input type="password" name="confirmPassword" id="regConfirmPassword" placeholder="Retype Password" required />
-            <i class="bx bxs-lock-alt" style="cursor:pointer"
-               onclick="togglePassword('regConfirmPassword', this)"></i>
-        </div>
-
-        <button type="submit" name="signUp" class="btn">
-    Register
-</button>
-
-<a href="../HTML/main.html" class="back-home-btn">
-    ← Back to Home
-</a>
-    </form>
-</div>
-
-      <!-- TOGGLE -->
-      <div class="toggle-box">
-        <div class="toggle-panel toggle-left">
-          <h1>Hello, Welcome</h1>
-          <p>Don't have an account?</p>
-          <button type="button" class="btn register-btn">Register</button>
-          <a href="../HTML/main.html" class="back-home-btn"></a>
-        </div>
-
-        <div class="toggle-panel toggle-right">
-          <h1>Welcome Back!</h1>
-          <p>Already have an account?</p>
-          <button type="button" class="btn login-btn">Login</button>
-        </div>
-      </div>
     </div>
 
-    <script>
-      function togglePassword(inputId, icon) {
-        const inp = document.getElementById(inputId);
-        const isHidden = inp.type === "password";
-        inp.type = isHidden ? "text" : "password";
-        icon.className = isHidden ? "bx bxs-lock-open-alt" : "bx bxs-lock-alt";
-      }
+    <!-- REGISTER -->
+    <div class="form-box register">
 
-      const container = document.querySelector(".container");
-      const registerBtn = document.querySelector(".register-btn");
-      const loginBtn = document.querySelector(".login-btn");
+        <form action="../PHP/register.php" method="POST">
 
-      if (registerBtn) {
-        registerBtn.addEventListener("click", () => {
-          container.classList.add("active");
-        });
-      }
+            <h1>Registration</h1>
 
-      if (loginBtn) {
-        loginBtn.addEventListener("click", () => {
-          container.classList.remove("active");
-        });
-      }
+            <!-- FIRST NAME -->
+            <div class="input-box">
 
-    </script>
-  </body>
+                <input
+                    type="text"
+                    name="firstName"
+                    placeholder="First Name"
+                    required
+                />
+
+                <i class="bx bxs-user"></i>
+
+            </div>
+
+            <!-- LAST NAME -->
+            <div class="input-box">
+
+                <input
+                    type="text"
+                    name="lastName"
+                    placeholder="Last Name"
+                    required
+                />
+
+                <i class="bx bxs-user"></i>
+
+            </div>
+
+            <!-- EMAIL -->
+            <div class="input-box">
+
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    required
+                />
+
+                <i class="bx bxs-envelope"></i>
+
+            </div>
+
+            <!-- GENDER -->
+            <div class="input-box">
+
+                <select name="gender" required>
+
+                    <option value="" disabled selected>
+                        Select Gender
+                    </option>
+
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                    <option value="Prefer not to say">
+                        Prefer not to say
+                    </option>
+
+                </select>
+
+                <i class="bx bxs-group"></i>
+
+            </div>
+
+            <!-- PASSWORD -->
+            <div class="input-box">
+
+                <input
+                    type="password"
+                    name="password"
+                    id="regPassword"
+                    placeholder="Password"
+                    required
+                />
+
+                <i
+                    class="bx bxs-lock-alt"
+                    style="cursor:pointer"
+                    onclick="togglePassword('regPassword', this)"
+                ></i>
+
+            </div>
+
+            <!-- CONFIRM PASSWORD -->
+            <div class="input-box">
+
+                <input
+                    type="password"
+                    name="confirmPassword"
+                    id="regConfirmPassword"
+                    placeholder="Confirm Password"
+                    required
+                />
+
+                <i
+                    class="bx bxs-lock-alt"
+                    style="cursor:pointer"
+                    onclick="togglePassword('regConfirmPassword', this)"
+                ></i>
+
+            </div>
+
+            <!-- PASSWORD MATCH -->
+            <div
+                id="passwordMatchMsg"
+                style="
+                    margin-top:8px;
+                    font-size:14px;
+                    font-weight:500;
+                "
+            ></div>
+
+            <!-- PASSWORD STRENGTH -->
+            <div class="password-strength">
+
+                <div class="strength-bar">
+
+                    <div id="strengthFill"></div>
+
+                </div>
+
+                <span id="strengthText">
+                    Password Strength
+                </span>
+
+                <ul class="password-rules">
+
+                    <li id="ruleLength">
+                        ✔ At least 8 characters
+                    </li>
+
+                    <li id="ruleUpper">
+                        ✔ One uppercase letter
+                    </li>
+
+                    <li id="ruleNumber">
+                        ✔ One number
+                    </li>
+
+                    <li id="ruleSpecial">
+                        ✔ One special character
+                    </li>
+
+                </ul>
+
+            </div>
+
+            <!-- REGISTER BUTTON -->
+            <button
+                type="submit"
+                name="signUp"
+                class="btn"
+            >
+                Register
+            </button>
+
+        </form>
+
+    </div>
+
+    <!-- TOGGLE -->
+    <div class="toggle-box">
+
+        <!-- LEFT -->
+        <div class="toggle-panel toggle-left">
+
+            <h1>Hello, Welcome</h1>
+
+            <p>Don't have an account?</p>
+
+            <button
+                type="button"
+                class="btn register-btn"
+            >
+                Register
+            </button>
+
+            <button
+                type="button"
+                class="btn back-home-btn"
+                onclick="window.location.href='../HTML/main.html'"
+            >
+                ← Back to Home
+            </button>
+
+        </div>
+
+        <!-- RIGHT -->
+        <div class="toggle-panel toggle-right">
+
+            <h1>Welcome Back!</h1>
+
+            <p>Already have an account?</p>
+
+            <button
+                type="button"
+                class="btn login-btn"
+            >
+                Login
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+// ================= PASSWORD TOGGLE =================
+
+function togglePassword(inputId, icon) {
+
+    const inp = document.getElementById(inputId);
+
+    const isHidden = inp.type === "password";
+
+    inp.type = isHidden ? "text" : "password";
+
+    icon.className =
+        isHidden
+        ? "bx bxs-lock-open-alt"
+        : "bx bxs-lock-alt";
+}
+
+// ================= PANEL TOGGLE =================
+
+const container =
+    document.querySelector(".container");
+
+const registerBtn =
+    document.querySelector(".register-btn");
+
+const loginBtn =
+    document.querySelector(".login-btn");
+
+if(registerBtn){
+
+    registerBtn.addEventListener("click", () => {
+
+        container.classList.add("active");
+
+    });
+
+}
+
+if(loginBtn){
+
+    loginBtn.addEventListener("click", () => {
+
+        container.classList.remove("active");
+
+    });
+
+}
+
+// ================= PASSWORD STRENGTH =================
+
+const passwordInput =
+    document.getElementById("regPassword");
+
+const confirmInput =
+    document.getElementById("regConfirmPassword");
+
+const strengthFill =
+    document.getElementById("strengthFill");
+
+const strengthText =
+    document.getElementById("strengthText");
+
+const matchMsg =
+    document.getElementById("passwordMatchMsg");
+
+const ruleLength =
+    document.getElementById("ruleLength");
+
+const ruleUpper =
+    document.getElementById("ruleUpper");
+
+const ruleNumber =
+    document.getElementById("ruleNumber");
+
+const ruleSpecial =
+    document.getElementById("ruleSpecial");
+
+// PASSWORD CHECKER
+if(passwordInput){
+
+    passwordInput.addEventListener("input", () => {
+
+        const val = passwordInput.value;
+
+        let strength = 0;
+
+        // RULES
+        const hasLength =
+            val.length >= 8;
+
+        const hasUpper =
+            /[A-Z]/.test(val);
+
+        const hasNumber =
+            /[0-9]/.test(val);
+
+        const hasSpecial =
+            /[^A-Za-z0-9]/.test(val);
+
+        // COUNT
+        if(hasLength) strength++;
+        if(hasUpper) strength++;
+        if(hasNumber) strength++;
+        if(hasSpecial) strength++;
+
+        // RULE COLORS
+        ruleLength.style.color =
+            hasLength ? "green" : "red";
+
+        ruleUpper.style.color =
+            hasUpper ? "green" : "red";
+
+        ruleNumber.style.color =
+            hasNumber ? "green" : "red";
+
+        ruleSpecial.style.color =
+            hasSpecial ? "green" : "red";
+
+        // STRENGTH UI
+        if(strength <= 1){
+
+            strengthFill.style.width = "25%";
+            strengthFill.style.background = "red";
+
+            strengthText.textContent =
+                "Weak Password";
+
+            strengthText.style.color =
+                "red";
+        }
+
+        else if(strength <= 3){
+
+            strengthFill.style.width = "65%";
+            strengthFill.style.background = "orange";
+
+            strengthText.textContent =
+                "Medium Password";
+
+            strengthText.style.color =
+                "orange";
+        }
+
+        else{
+
+            strengthFill.style.width = "100%";
+            strengthFill.style.background = "green";
+
+            strengthText.textContent =
+                "Strong Password";
+
+            strengthText.style.color =
+                "green";
+        }
+
+    });
+
+}
+
+// PASSWORD MATCH
+if(confirmInput){
+
+    confirmInput.addEventListener("input", () => {
+
+        if(confirmInput.value === passwordInput.value){
+
+            matchMsg.textContent =
+                "✔ Passwords Match";
+
+            matchMsg.style.color =
+                "green";
+
+        }
+
+        else{
+
+            matchMsg.textContent =
+                "✖ Passwords Do Not Match";
+
+            matchMsg.style.color =
+                "red";
+
+        }
+
+    });
+
+}
+
+</script>
+
+</body>
 </html>

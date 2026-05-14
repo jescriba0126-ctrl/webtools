@@ -61,13 +61,13 @@ if ($action === 'list') {
     ")->fetch();
 
     // ── Today's bookings count (for capacity bar) ─────────────
-    $today = $pdo->query("
-        SELECT COUNT(*) AS today_count,
-               COALESCE(SUM(guests),0) AS today_guests
-        FROM bookings
-        WHERE DATE(booking_datetime) = CURDATE()
-          AND status NOT IN ('Cancelled')
-    ")->fetch();
+   $today = $pdo->query("
+    SELECT COUNT(*) AS today_count,
+           COALESCE(SUM(guests),0) AS today_guests
+    FROM bookings
+    WHERE DATE(created_at) = CURDATE()
+      AND status NOT IN ('Cancelled')
+")->fetch();
 
     echo json_encode([
         'success'  => true,

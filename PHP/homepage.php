@@ -53,39 +53,111 @@ include("connect.php");
     </div>
   </section>
 
-  <section class="testimonial-section">
-    <div class="testimonial-header">
-      <h2>What Our Guests Say</h2>
-      <p>Real experiences shared by customers who celebrated with Cubiertos Food Hub.</p>
-    </div>
-    <div class="testimonial-container">
-      <div class="testimonial-card">
-        <div class="testimonial-top">
-          <img src="../IMAGES/customer1.jpg" alt="Customer">
-          <div><h3>lance_vs_zombies@017</h3><span>Birthday Celebration</span></div>
-        </div>
-        <p>"The ambiance was warm and elegant. The food was amazing and the staff were very accommodating throughout our celebration."</p>
-        <div class="stars">★★★★★</div>
-      </div>
-      <div class="testimonial-card featured">
-        <div class="testimonial-top">
-          <img src="../IMAGES/customer2.jpg" alt="Customer">
-          <div><h3>pplyant_</h3><span>Wedding Reception</span></div>
-        </div>
-        <p>"Cubiertos made our wedding unforgettable. Everything from the setup to the service exceeded our expectations."</p>
-        <div class="stars">★★★★★</div>
-      </div>
-      <div class="testimonial-card">
-        <div class="testimonial-top">
-          <img src="../IMAGES/customer3.jpg" alt="Customer">
-          <div><h3>spro.usv</h3><span>Family Gathering</span></div>
-        </div>
-        <p>"One of the best dining experiences in Catanduanes. Cozy atmosphere, delicious food, and excellent customer service."</p>
-        <div class="stars">★★★★★</div>
-      </div>
-    </div>
-  </section>
+<!-- ================= TESTIMONIAL SECTION ================= -->
 
+<section class="testimonial-section">
+
+  <div class="testimonial-header">
+    <h2>What Our Guests Say</h2>
+
+    <p>
+      Real experiences shared by customers who celebrated with Cubiertos Food Hub.
+    </p>
+  </div>
+
+  <div class="testimonial-grid">
+
+    <!-- CARD 1 -->
+    <div class="testimonial-card light-card">
+
+      <div class="quote-icon">❝</div>
+
+      <div class="testimonial-top">
+        <img src="../IMAGES/customer1.jpg" alt="Customer">
+
+        <div>
+          <h3>lance_vs_zombies@017</h3>
+          <span>Birthday Celebration</span>
+        </div>
+      </div>
+
+      <p>
+        "The ambiance was warm and elegant. The food was amazing and the staff were very accommodating throughout our celebration."
+      </p>
+
+      <div class="stars">★★★★★</div>
+
+    </div>
+
+    <!-- CARD 2 FEATURED -->
+    <div class="testimonial-card featured-card">
+
+      <div class="quote-icon">❝</div>
+
+      <div class="testimonial-top">
+        <img src="../IMAGES/customer2.jpg" alt="Customer">
+
+        <div>
+          <h3>pplyant_</h3>
+          <span>Wedding Reception</span>
+        </div>
+      </div>
+
+      <p>
+        "Cubiertos made our wedding unforgettable. Everything from the setup to the service exceeded our expectations."
+      </p>
+
+      <div class="stars">★★★★★</div>
+
+    </div>
+
+    <!-- CARD 3 -->
+    <div class="testimonial-card light-card">
+
+      <div class="quote-icon">❝</div>
+
+      <div class="testimonial-top">
+        <img src="../IMAGES/customer3.jpg" alt="Customer">
+
+        <div>
+          <h3>spro.usv</h3>
+          <span>Family Gathering</span>
+        </div>
+      </div>
+
+      <p>
+        "One of the best dining experiences in Catanduanes. Cozy atmosphere, delicious food, and excellent customer service."
+      </p>
+
+      <div class="stars">★★★★★</div>
+
+    </div>
+
+    <!-- CARD 4 -->
+    <div class="testimonial-card featured-card">
+
+      <div class="quote-icon">❝</div>
+
+      <div class="testimonial-top">
+        <img src="../IMAGES/customer4.jpg" alt="Customer">
+
+        <div>
+          <h3>Ches_ru@12</h3>
+          <span>Wedding Reception</span>
+        </div>
+      </div>
+
+      <p>
+        "We celebrated our Wedding at Cubiertos and everything was perfect. The food was flavorful, the place felt cozy, and the staff treated us so well."
+      </p>
+
+      <div class="stars">★★★★★</div>
+
+    </div>
+
+  </div>
+
+</section>
   <!-- ================= BOOKING STATS ================= -->
 
 <section class="booking-stats">
@@ -205,7 +277,8 @@ include("connect.php");
           </select>
         </p>
 
-        <!-- ================= PAYMENT ================= -->
+
+<!-- ================= PAYMENT ================= -->
 
 <div class="payment-wrapper">
 
@@ -266,68 +339,73 @@ include("connect.php");
 
   </div>
 
-  <!-- GCASH DETAILS -->
+  <!-- ================= GCASH DETAILS ================= -->
+
   <div class="gcash-box" id="gcashBox">
 
     <div class="gcash-content">
 
-  <div class="gcash-layout">
+      <div class="gcash-layout">
 
-    <!-- LEFT SIDE -->
-    <div class="gcash-info-side">
+        <!-- LEFT SIDE -->
+        <div class="gcash-info-side">
 
-      <div class="gcash-header">
-        <div class="gcash-icon">📲</div>
+          <div class="gcash-header">
+            <div class="gcash-icon">📲</div>
 
-        <div>
-          <h4>GCash Reservation Details</h4>
-          <p>Send your reservation payment to:</p>
+            <div>
+              <h4>GCash Reservation Details</h4>
+              <p>Send your reservation payment to:</p>
+            </div>
+          </div>
+
+          <div class="gcash-details">
+
+            <div class="detail-item">
+              <span>Account Name</span>
+              <strong>Cubiertos Food Hub</strong>
+            </div>
+
+            <div class="detail-item">
+              <span>GCash Number</span>
+              <strong>0981 027 0704</strong>
+            </div>
+
+          </div>
+
+          <div class="upload-proof">
+
+            <label>Upload Payment Screenshot</label>
+
+            <input
+              type="file"
+              name="proof"
+              accept="image/*"
+            >
+
+          </div>
+
         </div>
-      </div>
 
-      <div class="gcash-details">
+        <!-- RIGHT SIDE -->
+        <div class="gcash-qr-side">
 
-        <div class="detail-item">
-          <span>Account Name</span>
-          <strong>Cubiertos Food Hub</strong>
+          <div class="qr-card">
+
+            <h4>Scan QR Code</h4>
+
+            <img
+              src="../IMAGES/gcash.jpg"
+              alt="GCash QR Code"
+            >
+
+            <p>
+              Scan using your GCash app for faster payment processing.
+            </p>
+
+          </div>
+
         </div>
-
-        <div class="detail-item">
-          <span>GCash Number</span>
-          <strong>0981 027 0704</strong>
-        </div>
-
-      </div>
-
-      <div class="upload-proof">
-
-        <label>Upload Payment Screenshot</label>
-
-        <input
-          type="file"
-          name="proof"
-          accept="image/*"
-        >
-
-      </div>
-
-    </div>
-
-    <!-- RIGHT SIDE -->
-    <div class="gcash-qr-side">
-
-      <div class="qr-card">
-
-        <h4>Scan QR Code</h4>
-
-        <img
-          src="../IMAGES/gcash.jpg"
-          alt="GCash QR Code"
-        >
-
-        <p>
-          Scan using your GCash app for faster payment processing.
-        </p>
 
       </div>
 
@@ -335,22 +413,33 @@ include("connect.php");
 
   </div>
 
+  <!-- ================= SPECIAL NOTES ================= -->
+
+  <p>
+    <i>Special Notes</i><br>
+
+    <textarea
+      name="message"
+      rows="4"
+      placeholder="Any special requests or details?"
+    ></textarea>
+  </p>
+
+  <!-- ================= BUTTONS ================= -->
+
+  <div class="form-actions">
+
+    <button type="submit" class="btn-submit" id="submitBtn">
+      Submit Booking
+    </button>
+
+    <button type="reset" class="btn-reset">
+      Clear Form
+    </button>
+
+  </div>
+
 </div>
-        <!-- NOTES -->
-        <p>
-          <i>Special Notes</i><br>
-          <textarea name="message" rows="4"
-                    placeholder="Any special requests or details?"></textarea>
-        </p>
-
-        <!-- BUTTONS -->
-        <div class="form-actions">
-          <button type="submit" class="btn-submit" id="submitBtn">
-            Submit Booking
-          </button>
-          <button type="reset" class="btn-reset">Clear Form</button>
-        </div>
-
       </form>
 
       <div class="booking-info">

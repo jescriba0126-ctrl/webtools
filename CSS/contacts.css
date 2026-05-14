@@ -24,7 +24,7 @@ html {
 
 body {
   background:
-    linear-gradient(rgba(248, 246, 242, 0.94), rgba(248, 246, 242, 0.94)),
+    linear-gradient(rgba(248, 246, 242, 0.75), rgba(248, 246, 242, 0.75)),
     url("../IMAGES/newbg.jpg");
 
   background-size: cover;
@@ -36,88 +36,118 @@ body {
 }
 
 /* HEADER */
-header {
+/* ============================= */
+/* GLASS HEADER */
+/* ============================= */
+.glass-header {
   position: fixed;
   top: 20px;
   left: 50%;
   transform: translateX(-50%);
-
   width: 92%;
   z-index: 1000;
-
-  padding: 16px 35px;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  background: rgba(255, 255, 255, 0.18);
-
+  background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
-
-  border: 1px solid rgba(255, 255, 255, 0.3);
-
-  border-radius: 28px;
-
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 25px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), inset 0 1px 1px rgba(255, 255, 255, 0.2);
   transition: 0.4s ease;
 }
 
-header.scrolled {
-  background: rgba(255, 255, 255, 0.9);
+.glass-header.scrolled {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
+}
+
+.nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 35px;
 }
 
 .logo {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
+  text-decoration: none;
 }
 
 .logo img {
-  width: 150px;
-  height: auto;
+  width: 58px;
+  height: 58px;
+  border-radius: 16px;
+  object-fit: cover;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
 }
 
-.logo h1 {
-  font-size: 1.6rem;
-  color: #222;
+.logo-text h2 {
+  color: #283618;
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1;
 }
 
-.logo span {
-  color: #606c38;
-  font-style: italic;
+.logo-text span {
+  font-size: 0.7rem;
+  letter-spacing: 4px;
+  color: #bc6c25;
+  font-weight: 600;
 }
-nav a {
-  margin: 0 12px;
+
+.navbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.navbar a {
   text-decoration: none;
-  color: #222;
-  font-weight: 500;
-  font-size: 1rem;
+  color: #283618;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 12px 18px;
+  border-radius: 14px;
   position: relative;
-  transition: 0.3s;
+  transition: 0.3s ease;
 }
 
-nav a:hover {
-  color: #dda15e;
-}
-nav a::after {
-  content: "";
-  position: absolute;
-  width: 0%;
-  height: 3px;
-  background: #dda15e;
-  left: 0;
-  bottom: -4px;
-  transition: 0.3s;
-}
-nav a:hover::after {
-  width: 100%;
+.navbar a:hover {
+  background: rgba(255, 255, 255, 0.45);
+  color: #bc6c25;
+  transform: translateY(-2px);
 }
 
-.login {
-  color: #007bff;
+.navbar a.active {
+  background: linear-gradient(135deg, #606c38, #4f5d2f);
+  color: white;
+  box-shadow: 0 8px 20px rgba(96, 108, 56, 0.35);
+}
+
+.login-btn {
+  text-decoration: none;
+  background: linear-gradient(135deg, #dda15e, #bc6c25);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 14px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  box-shadow: 0 8px 20px rgba(221, 161, 94, 0.35);
+  transition: 0.3s ease;
+}
+
+.login-btn:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 12px 25px rgba(221, 161, 94, 0.45);
+}
+
+.menu-toggle {
+  display: none;
+  font-size: 1.8rem;
+  color: #283618;
+  cursor: pointer;
 }
 
 /* ========================================= */
@@ -161,20 +191,15 @@ nav a:hover::after {
 /* ========================================= */
 
 .hero {
-  width: 92%;
+  width: 86%; /* Changed from 92% to match main page layout */
   min-height: 88vh;
-
-  margin: 130px auto 80px;
-
+  margin: 120px auto 60px; /* Matched top/bottom spacing to main page */
   border-radius: 40px;
-
   position: relative;
   overflow: hidden;
-
   display: flex;
   align-items: center;
-
-  padding: 0 8%;
+  padding: 0 7%; /* Matched inner padding to main page */
 
   background:
     linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
@@ -186,102 +211,18 @@ nav a:hover::after {
   box-shadow: 0 20px 45px rgba(0, 0, 0, 0.18);
 }
 
-.hero-content {
-  max-width: 700px;
-  z-index: 2;
-}
-
-.hero-badge {
-  display: inline-block;
-
-  background: rgba(255, 255, 255, 0.12);
-
-  backdrop-filter: blur(10px);
-
-  color: #ffd166;
-
-  padding: 10px 22px;
-
-  border-radius: 40px;
-
-  font-size: 0.85rem;
-  font-weight: 700;
-
-  margin-bottom: 25px;
-}
-
-.hero h1 {
-  font-size: 5rem;
-  line-height: 1.05;
-
-  color: white;
-
-  margin-bottom: 22px;
-
-  font-weight: 800;
-}
-
-.hero h1 span {
-  color: #ffd166;
-}
-
-.hero p {
-  color: rgba(255, 255, 255, 0.88);
-
-  font-size: 1.05rem;
-  line-height: 1.9;
-}
-
-.hero-buttons {
-  display: flex;
-  gap: 18px;
-
-  margin-top: 35px;
-}
-
-.hero-btn {
-  text-decoration: none;
-
-  padding: 16px 32px;
-
-  border-radius: 40px;
-
-  font-weight: 700;
-
-  transition: 0.3s ease;
-}
-
-.primary-btn {
-  background: linear-gradient(135deg, #dda15e, #bc6c25);
-
-  color: white;
-}
-
-.secondary-btn {
-  background: rgba(255, 255, 255, 0.12);
-
-  color: white;
-
-  border: 1px solid rgba(255, 255, 255, 0.25);
-}
-
-.hero-btn:hover {
-  transform: translateY(-4px);
-}
+/* ... (Keep your other hero CSS rules here) ... */
 
 /* ========================================= */
 /* CONTACT SECTION */
 /* ========================================= */
 
 .contact-layout {
-  width: 92%;
-  margin: auto auto 100px;
-
+  width: 86%; /* Changed from 92% to match hero width */
+  margin: 0 auto 100px;
   display: grid;
   grid-template-columns: 380px 1fr;
-
   gap: 35px;
-
   align-items: start;
 }
 
