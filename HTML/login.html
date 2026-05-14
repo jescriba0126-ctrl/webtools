@@ -90,19 +90,44 @@
                onclick="togglePassword('regPassword', this)"></i>
         </div>
 
-        <div class="input-box">
-            <input type="password" name="confirmPassword" id="regConfirmPassword" placeholder="Retype Password" required />
-            <i class="bx bxs-lock-alt" style="cursor:pointer"
-               onclick="togglePassword('regConfirmPassword', this)"></i>
-        </div>
+       <div class="input-box">
+    <input 
+        type="password" 
+        name="password" 
+        id="regPassword" 
+        placeholder="Password" 
+        required 
+    />
 
+    <i class="bx bxs-lock-alt"
+       style="cursor:pointer"
+       onclick="togglePassword('regPassword', this)">
+    </i>
+</div>
+
+<div id="passwordMatchMsg"></div>
+
+<!-- PASSWORD STRENGTH -->
+<div class="password-strength">
+
+    <div class="strength-bar">
+        <div id="strengthFill"></div>
+    </div>
+
+    <span id="strengthText">Password Strength</span>
+
+    <ul class="password-rules">
+        <li id="ruleLength">✔ At least 8 characters</li>
+        <li id="ruleUpper">✔ One uppercase letter</li>
+        <li id="ruleNumber">✔ One number</li>
+        <li id="ruleSpecial">✔ One special character</li>
+    </ul>
+
+</div>
         <button type="submit" name="signUp" class="btn">
     Register
 </button>
 
-<a href="../HTML/main.html" class="back-home-btn">
-    ← Back to Home
-</a>
     </form>
 </div>
 
@@ -112,7 +137,13 @@
           <h1>Hello, Welcome</h1>
           <p>Don't have an account?</p>
           <button type="button" class="btn register-btn">Register</button>
-          <a href="../HTML/main.html" class="back-home-btn"></a>
+          
+          <button 
+    type="button" 
+    class="btn back-home-btn"
+    onclick="window.location.href='../HTML/main.html'">
+    ← Back to Home
+</button>
         </div>
 
         <div class="toggle-panel toggle-right">
@@ -146,6 +177,82 @@
           container.classList.remove("active");
         });
       }
+
+
+const passwordInput = document.getElementById("regPassword");
+const confirmInput  = document.getElementById("regConfirmPassword");
+
+const strengthFill = document.getElementById("strengthFill");
+const strengthText = document.getElementById("strengthText");
+
+const matchMsg = document.getElementById("passwordMatchMsg");
+
+const ruleLength  = document.getElementById("ruleLength");
+const ruleUpper   = document.getElementById("ruleUpper");
+const ruleNumber  = document.getElementById("ruleNumber");
+const ruleSpecial = document.getElementById("ruleSpecial");
+
+passwordInput.addEventListener("input", () => {
+
+    const val = passwordInput.value;
+
+    let strength = 0;
+
+    // RULES
+    const hasLength  = val.length >= 8;
+    const hasUpper   = /[A-Z]/.test(val);
+    const hasNumber  = /[0-9]/.test(val);
+    const hasSpecial = /[^A-Za-z0-9]/.test(val);
+
+    // CHECK RULES
+    if(hasLength) strength++;
+    if(hasUpper) strength++;
+    if(hasNumber) strength++;
+    if(hasSpecial) strength++;
+
+    // UPDATE RULE COLORS
+    ruleLength.style.color  = hasLength ? "green" : "red";
+    ruleUpper.style.color   = hasUpper ? "green" : "red";
+    ruleNumber.style.color  = hasNumber ? "green" : "red";
+    ruleSpecial.style.color = hasSpecial ? "green" : "red";
+
+    // STRENGTH LEVEL
+    if(strength <= 1){
+        strengthFill.style.width = "25%";
+        strengthFill.style.background = "red";
+        strengthText.textContent = "Weak Password";
+        strengthText.style.color = "red";
+    }
+    else if(strength == 2 || strength == 3){
+        strengthFill.style.width = "65%";
+        strengthFill.style.background = "orange";
+        strengthText.textContent = "Medium Password";
+        strengthText.style.color = "orange";
+    }
+    else{
+        strengthFill.style.width = "100%";
+        strengthFill.style.background = "green";
+        strengthText.textContent = "Strong Password";
+        strengthText.style.color = "green";
+    }
+
+});
+
+confirmInput.addEventListener("input", () => {
+
+    if(confirmInput.value === passwordInput.value){
+
+        matchMsg.textContent = "✔ Passwords Match";
+        matchMsg.style.color = "green";
+
+    } else {
+
+        matchMsg.textContent = "✖ Passwords Do Not Match";
+        matchMsg.style.color = "red";
+
+    }
+
+});
 
     </script>
   </body>
