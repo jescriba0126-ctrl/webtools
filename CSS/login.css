@@ -346,3 +346,35 @@ form {
     font-size:13px;
     font-weight:600;
 }
+
+/* ================= REMEMBER & FORGOT PASSWORD FIX ================= */
+.remember-forgot {
+    display: flex;
+    justify-content: space-between; /* Pushes one to left, one to right */
+    align-items: center;
+    font-size: 14px;
+    margin: 15px 0 20px; /* Adjusts spacing between inputs and the login button */
+    color: #333;
+}
+
+.remember-forgot label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.remember-forgot label input {
+    accent-color: #dda15e; /* Matches your brown button theme */
+    margin-right: 6px;
+    cursor: pointer;
+}
+
+.remember-forgot a {
+    color: #bc6c25; /* Use your primary brown for the link */
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.remember-forgot a:hover {
+    text-decoration: underline;
+}
