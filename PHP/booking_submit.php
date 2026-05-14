@@ -75,6 +75,33 @@ if (!$bookingDT || $bookingDT === '1970-01-01 00:00:00') {
     exit;
 }
 
+// ── capacity check ───────────────────────────────────────────
+$bookingDate = date('Y-m-d', strtotime($bookingDT));
+
+// Read the limit from the DB (falls back to 100 if not set)
+$limitStmt   = $pdo->query("SELECT setting_value FROM settings WHERE setting_key = 'daily_capacity'");
+$DAILY_LIMIT = (int)($limitStmt->fetchColumn() ?: 100);
+
+// Sum all non-cancelled guests already booked on that date
+$capStmt = $pdo->prepare("
+    SELECT COALESCE(SUM(guests), 0) AS total_guests
+    FROM bookings
+    WHERE DATE(booking_datetime) = ?
+    AND status != 'Cancelled'
+");
+$capStmt->execute([$bookingDate]);
+$bookedGuests = (int) $capStmt->fetchColumn();
+
+if (($bookedGuests + $guests) > $DAILY_LIMIT) {
+    $remaining = max(0, $DAILY_LIMIT - $bookedGuests);
+    echo json_encode([
+        'success' => false,
+        'message' => "Sorry, we're fully booked for that date. Only {$remaining} guest slot(s) remaining."
+    ]);
+    exit;
+}
+// ── end capacity check ───────────────────────────────────────
+
 // ── generate unique ticket number ────────────────────────────
 $ticket = 'T' . strtoupper(substr(uniqid(), -8));
 
