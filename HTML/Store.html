@@ -15,17 +15,29 @@
 
   <body>
     <!-- HEADER -->
-    <header>
-      <div class="logo">
-        <img src="../IMAGES/logo.jpg" alt="Cubiertos Food Hub Logo" />
+<header class="glass-header">
+      <div class="nav-container">
+        <a href="../HTML/main.html" class="logo">
+          <img src="../IMAGES/logo.jpg" alt="Cubiertos Logo">
+          <div class="logo-text">
+            <h2>Cubiertos</h2>
+            <span>FOOD HUB</span>
+          </div>
+        </a>
+
+        <nav class="navbar">
+          <a href="../HTML/main.html">Home</a>
+          <a href="../HTML/about.html">About</a>
+          <a href="../HTML/Store.html" class="active">Stores</a>
+          <a href="../HTML/contacts.html">Contacts</a>
+        </nav>
+
+        <a href="../HTML/login.html" class="login-btn">
+            Book Now
+        </a>
       </div>
-      <nav>
-        <a href="../HTML/main.html">Home</a>
-        <a href="../HTML/about.html">About</a>
-        <a href="../HTML/Store.html">Our Stores</a>
-        <a href="../HTML/contacts.html">Contacts</a>
-        <a href="../HTML/login.html" class="login"><i>👤</i> Log-in</a>
-      </nav>
+
+      <div class="menu-toggle" id="menuToggle">☰</div>
     </header>
 
     <section class="store-hero">
