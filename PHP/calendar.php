@@ -12,85 +12,35 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Booking Calendar</title>
 
+<link rel="stylesheet" href="../CSS/adminsamp.css">
 <link rel="stylesheet" href="../CSS/calendar.css">
-
 <link rel="icon" type="image/jpg" href="/IMAGES/logo.jpg">
-
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
-
-<!-- SIDEBAR -->
 <div class="sidebar">
-
     <div class="sidebar-logo">
         <img src="../IMAGES/logo.jpg" alt="">
         <h2>Cubiertos</h2>
     </div>
-
     <ul class="sidebar-menu">
-
-        <li class="active">
-            <a href="admin.php">
-                <span></span>
-                Dashboard
-            </a>
-        </li>
-
-        <li>
-            <a href="#">
-                <span></span>
-                Appointments
-            </a>
-        </li>
-
-        <li>
-            <a href="#">
-                <span></span>
-                Venues
-            </a>
-        </li>
-
-        <li>
-    <a href="calendar.php">
-        <span></span>
-        Calendar
-    </a>
-</li>
-        <li>
-            <a href="customer.php">
-                <span></span>
-                Customers
-            </a>
-        </li>
-
-        <li>
-            <a href="report.php">
-                <span></span>
-                Reports
-            </a>
-        </li>
-
+        <li><a href="admin.php"><span></span>Dashboard</a></li>
+        <li><a href="appointments.php"><span></span>Appointments</a></li>
+        <li><a href="venues.php"><span></span>Venues</a></li>
+        <li class="active"><a href="calendar.php"><span></span>Calendar</a></li> <li><a href="customer.php"><span></span>Customers</a></li>
+        <li><a href="report.php"><span></span>Reports</a></li>
     </ul>
-
 </div>
 
-<!-- HEADER -->
 <header id="adminHeader">
-
     <div class="logo">
-        <h1>Booking Calendar</h1>
-    </div>
-
+        <h1><span>Calendar</span> Dashboard</h1> </div>
     <nav>
         <a href="admin.php">Dashboard</a>
-        <a href="logout.php" class="logout">Logout</a>
-    </nav>
-
+        <a href="logout.php" class="btn logout">Logout</a> </nav>
 </header>
 
 <!-- MAIN -->
@@ -174,34 +124,58 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
 
     <div class="calendar-wrapper">
 
-        <!-- CALENDAR -->
-        <div class="calendar-card">
+        <div class="calendar-left-column">
+            
+            <div class="calendar-card">
 
-            <div class="calendar-header">
+                <div class="calendar-header">
+                    <button id="prevMonth">&lt;</button>
+                    <h2 id="monthDisplay"></h2>
+                    <button id="nextMonth">&gt;</button>
+                </div>
 
-                <button id="prevMonth">&lt;</button>
+                <div class="calendar-days">
+                    <span>Sun</span>
+                    <span>Mon</span>
+                    <span>Tue</span>
+                    <span>Wed</span>
+                    <span>Thu</span>
+                    <span>Fri</span>
+                    <span>Sat</span>
+                </div>
 
-                <h2 id="monthDisplay"></h2>
-
-                <button id="nextMonth">&gt;</button>
+                <div id="calendarGrid" class="calendar-grid"></div>
 
             </div>
 
-            <div class="calendar-days">
-                <span>Sun</span>
-                <span>Mon</span>
-                <span>Tue</span>
-                <span>Wed</span>
-                <span>Thu</span>
-                <span>Fri</span>
-                <span>Sat</span>
-            </div>
+            <div class="capacity-card" style="background: white; border-radius: 25px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); margin-top: 30px;">
+                
+                <div class="capacity-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 class="section-title" style="font-size: 1.2rem; color: #283618;">Daily Capacity</h2>
+                    <button class="btn-set-limit" onclick="setNewLimit()" style="border: none; background: #bc6c25; color: white; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: 500;">Set Limit</button>
+                </div>
 
-            <div id="calendarGrid" class="calendar-grid"></div>
+                <div class="capacity-body">
+                    <p class="label-text" style="color: #777; margin-bottom: 5px;">Maximum Guests</p>
+                    
+                    <p class="capacity-value" style="font-size: 2rem; font-weight: 700; color: #283618; margin-bottom: 15px;">
+                        <span id="maxCapacity">100</span> / Day
+                    </p>
+
+                    <div class="progress-container" style="width: 100%; height: 12px; background: #ececec; border-radius: 20px; overflow: hidden; margin-bottom: 15px;">
+                        <div id="capacityFill" class="progress-fill" style="width: 0%; height: 100%; background: #bc6c25; border-radius: 20px; transition: 0.4s ease;"></div>
+                    </div>
+
+                    <div class="capacity-footer" style="display: flex; justify-content: space-between; font-size: 0.9rem; color: #555;">
+                        <p>Booked: <strong id="currentBooked" style="color: #bc6c25;">0</strong></p>
+                        <p>Available: <strong id="slotsAvailable">100</strong></p>
+                    </div>
+
+                </div>
+            </div>
 
         </div>
 
-        <!-- CLIENT LIST -->
         <div class="details-card">
 
             <div class="details-top">
@@ -325,35 +299,6 @@ function renderCalendar() {
         bookings.length + " booking";
 
     daySquare.appendChild(badge);
-
-    // SHOW CUSTOMER NAMES
-    bookings.slice(0,3).forEach(order => {
-
-        const person =
-            document.createElement("div");
-
-        person.classList.add("mini-name");
-
-        person.innerText =
-            "• " + order.name;
-
-        daySquare.appendChild(person);
-
-    });
-
-    // IF MORE THAN 3
-    if(bookings.length > 3){
-
-        const more =
-            document.createElement("div");
-
-        more.classList.add("more-bookings");
-
-        more.innerText =
-            "+" + (bookings.length - 3) + " more";
-
-        daySquare.appendChild(more);
-    }
 
     // CLICK EVENT
     daySquare.addEventListener("click", () => {
@@ -646,6 +591,60 @@ setInterval(
 );
 
 loadReservationList();
+
+// ================= CAPACITY LOGIC =================
+function updateCapacity() {
+    let maxCap = parseInt(localStorage.getItem("dailyCapacity")) || 100;
+    let allOrders = JSON.parse(localStorage.getItem("orders")) || [];
+    let totalGuests = 0;
+
+    const today = new Date();
+    const todayKey = `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`;
+
+    // Calculate guests ONLY for today's Pending or Approved bookings
+    allOrders.forEach(order => {
+        if ((order.status === "Pending" || order.status === "Approved") && order.datetime) {
+            const d = new Date(order.datetime);
+            const key = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+
+            if (key === todayKey) {
+                totalGuests += Number(order.guests) || 0;
+            }
+        }
+    });
+
+    // Update Text Elements
+    document.getElementById("maxCapacity").textContent = maxCap;
+    document.getElementById("currentBooked").textContent = totalGuests;
+    document.getElementById("slotsAvailable").textContent = Math.max(0, maxCap - totalGuests);
+
+    // Update Progress Bar
+    const fillEl = document.getElementById("capacityFill");
+    if (fillEl) {
+        let percentage = (totalGuests / maxCap) * 100;
+        if (percentage > 100) percentage = 100;
+        fillEl.style.width = percentage + "%";
+    }
+}
+
+// Function triggered by the "Set Limit" button
+window.setNewLimit = function () {
+    let currentLimit = parseInt(localStorage.getItem("dailyCapacity")) || 100;
+    let input = prompt("Enter new maximum guests per day:", currentLimit);
+
+    if (input !== null) {
+        let newLimit = parseInt(input);
+        if (!isNaN(newLimit) && newLimit > 0) {
+            localStorage.setItem("dailyCapacity", newLimit);
+            updateCapacity(); // Refresh UI instantly
+        }
+    }
+};
+
+// Run immediately and every 3 seconds
+updateCapacity();
+setInterval(updateCapacity, 3000);
+window.addEventListener("storage", updateCapacity);
 
 </script>
 

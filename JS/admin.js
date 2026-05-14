@@ -14,7 +14,6 @@ async function fetchOrders() {
       orders = data.bookings;
 
       loadOrders();
-      renderCalendar();
     } else {
       console.error("Failed to fetch bookings");
     }
@@ -284,27 +283,32 @@ function renderCalendar() {
   }
 }
 
-// ================= CALENDAR NAV =================
-document.getElementById("prevMonth")?.addEventListener("click", () => {
-  nav--;
-  renderCalendar();
-});
-
-document.getElementById("nextMonth")?.addEventListener("click", () => {
-  nav++;
-  renderCalendar();
-});
 
 // ================= START =================
 fetchOrders();
 
-// ================= LOADER =================
+// ================= LOADER (RUN ONCE PER SESSION) =================
 window.addEventListener("load", function () {
-  setTimeout(function () {
-    const loader = document.getElementById("startup-loader");
+  const loader = document.getElementById("startup-loader");
 
-    if (loader) {
+  if (loader) {
+    // Check if they have NOT seen the loader yet this session
+    if (!sessionStorage.getItem("hasSeenLoader")) {
+      
+      // 1. Show the loader
+      loader.style.display = "flex"; // Or "block" depending on your CSS
+      
+      // 2. Mark that they have seen it
+      sessionStorage.setItem("hasSeenLoader", "true");
+
+      // 3. Hide it after 2 seconds
+      setTimeout(function () {
+        loader.style.display = "none";
+      }, 2000);
+
+    } else {
+      // If they already saw it, ensure it stays completely hidden
       loader.style.display = "none";
     }
-  }, 2000);
+  }
 });

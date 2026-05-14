@@ -30,33 +30,32 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
 
     <ul class="sidebar-menu">
 
-        <li class="active">
-            <a href="#">
+        <li class="active"> 
+            <a href="admin.php">
                 <span></span>
                 Dashboard
             </a>
         </li>
 
         <li>
-            <a href="#">
-                <span></span>
+            <a href="appointments.php"> <span></span>
                 Appointments
             </a>
         </li>
 
         <li>
-            <a href="#">
-                <span></span>
+            <a href="venues.php"> <span></span>
                 Venues
             </a>
         </li>
 
         <li>
-    <a href="calendar.php">
-        <span></span>
-        Calendar
-    </a>
-</li>
+            <a href="calendar.php">
+                <span></span>
+                Calendar
+            </a>
+        </li>
+
         <li>
             <a href="customer.php">
                 <span></span>
@@ -172,77 +171,6 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
 
     </div>
 
-    <!-- CAPACITY -->
-    <section class="admin-status-bar">
-
-        <div class="combined-status-card">
-
-            <!-- CALENDAR -->
-            <div class="status-section">
-
-                <h2 class="section-title">Booking Calendar</h2>
-
-                <div class="calendar-box">
-
-                    <div class="calendar-header">
-                        <button id="prevMonth">&lt;</button>
-                        <span id="monthDisplay"></span>
-                        <button id="nextMonth">&gt;</button>
-                    </div>
-
-                    <div class="calendar-days">
-                        <span>Su</span>
-                        <span>Mo</span>
-                        <span>Tu</span>
-                        <span>We</span>
-                        <span>Th</span>
-                        <span>Fr</span>
-                        <span>Sa</span>
-                    </div>
-
-                    <div id="calendarGrid" class="calendar-grid"></div>
-
-                </div>
-
-            </div>
-
-            <div class="vertical-divider"></div>
-
-            <!-- CAPACITY -->
-            <div class="status-section">
-
-                <div class="capacity-header">
-                    <h2 class="section-title">Daily Capacity</h2>
-                    <button class="btn-set-limit" onclick="setNewLimit()">
-                        Set Limit
-                    </button>
-                </div>
-
-                <div class="capacity-body">
-
-                    <p class="label-text">Maximum Guests</p>
-
-                    <p class="capacity-value">
-                        <span id="maxCapacity">100</span> / Day
-                    </p>
-
-                    <div class="progress-container">
-                        <div id="capacityFill" class="progress-fill"></div>
-                    </div>
-
-                    <div class="capacity-footer">
-                        <p>Booked: <strong id="currentBooked">0</strong></p>
-                        <p>Available: <strong id="slotsAvailable">100</strong></p>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
     <!-- CONTROLS -->
     <section class="card">
 
@@ -297,7 +225,7 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
 
 </main>
 
-<div id="startup-loader">
+<div id="startup-loader" style="display: none;">
     <div class="loader-content">
         <h1 class="loader-title">Cubiertos <span>Food Hub</span></h1>
         <p class="loader-text">Loading Dashboard...</p>

@@ -10,87 +10,38 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Cubiertos Customers Dashboard</title>
 
+<link rel="stylesheet" href="../CSS/adminsamp.css">
 <link rel="stylesheet" href="../CSS/customer.css">
 <link rel="icon" type="image/jpg" href="/IMAGES/logo.jpg">
-
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
 </head>
+
 <body>
-
-<!-- SIDEBAR -->
 <div class="sidebar">
-
     <div class="sidebar-logo">
         <img src="../IMAGES/logo.jpg" alt="">
         <h2>Cubiertos</h2>
     </div>
-
     <ul class="sidebar-menu">
-
-        <li class="active">
-            <a href="admin.php">
-                <span></span>
-                Dashboard
-            </a>
-        </li>
-
-        <li>
-            <a href="#">
-                <span></span>
-                Appointments
-            </a>
-        </li>
-
-        <li>
-            <a href="#">
-                <span></span>
-                Venues
-            </a>
-        </li>
-
-        <li>
-    <a href="calendar.php">
-        <span></span>
-        Calendar
-    </a>
-</li>
-        <li>
-            <a href="customer.php">
-                <span></span>
-                Customers
-            </a>
-        </li>
-
-        <li>
-            <a href="report.php">
-                <span></span>
-                Reports
-            </a>
-        </li>
-
+        <li><a href="admin.php"><span></span>Dashboard</a></li>
+        <li><a href="appointments.php"><span></span>Appointments</a></li>
+        <li><a href="venues.php"><span></span>Venues</a></li>
+        <li><a href="calendar.php"><span></span>Calendar</a></li>
+        <li class="active"><a href="customer.php"><span></span>Customers</a></li> <li><a href="report.php"><span></span>Reports</a></li>
     </ul>
-
 </div>
 
-<!-- HEADER -->
 <header id="adminHeader">
-
     <div class="logo">
         <h1><span>Customers</span> Dashboard</h1>
     </div>
-
     <nav>
         <a href="main.html">Home</a>
-        <a href="logout.php" class="logout">Logout</a>
-    </nav>
-
+        <a href="logout.php" class="btn logout">Logout</a> </nav>
 </header>
 
 <!-- MAIN -->

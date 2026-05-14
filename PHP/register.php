@@ -76,6 +76,7 @@ if(isset($_POST['signIn'])){
         $_SESSION['email']     = $row['email'];
         $_SESSION['firstName'] = $row['firstName'];
         $_SESSION['role']      = $row['role'];
+        $_SESSION['just_logged_in'] = true; // ADDED THIS LINE for the loader animation
 
         // ADMIN
         if($row['role'] == 'admin'){
