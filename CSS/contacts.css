@@ -349,6 +349,7 @@ body {
 
 .contact-item {
   display: flex;
+  align-items: flex-start; /* Forces the icon to align with the top of the text */
   gap: 15px;
   margin-top: 20px;
 }
@@ -356,7 +357,29 @@ body {
 .contact-item i {
   color: var(--primary);
   font-size: 1.2rem;
+  margin-top: 3px; /* Small nudge to center it visually */
+}
+
+/* Fixes the blue phone number link */
+.contact-item a {
+  text-decoration: none;
+  color: var(--text);
+  transition: color 0.3s ease;
+}
+
+.contact-item a:hover {
+  color: var(--primary);
+}
+
+/* Removes the bullet point and fixes alignment in Our Stores */
+.stores-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.stores-list li {
   margin-top: 5px;
+  line-height: 1.6;
 }
 
 .contact-buttons {
