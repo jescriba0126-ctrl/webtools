@@ -1,7 +1,7 @@
 /* =========================
    GOOGLE FONTS — matches main.css
 ========================= */
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap");
 
 /* =========================
    GLOBAL
@@ -17,7 +17,7 @@ html {
 }
 
 body {
-  font-family: "DM Sans", sans-serif;
+  font-family: "Poppins", sans-serif;
   color: #222;
 
   background:
@@ -142,7 +142,7 @@ body::before {
 }
 
 .navbar a {
-  font-family: "DM Sans", sans-serif;
+  font-family: "Poppins", sans-serif;
   text-decoration: none;
   color: #283618;
 
@@ -187,7 +187,7 @@ body::before {
 /* PROFILE BUTTON */
 
 .profile-btn {
-  font-family: "DM Sans", sans-serif;
+  font-family: "Poppins", sans-serif;
   text-decoration: none;
 
   color: #283618;
@@ -213,7 +213,7 @@ body::before {
 /* LOGIN BUTTON */
 
 .login-btn {
-  font-family: "DM Sans", sans-serif;
+  font-family: "Poppins", sans-serif;
   text-decoration: none;
 
   background: linear-gradient(135deg, #dda15e, #bc6c25);
@@ -332,7 +332,7 @@ body::before {
 }
 
 .btn {
-  font-family: "DM Sans", sans-serif;
+  font-family: "Poppins", sans-serif;
   text-decoration: none;
   background: #f7f7f7;
   color: #283618;
@@ -435,7 +435,7 @@ body::before {
 }
 
 .mainpage-context h2 {
-  font-family: "Playfair Display", serif;
+  font-family: "Poppins", serif;
   font-size: clamp(3rem, 6vw, 4.8rem);
   line-height: 1.05;
   color: white;
@@ -453,7 +453,7 @@ body::before {
 }
 
 .mainpage-context p {
-  font-family: "DM Sans", sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 1.1rem;
   color: rgba(255, 255, 255, 0.85);
   font-weight: 300;
@@ -462,7 +462,7 @@ body::before {
 
 /* buttons */
 .book-btn {
-  font-family: "DM Sans", sans-serif;
+  font-family: "Poppins", sans-serif;
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -512,14 +512,14 @@ body::before {
 }
 
 .stat-box h3 {
-  font-family: "Playfair Display", serif;
+  font-family: "Poppins", serif;
   color: white;
   font-size: 1.4rem;
   font-weight: 400;
 }
 
 .stat-box p {
-  font-family: "DM Sans", sans-serif;
+  font-family: "Poppins", sans-serif;
   color: rgba(255, 255, 255, 0.75);
   font-size: 0.85rem;
   font-weight: 300;
@@ -537,6 +537,7 @@ body::before {
 .mySlides {
   width: 100%;
   border-radius: 35px;
+  position: relative;
   overflow: hidden;
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.16);
   animation: fade 1s ease;
@@ -553,8 +554,72 @@ body::before {
   }
 }
 
+/* =========================
+   MENU PROMO OVERLAY
+========================= */
+.menu-promo-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 85%;
+  max-width: 550px;
+
+  background: rgba(40, 54, 24, 0.75);
+  padding: 40px;
+  border-radius: 30px;
+  text-align: center;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+}
+
+.menu-promo-overlay span {
+  font-family: "Poppins", sans-serif;
+  color: #ffd166;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+.menu-promo-overlay h2 {
+  font-family: "Poppins", serif;
+  color: white;
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-weight: 400;
+  line-height: 1.2;
+  margin: 15px 0;
+}
+
+.menu-promo-overlay p {
+  font-family: "Poppins", sans-serif;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 300;
+  line-height: 1.6;
+  margin-bottom: 25px;
+}
+
+.menu-promo-overlay .promo-btn {
+  font-family: "Poppins", sans-serif;
+  display: inline-block;
+  background: #dda15e;
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 14px 30px;
+  border-radius: 40px;
+  transition: 0.3s ease;
+}
+
+.menu-promo-overlay .promo-btn:hover {
+  background: #bc6c25;
+  transform: translateY(-3px);
+}
+
 .page2 {
-  font-family: "Playfair Display", serif;
+  font-family: "Poppins", serif;
   text-align: center;
   margin-top: 30px;
   color: #283618;
@@ -565,7 +630,7 @@ body::before {
 
 /* menu button */
 .menu-btn {
-  font-family: "DM Sans", sans-serif;
+  font-family: "Poppins", sans-serif;
   display: inline-block;
   margin-top: 25px;
 
@@ -598,7 +663,7 @@ body::before {
 }
 
 .section-title {
-  font-family: "Playfair Display", serif;
+  font-family: "Poppins", serif;
   text-align: center;
   font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 400;
@@ -652,7 +717,7 @@ body::before {
 }
 
 .card h3 {
-  font-family: "Playfair Display", serif;
+  font-family: "Poppins", serif;
   padding: 22px 24px 10px;
   font-size: 1.3rem;
   font-weight: 400;
@@ -660,7 +725,7 @@ body::before {
 }
 
 .card p {
-  font-family: "DM Sans", sans-serif;
+  font-family: "Poppins", sans-serif;
   padding: 0 24px 28px;
   color: #666;
   line-height: 1.8;
@@ -721,7 +786,7 @@ body::before {
 }
 
 .meal-name {
-  font-family: "Playfair Display", serif;
+  font-family: "Poppins", serif;
   font-size: 1.25rem;
   font-weight: 400;
   color: #283618;
@@ -729,7 +794,7 @@ body::before {
 }
 
 .reviewer-info {
-  font-family: "DM Sans", sans-serif;
+  font-family: "Poppins", sans-serif;
   margin-bottom: 14px;
   color: #777;
   font-size: 0.875rem;
@@ -741,7 +806,7 @@ body::before {
 }
 
 .review-text {
-  font-family: "DM Sans", sans-serif;
+  font-family: "Poppins", sans-serif;
   line-height: 1.8;
   color: #555;
   font-size: 0.96rem;
@@ -800,7 +865,7 @@ body::before {
 }
 
 .hero-content p {
-  font-family: "DM Sans", sans-serif;
+  font-family: "Poppins", sans-serif;
   color: rgba(255, 255, 255, 0.8);
   font-weight: 300;
   line-height: 1.8;
@@ -808,7 +873,7 @@ body::before {
 }
 
 .book {
-  font-family: "DM Sans", sans-serif;
+  font-family: "Poppins", sans-serif;
   display: inline-block;
 
   padding: 16px 40px;
@@ -870,12 +935,12 @@ footer {
 }
 
 .footer-tagline {
+  font-family: "Playfair Display", serif;
   font-size: 0.82rem;
   font-style: italic;
   color: rgba(255, 255, 255, 0.4);
   max-width: 200px;
   line-height: 1.5;
-  font-family: "Playfair Display", serif;
 }
 
 .footer-links {
@@ -885,7 +950,7 @@ footer {
 }
 
 .footer-links a {
-  font-family: "DM Sans", sans-serif;
+  font-family: "Poppins", sans-serif;
   text-decoration: none;
   color: rgba(255, 255, 255, 0.55);
   font-size: 0.875rem;
@@ -897,7 +962,7 @@ footer {
 }
 
 .footer-contact {
-  font-family: "DM Sans", sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 0.82rem;
   line-height: 1.8;
   color: rgba(255, 255, 255, 0.55);
@@ -914,7 +979,7 @@ footer {
   justify-content: space-between;
   align-items: center;
   font-size: 0.78rem;
-  font-family: "DM Sans", sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .footer-socials {
@@ -989,14 +1054,14 @@ footer {
 }
 
 .floating-food-card h4 {
-  font-family: "DM Sans", sans-serif;
+  font-family: "Poppins", sans-serif;
   color: #283618;
   font-size: 0.95rem;
   font-weight: 500;
 }
 
 .floating-food-card p {
-  font-family: "DM Sans", sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 0.75rem;
   color: #888;
   font-weight: 300;
@@ -1061,7 +1126,7 @@ footer {
 }
 
 .quick-box h2 {
-  font-family: "Playfair Display", serif;
+  font-family: "Poppins", serif;
   font-size: 2.3rem;
   font-weight: 400;
   color: #bc6c25;
@@ -1069,7 +1134,7 @@ footer {
 }
 
 .quick-box p {
-  font-family: "DM Sans", sans-serif;
+  font-family: "Poppins", sans-serif;
   color: #666;
   font-weight: 500;
 }
@@ -1110,7 +1175,7 @@ footer {
 }
 
 .mini-title {
-  font-family: "DM Sans", sans-serif;
+  font-family: "Poppins", sans-serif;
   display: inline-block;
   padding: 8px 18px;
   border-radius: 30px;
@@ -1124,7 +1189,7 @@ footer {
 }
 
 .why-right h2 {
-  font-family: "Playfair Display", serif;
+  font-family: "Poppins", serif;
   font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 400;
   color: #283618;
@@ -1138,7 +1203,7 @@ footer {
 }
 
 .why-right p {
-  font-family: "DM Sans", sans-serif;
+  font-family: "Poppins", sans-serif;
   color: #666;
   line-height: 1.8;
   font-weight: 300;
@@ -1174,14 +1239,14 @@ footer {
 }
 
 .why-card h4 {
-  font-family: "DM Sans", sans-serif;
+  font-family: "Poppins", sans-serif;
   color: #283618;
   font-weight: 500;
   margin-bottom: 6px;
 }
 
 .why-card p {
-  font-family: "DM Sans", sans-serif;
+  font-family: "Poppins", sans-serif;
   margin: 0;
   font-size: 0.9rem;
   font-weight: 300;
@@ -1214,8 +1279,8 @@ footer {
 }
 
 .promo-content span {
-  font-family: "DM Sans", sans-serif;
-  color: var(--amber, #dda15e);
+  font-family: "Poppins", sans-serif;
+  color: #dda15e;
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -1223,7 +1288,7 @@ footer {
 }
 
 .promo-content h2 {
-  font-family: "Playfair Display", serif;
+  font-family: "Poppins", serif;
   color: white;
   font-size: clamp(2rem, 4vw, 3.5rem);
   font-weight: 400;
@@ -1232,14 +1297,14 @@ footer {
 }
 
 .promo-content p {
-  font-family: "DM Sans", sans-serif;
+  font-family: "Poppins", sans-serif;
   color: rgba(255, 255, 255, 0.85);
   line-height: 1.8;
   font-weight: 300;
 }
 
 .promo-btn {
-  font-family: "DM Sans", sans-serif;
+  font-family: "Poppins", sans-serif;
   display: inline-block;
 
   margin-top: 30px;

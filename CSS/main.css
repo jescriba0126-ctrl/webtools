@@ -115,27 +115,27 @@ body::before {
 }
 
 .logo-text {
-    display: flex;
-    flex-direction: column; /* Stack Cubiertos and Food Hub vertically */
-    justify-content: center;
+  display: flex;
+  flex-direction: column; /* Stack Cubiertos and Food Hub vertically */
+  justify-content: center;
 }
 
 .logo-text {
-    display: flex;
-    flex-direction: column; /* Stack Cubiertos and Food Hub vertically */
-    justify-content: center;
+  display: flex;
+  flex-direction: column; /* Stack Cubiertos and Food Hub vertically */
+  justify-content: center;
 }
 
 .logo-text h2 {
   color: #283618;
-  font-family: 'Caveat', cursive;
+  font-family: "Caveat", cursive;
   font-size: 2.4rem;
   font-weight: 700;
-  line-height:  1.1;
+  line-height: 1.1;
 }
 
 .logo-text span {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 0.7rem;
   letter-spacing: 4px;
   color: #bc6c25;
@@ -558,16 +558,16 @@ body::before {
   top: 50%; /* Centers the box vertically */
   left: 50%;
   transform: translate(-50%, -50%); /* Centers the box perfectly */
-  
+
   width: 85%;
   max-width: 550px; /* Prevents the box from getting too wide on big screens */
-  
+
   background: rgba(40, 54, 24, 0.75); /* Translucent dark green background */
   padding: 40px;
   border-radius: 30px;
   text-align: center;
-  
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   z-index: 10;
 }
 
@@ -585,11 +585,11 @@ body::before {
   font-size: 2.5rem;
   line-height: 1.2;
   margin: 15px 0;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .menu-promo-overlay p {
-  color: rgba(255,255,255,0.9);
+  color: rgba(255, 255, 255, 0.9);
   line-height: 1.6;
   margin-bottom: 25px;
 }
