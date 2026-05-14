@@ -76,25 +76,37 @@ body {
 }
 
 .logo img {
-  width: 58px;
-  height: 58px;
-  border-radius: 16px;
-  object-fit: cover;
+  width: 55px;
+  height: auto;
+  border-radius: 12px;
+  object-fit: contain;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Updated Logo Text */
+.logo-text {
+  display: flex;
+  flex-direction: column; 
+  justify-content: center;
 }
 
 .logo-text h2 {
   color: #283618;
-  font-size: 1.3rem;
+  font-family: "Caveat", cursive;
+  font-size: 2.4rem;
   font-weight: 700;
-  line-height: 1;
+  line-height: 1.1;
 }
 
 .logo-text span {
+  font-family: "Poppins", sans-serif;
   font-size: 0.7rem;
   letter-spacing: 4px;
   color: #bc6c25;
   font-weight: 600;
+  display: block;
+  margin-top: -5px; 
+  text-transform: uppercase;
 }
 
 .navbar {
