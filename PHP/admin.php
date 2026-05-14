@@ -83,7 +83,7 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
     </div>
 
     <nav>
-        <a href="main.html">Home</a>
+        
         <a href="logout.php" class="btn logout">Logout</a>
     </nav>
 
