@@ -329,7 +329,7 @@ function loadReservationList() {
     });
 }
 
-// ================= CAPACITY (now uses real DB today_guests) =================
+// ================= CAPACITY (now uses real DB today_guestss) =================
 
 function updateCapacity() {
     const maxCap      = parseInt(localStorage.getItem("dailyCapacity")) || 100;

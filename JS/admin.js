@@ -118,7 +118,7 @@ function loadOrders() {
             </td>
         `;
 
-    ordersTable.appendChild(row);/////////////////////////////////////////////////////////////////////
+    ordersTable.appendChild(row); /////////////////////////////////////////////////////////////////////
   });
 
   // ================= DASHBOARD =================
@@ -151,7 +151,7 @@ function loadOrders() {
   fillEl.style.width = percentage + "%";
 }
 
-// ================= UPDATE STATUS =================
+// ================= UPDATE STATUSs =================
 async function updateStatus(id, status) {
   try {
     await fetch("admin_bookings.php?action=update_status", {
@@ -283,7 +283,6 @@ function renderCalendar() {
   }
 }
 
-
 // ================= START =================
 fetchOrders();
 
@@ -294,10 +293,9 @@ window.addEventListener("load", function () {
   if (loader) {
     // Check if they have NOT seen the loader yet this session
     if (!sessionStorage.getItem("hasSeenLoader")) {
-      
       // 1. Show the loader
       loader.style.display = "flex"; // Or "block" depending on your CSS
-      
+
       // 2. Mark that they have seen it
       sessionStorage.setItem("hasSeenLoader", "true");
 
@@ -305,7 +303,6 @@ window.addEventListener("load", function () {
       setTimeout(function () {
         loader.style.display = "none";
       }, 2000);
-
     } else {
       // If they already saw it, ensure it stays completely hidden
       loader.style.display = "none";
@@ -313,60 +310,42 @@ window.addEventListener("load", function () {
   }
 });
 
+async function loadSpecialNotes() {
+  const container = document.getElementById("notesContainer");
 
-async function loadSpecialNotes(){
+  const search = document.getElementById("searchNotes").value.toLowerCase();
 
-    const container =
-        document.getElementById("notesContainer");
+  try {
+    const response = await fetch("fetch_notes.php");
 
-    const search =
-        document.getElementById("searchNotes")
-        .value
-        .toLowerCase();
+    const notes = await response.json();
 
-    try{
+    container.innerHTML = "";
 
-        const response =
-            await fetch("fetch_notes.php");
-
-        const notes =
-            await response.json();
-
-        container.innerHTML = "";
-
-        if(notes.length === 0){
-
-            container.innerHTML = `
+    if (notes.length === 0) {
+      container.innerHTML = `
                 <p class="empty-note">
                     No special notes found.
                 </p>
             `;
 
-            return;
-        }
+      return;
+    }
 
-        let hasResult = false;
+    let hasResult = false;
 
-        notes.forEach(note => {
+    notes.forEach((note) => {
+      const customer = (note.name || "").toLowerCase();
 
-            const customer =
-                (note.name || "")
-                .toLowerCase();
+      const message = (note.special_notes || "").toLowerCase();
 
-            const message =
-                (note.special_notes || "")
-                .toLowerCase();
+      if (!customer.includes(search) && !message.includes(search)) {
+        return;
+      }
 
-            if(
-                !customer.includes(search) &&
-                !message.includes(search)
-            ){
-                return;
-            }
+      hasResult = true;
 
-            hasResult = true;
-
-            container.innerHTML += `
+      container.innerHTML += `
 
             <div class="note-box">
 
@@ -375,8 +354,7 @@ async function loadSpecialNotes(){
                     <h3>${note.name}</h3>
 
                     <span>
-                        ${new Date(note.booking_datetime)
-                        .toLocaleString()}
+                        ${new Date(note.booking_datetime).toLocaleString()}
                     </span>
 
                 </div>
@@ -409,32 +387,24 @@ async function loadSpecialNotes(){
             </div>
 
             `;
-        });
+    });
 
-        if(!hasResult){
-
-            container.innerHTML = `
+    if (!hasResult) {
+      container.innerHTML = `
                 <p class="empty-note">
                     No matching notes found.
                 </p>
             `;
-        }
-
-    }catch(error){
-
-        console.log(error);
-
     }
-
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 document
-.getElementById("searchNotes")
-.addEventListener(
-    "input",
-    loadSpecialNotes
-);
+  .getElementById("searchNotes")
+  .addEventListener("input", loadSpecialNotes);
 
 loadSpecialNotes();
 
-setInterval(loadSpecialNotes,3000);
+setInterval(loadSpecialNotes, 3000);

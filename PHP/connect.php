@@ -9,13 +9,11 @@ if($conn->connect_error){
     echo "Failed to connect DB".$conn->connect_error;
 }
 
-// connect.php  — place this in your PHP/ folder (or wherever your other files live)
-// Adjust host / dbname / user / pass to match your local setup
  
 $host   = 'localhost';
-$dbname = 'login';          // your existing database
-$user   = 'root';           // your phpMyAdmin username
-$pass   = '';               // your phpMyAdmin password (blank on XAMPP default)
+$dbname = 'login';          
+$user   = 'root';           
+$pass   = '';               
  
 try {
     $pdo = new PDO(
