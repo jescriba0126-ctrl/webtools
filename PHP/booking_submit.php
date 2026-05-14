@@ -22,6 +22,11 @@ function getAmount(string $pkg): float {
     };
 }
 
+// ── Booking hours (24h) ───────────────────────────────────────
+define('BOOKING_OPEN',   8);  // 8:00 AM
+define('BOOKING_CLOSE', 22);  // 10:00 PM
+define('BUFFER_HOURS',   2);  // 2-hour buffer between bookings
+
 // ── validate method ──────────────────────────────────────────
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
@@ -68,21 +73,81 @@ if ($guests < 1 || $guests > 500) {
     exit;
 }
 
-// Convert "2025-12-25T19:00" → "2025-12-25 19:00:00"
+// ── Convert "2025-12-25T19:00" → "2025-12-25 19:00:00" ───────
 $bookingDT = date('Y-m-d H:i:s', strtotime($datetime));
 if (!$bookingDT || $bookingDT === '1970-01-01 00:00:00') {
     echo json_encode(['success' => false, 'message' => 'Invalid date/time.']);
     exit;
 }
 
-// ── capacity check ───────────────────────────────────────────
+// ── Block past dates & times ──────────────────────────────────
+if (strtotime($bookingDT) <= time()) {
+    echo json_encode(['success' => false, 'message' => 'Please select a future date and time.']);
+    exit;
+}
+
+// ── Block outside business hours ─────────────────────────────
+$bookingHour = (int) date('G', strtotime($bookingDT));
+if ($bookingHour < BOOKING_OPEN || $bookingHour >= BOOKING_CLOSE) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Bookings are only accepted between 8:00 AM and 10:00 PM. Please choose a valid time.'
+    ]);
+    exit;
+}
+
+// ── Time slot conflict check (2-hour buffer) ──────────────────
+// Checks if any existing non-cancelled booking falls within 2 hours
+// before or after the requested time on the same date
+$bufferSecs    = BUFFER_HOURS * 3600;
+$windowStart   = date('Y-m-d H:i:s', strtotime($bookingDT) - $bufferSecs);
+$windowEnd     = date('Y-m-d H:i:s', strtotime($bookingDT) + $bufferSecs);
+
+$conflictStmt  = $pdo->prepare("
+    SELECT COUNT(*) AS conflicts
+    FROM bookings
+    WHERE booking_datetime BETWEEN :start AND :end
+    AND status != 'Cancelled'
+");
+$conflictStmt->execute([
+    ':start' => $windowStart,
+    ':end'   => $windowEnd,
+]);
+$conflicts = (int) $conflictStmt->fetchColumn();
+
+if ($conflicts > 0) {
+    // Find the actual conflicting booking time to show the customer
+    $nextStmt = $pdo->prepare("
+        SELECT booking_datetime
+        FROM bookings
+        WHERE booking_datetime BETWEEN :start AND :end
+        AND status != 'Cancelled'
+        ORDER BY booking_datetime ASC
+        LIMIT 1
+    ");
+    $nextStmt->execute([
+        ':start' => $windowStart,
+        ':end'   => $windowEnd,
+    ]);
+    $conflictRow  = $nextStmt->fetch();
+    $conflictTime = $conflictRow
+        ? date('F j, Y \a\t g:i A', strtotime($conflictRow['booking_datetime']))
+        : 'that time';
+
+    echo json_encode([
+        'success' => false,
+        'message' => "Sorry, that time slot is unavailable. There is already a booking near {$conflictTime}. Please choose a time at least 2 hours apart."
+    ]);
+    exit;
+}
+// ── end time slot check ───────────────────────────────────────
+
+// ── Daily capacity check ──────────────────────────────────────
 $bookingDate = date('Y-m-d', strtotime($bookingDT));
 
-// Read the limit from the DB (falls back to 100 if not set)
 $limitStmt   = $pdo->query("SELECT setting_value FROM settings WHERE setting_key = 'daily_capacity'");
 $DAILY_LIMIT = (int)($limitStmt->fetchColumn() ?: 100);
 
-// Sum all non-cancelled guests already booked on that date
 $capStmt = $pdo->prepare("
     SELECT COALESCE(SUM(guests), 0) AS total_guests
     FROM bookings
@@ -100,7 +165,7 @@ if (($bookedGuests + $guests) > $DAILY_LIMIT) {
     ]);
     exit;
 }
-// ── end capacity check ───────────────────────────────────────
+// ── end capacity check ────────────────────────────────────────
 
 // ── generate unique ticket number ────────────────────────────
 $ticket = 'T' . strtoupper(substr(uniqid(), -8));
