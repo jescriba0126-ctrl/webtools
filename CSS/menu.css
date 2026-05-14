@@ -6,33 +6,44 @@
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   color: #222;
   background: url("../IMAGES/bodybg.jpg");
   min-height: 100vh;
 }
 
-/* ================= HEADER (keep yours if already good) ================= */
+/* HEADER */
 header {
-  width: 100%;
-  padding: 0.5rem 6%;
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 92%;
+  z-index: 1000;
+
+  padding: 16px 35px;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: transparent;
-  transition:
-    background-color 0.4s ease,
-    box-shadow 0.4s ease;
-  z-index: 1000;
+
+  background: rgba(255, 255, 255, 0.18);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  border: 1px solid rgba(255, 255, 255, 0.3);
+
+  border-radius: 28px;
+
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+
+  transition: 0.4s ease;
 }
 
 header.scrolled {
-  background-color: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.9);
 }
 
 .logo {
@@ -55,9 +66,8 @@ header.scrolled {
   color: #606c38;
   font-style: italic;
 }
-
 nav a {
-  margin: 0 10px;
+  margin: 0 12px;
   text-decoration: none;
   color: #222;
   font-weight: 500;
@@ -69,7 +79,6 @@ nav a {
 nav a:hover {
   color: #dda15e;
 }
-
 nav a::after {
   content: "";
   position: absolute;
@@ -80,33 +89,12 @@ nav a::after {
   bottom: -4px;
   transition: 0.3s;
 }
-
 nav a:hover::after {
   width: 100%;
 }
 
-.w3-content {
-  max-width: 1200px;
-  width: 90%;
-  margin: 40px auto;
-}
-
-.mySlides {
-  width: 100%;
-  border-radius: 50px;
-  margin-top: 1%;
-  animation: fade 1.2s ease-in;
-}
-
-@keyframes fade {
-  from {
-    opacity: 0;
-    transform: scale(1.02);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+.login {
+  color: #007bff;
 }
 
 /* ================= HERO ================= */
