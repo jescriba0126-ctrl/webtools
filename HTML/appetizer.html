@@ -1,45 +1,829 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <link rel="icon" type="image/jpg" href="/IMAGES/logo.jpg">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Appetizer - Cubiertos</title>
-  <link rel="stylesheet" href="../CSS/appetizer.css">
-</head>
-<body>
-  <section class="menu-section">
-    <div class="menu-header">
-      <img src="../IMAGES/mojos 1.png" alt="Appetizer Dish" class="header-img">
-      <h1>Appetizer</h1>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Appetizers — Cubiertos Food Hub</title>
+    <link rel="icon" type="image/jpg" href="../IMAGES/logo.jpg" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --olive: #606c38;
+        --olive-deep: #283618;
+        --amber: #dda15e;
+        --amber-dark: #bc6c25;
+        --cream: #fefae0;
+        --dark: #1a1a14;
+        --text: #2d2d20;
+        --muted: #7a7a62;
+        --surface: rgba(255, 255, 255, 0.88);
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "DM Sans", sans-serif;
+        background-color: #f8f5ee;
+        color: var(--text);
+        overflow-x: hidden;
+      }
+
+      /* ── HEADER (matches menu.html) ── */
+      header {
+        position: fixed;
+        top: 18px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 94%;
+        max-width: 1300px;
+        z-index: 1000;
+        padding: 14px 32px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(254, 250, 224, 0.75);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(96, 108, 56, 0.2);
+        border-radius: 60px;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+        transition:
+          background 0.4s ease,
+          box-shadow 0.4s ease;
+      }
+      header.scrolled {
+        background: rgba(254, 250, 224, 0.96);
+        box-shadow: 0 6px 32px rgba(0, 0, 0, 0.1);
+      }
+      .logo img {
+        width: 120px;
+        height: auto;
+        display: block;
+      }
+      nav {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      nav a {
+        padding: 8px 16px;
+        text-decoration: none;
+        color: var(--text);
+        font-size: 0.875rem;
+        font-weight: 400;
+        border-radius: 40px;
+        transition:
+          background 0.2s,
+          color 0.2s;
+      }
+      nav a:hover {
+        background: rgba(96, 108, 56, 0.12);
+        color: var(--olive);
+      }
+      nav a.login {
+        background: var(--olive);
+        color: #fff;
+        font-weight: 500;
+        padding: 8px 20px;
+      }
+      nav a.login:hover {
+        background: var(--amber-dark);
+      }
+
+      /* ── HERO ── */
+      .hero {
+        position: relative;
+        height: 75vh;
+        min-height: 520px;
+        overflow: hidden;
+        display: flex;
+        align-items: flex-end;
+      }
+      .hero-bg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        animation: slowZoom 20s ease-in-out infinite alternate;
+      }
+      @keyframes slowZoom {
+        from {
+          transform: scale(1);
+        }
+        to {
+          transform: scale(1.06);
+        }
+      }
+      .hero-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0.08) 0%,
+          rgba(0, 0, 0, 0.18) 40%,
+          rgba(10, 10, 5, 0.78) 80%,
+          rgba(10, 10, 5, 0.92) 100%
+        );
+      }
+      .hero-content {
+        position: relative;
+        z-index: 2;
+        padding: 0 100px 72px;
+        max-width: 780px;
+      }
+      .hero-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.72rem;
+        font-weight: 500;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--amber);
+        margin-bottom: 18px;
+      }
+      .hero-eyebrow::before {
+        content: "";
+        display: block;
+        width: 36px;
+        height: 1px;
+        background: var(--amber);
+      }
+      .hero-content h1 {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(3rem, 6vw, 5rem);
+        font-weight: 400;
+        line-height: 1.05;
+        color: #fff;
+        margin-bottom: 18px;
+      }
+      .hero-content h1 em {
+        font-style: italic;
+        color: var(--amber);
+      }
+      .hero-content p {
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.7);
+        font-weight: 300;
+        line-height: 1.7;
+        max-width: 440px;
+      }
+      .back-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 30px;
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        backdrop-filter: blur(8px);
+        color: rgba(255, 255, 255, 0.85);
+        text-decoration: none;
+        font-size: 0.85rem;
+        font-weight: 500;
+        padding: 10px 22px;
+        border-radius: 40px;
+        transition:
+          background 0.3s,
+          transform 0.3s;
+      }
+      .back-pill:hover {
+        background: rgba(255, 255, 255, 0.22);
+        transform: translateX(-3px);
+      }
+      .back-pill svg {
+        width: 15px;
+        height: 15px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      /* ── MARQUEE STRIP ── */
+      .flavor-strip {
+        background: var(--olive);
+        overflow: hidden;
+        padding: 16px 0;
+        white-space: nowrap;
+      }
+      .flavor-track {
+        display: inline-flex;
+        animation: marquee 20s linear infinite;
+      }
+      @keyframes marquee {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-50%);
+        }
+      }
+      .flavor-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+        padding: 0 28px;
+        font-size: 0.72rem;
+        font-weight: 500;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.65);
+      }
+      .flavor-item .dot {
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: var(--amber);
+        flex-shrink: 0;
+      }
+
+      /* ── ITEMS SECTION ── */
+      .items-section {
+        padding: 90px 80px 120px;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      .section-header {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        margin-bottom: 64px;
+      }
+      .section-label {
+        font-size: 0.7rem;
+        font-weight: 500;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--olive);
+        margin-bottom: 12px;
+      }
+      .section-title {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(2rem, 3.5vw, 3rem);
+        font-weight: 400;
+        line-height: 1.1;
+        color: var(--dark);
+      }
+      .section-title em {
+        font-style: italic;
+        color: var(--olive);
+      }
+      .item-count {
+        font-size: 0.85rem;
+        color: var(--muted);
+        font-weight: 300;
+        text-align: right;
+      }
+      .item-count strong {
+        color: var(--olive-deep);
+        font-weight: 500;
+      }
+
+      /* ── GRID ── */
+      .items-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        gap: 28px;
+      }
+
+      /* ── FOOD CARD ── */
+      .food-card {
+        background: var(--surface);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        border-radius: 28px;
+        overflow: hidden;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+        transition:
+          transform 0.35s ease,
+          box-shadow 0.35s ease;
+        display: flex;
+        flex-direction: column;
+      }
+      .food-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 48px rgba(0, 0, 0, 0.13);
+      }
+
+      .card-img-wrap {
+        position: relative;
+        overflow: hidden;
+        height: 260px;
+        flex-shrink: 0;
+      }
+      .card-img-wrap img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+      .food-card:hover .card-img-wrap img {
+        transform: scale(1.08);
+      }
+
+      .card-badge {
+        position: absolute;
+        top: 18px;
+        left: 18px;
+        background: rgba(40, 54, 24, 0.82);
+        backdrop-filter: blur(6px);
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 0.65rem;
+        font-weight: 500;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        padding: 6px 14px;
+        border-radius: 30px;
+      }
+
+      .card-body {
+        padding: 24px 26px 26px;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+      }
+      .card-name {
+        font-family: "Playfair Display", serif;
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: var(--olive-deep);
+        margin-bottom: 10px;
+        line-height: 1.2;
+      }
+      .card-desc {
+        font-size: 0.9rem;
+        color: var(--muted);
+        line-height: 1.75;
+        font-weight: 300;
+        flex: 1;
+        margin-bottom: 22px;
+      }
+      .card-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .card-price {
+        font-family: "Playfair Display", serif;
+        font-size: 1.45rem;
+        font-weight: 400;
+        color: var(--amber-dark);
+      }
+      .card-price span {
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: var(--muted);
+        margin-right: 2px;
+        vertical-align: middle;
+      }
+      .order-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: linear-gradient(135deg, var(--olive), #4f5d2f);
+        color: #fff;
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.85rem;
+        font-weight: 500;
+        padding: 11px 22px;
+        border-radius: 40px;
+        text-decoration: none;
+        box-shadow: 0 6px 18px rgba(96, 108, 56, 0.28);
+        transition:
+          transform 0.25s ease,
+          box-shadow 0.25s ease;
+        cursor: pointer;
+        border: none;
+      }
+      .order-btn:hover {
+        transform: translateY(-2px) scale(1.03);
+        box-shadow: 0 10px 24px rgba(96, 108, 56, 0.38);
+      }
+      .order-btn svg {
+        width: 14px;
+        height: 14px;
+        stroke: #fff;
+        fill: none;
+        stroke-width: 2.2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      /* ── SOCIALS ── */
+      .socials {
+        position: fixed;
+        left: 24px;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        z-index: 999;
+      }
+      .socials a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: rgba(254, 250, 224, 0.9);
+        border: 1px solid rgba(96, 108, 56, 0.2);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        transition:
+          transform 0.25s,
+          background 0.25s;
+      }
+      .socials a:hover {
+        transform: scale(1.15);
+        background: #fff;
+      }
+      .socials img {
+        width: 20px;
+        height: 20px;
+        object-fit: contain;
+      }
+
+      /* ── FOOTER ── */
+      footer {
+        background: var(--dark);
+        padding: 56px 80px 36px;
+        color: rgba(255, 255, 255, 0.55);
+      }
+      .footer-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding-bottom: 40px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: 32px;
+      }
+      .footer-brand {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .footer-brand img {
+        width: 100px;
+        filter: brightness(0) invert(1) opacity(0.8);
+      }
+      .footer-tagline {
+        font-size: 0.82rem;
+        font-style: italic;
+        color: rgba(255, 255, 255, 0.4);
+        max-width: 200px;
+        line-height: 1.5;
+        font-family: "Playfair Display", serif;
+      }
+      .footer-links {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .footer-links a {
+        text-decoration: none;
+        color: rgba(255, 255, 255, 0.55);
+        font-size: 0.875rem;
+        transition: color 0.2s;
+      }
+      .footer-links a:hover {
+        color: var(--amber);
+      }
+      .footer-contact {
+        font-size: 0.82rem;
+        line-height: 1.8;
+      }
+      .footer-contact strong {
+        color: rgba(255, 255, 255, 0.8);
+        display: block;
+        margin-bottom: 6px;
+      }
+      .footer-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.78rem;
+      }
+      .footer-socials {
+        display: flex;
+        gap: 16px;
+      }
+      .footer-socials a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        transition:
+          border-color 0.2s,
+          background 0.2s;
+      }
+      .footer-socials a:hover {
+        border-color: var(--amber);
+        background: rgba(221, 161, 94, 0.1);
+      }
+      .footer-socials img {
+        width: 16px;
+        height: 16px;
+        filter: brightness(0) invert(1) opacity(0.7);
+      }
+
+      /* ── RESPONSIVE ── */
+      @media (max-width: 900px) {
+        .items-section {
+          padding: 60px 30px 80px;
+        }
+        .hero-content {
+          padding: 0 30px 64px;
+        }
+        .section-header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 10px;
+        }
+        .items-grid {
+          grid-template-columns: 1fr 1fr;
+          gap: 20px;
+        }
+        footer {
+          padding: 40px 30px 24px;
+        }
+        .footer-top {
+          flex-direction: column;
+          gap: 30px;
+        }
+        .footer-bottom {
+          flex-direction: column;
+          gap: 14px;
+          text-align: center;
+        }
+        .socials {
+          display: none;
+        }
+      }
+      @media (max-width: 600px) {
+        .items-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header id="header">
+      <div class="logo">
+        <img src="../IMAGES/logo.jpg" alt="Cubiertos Food Hub" />
+      </div>
+      <nav>
+        <a href="../HTML/main.html">Home</a>
+        <a href="../HTML/about.html">About</a>
+        <a href="../HTML/Store.html">Stores</a>
+        <a href="menu.html">Menu</a>
+        <a href="../HTML/contacts.html">Contacts</a>
+        <a href="../HTML/login.html" class="login">👤 Log in</a>
+      </nav>
+    </header>
+
+    <!-- SOCIALS -->
+    <div class="socials">
+      <a
+        href="https://www.facebook.com/profile.php?id=61555258696901"
+        target="_blank"
+        aria-label="Facebook"
+      >
+        <img src="../IMAGES/Facebook.png" alt="Facebook" />
+      </a>
+      <a
+        href="https://www.instagram.com/cubiertos2024/"
+        target="_blank"
+        aria-label="Instagram"
+      >
+        <img src="../IMAGES/Instagram.png" alt="Instagram" />
+      </a>
+      <a href="#" aria-label="Mail">
+        <img src="../IMAGES/Mail.png" alt="Mail" />
+      </a>
     </div>
 
-    <div class="menu-container">
-      <button class="back-btn" onclick="window.location.href='menu.html'">⮌ GO BACK</button>
+    <!-- HERO -->
+    <section class="hero">
+      <img src="../IMAGES/mojos 1.png" alt="Appetizers" class="hero-bg" />
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <div class="hero-eyebrow">Cubiertos Menu</div>
+        <h1>Start with a<br /><em>Perfect Bite</em></h1>
+        <p>
+          Crispy, golden, and made to share — our appetizers set the tone for an
+          unforgettable meal.
+        </p>
+        <a href="menu.html" class="back-pill">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6" /></svg>
+          Back to Menu
+        </a>
+      </div>
+    </section>
 
-      <div class="menu-items">
-        <div class="card">
-          <img src="../IMAGES/Fries.jpg" alt="French Fries">
-          <h3>French Fries</h3>
-          <p>Simple potato perfectly golden and crispy on the outside, soft on the inside. Served with ketchup.</p>
-          <span class="price">₱120.00</span>
-        </div>
-
-        <div class="card">
-          <img src="../IMAGES/mojos 1.png" alt="Mojos">
-          <h3>Mojos</h3>
-          <p>Slice of potatoes seasoned with a golden-brown special spicy dip good for sharing and perfect with any meal.</p>
-          <span class="price">₱135.00</span>
-        </div>
-
-        <div class="card">
-          <img src="../IMAGES/cheese sticks.jpg" alt="Breaded Cheesy Sticks">
-          <h3>Breaded Cheesy Sticks</h3>
-          <p>Succulent sticks of cheese with a crunchy breadcrumb coating and deep-fried until golden and gooey.</p>
-          <span class="price">₱175.00</span>
-        </div>
+    <!-- MARQUEE -->
+    <div class="flavor-strip" aria-hidden="true">
+      <div class="flavor-track">
+        <span class="flavor-item"><span class="dot"></span>Appetizers</span>
+        <span class="flavor-item"><span class="dot"></span>Start Here</span>
+        <span class="flavor-item"
+          ><span class="dot"></span>Golden &amp; Crispy</span
+        >
+        <span class="flavor-item"
+          ><span class="dot"></span>Made Fresh Daily</span
+        >
+        <span class="flavor-item"
+          ><span class="dot"></span>Virac, Philippines</span
+        >
+        <span class="flavor-item"
+          ><span class="dot"></span>Cubiertos Food Hub</span
+        >
+        <span class="flavor-item"><span class="dot"></span>Appetizers</span>
+        <span class="flavor-item"><span class="dot"></span>Start Here</span>
+        <span class="flavor-item"
+          ><span class="dot"></span>Golden &amp; Crispy</span
+        >
+        <span class="flavor-item"
+          ><span class="dot"></span>Made Fresh Daily</span
+        >
+        <span class="flavor-item"
+          ><span class="dot"></span>Virac, Philippines</span
+        >
+        <span class="flavor-item"
+          ><span class="dot"></span>Cubiertos Food Hub</span
+        >
       </div>
     </div>
-  </section>
-</body>
+
+    <!-- ITEMS -->
+    <section class="items-section">
+      <div class="section-header">
+        <div>
+          <p class="section-label">Appetizers</p>
+          <h2 class="section-title">Choose your<br /><em>starter</em></h2>
+        </div>
+        <p class="item-count"><strong>3</strong> items available</p>
+      </div>
+
+      <div class="items-grid">
+        <!-- CARD 1 -->
+        <div class="food-card">
+          <div class="card-img-wrap">
+            <img src="../IMAGES/fries.jpg" alt="French Fries" />
+            <span class="card-badge">Fan Favorite</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-name">French Fries</h3>
+            <p class="card-desc">
+              Simple potato perfectly golden and crispy on the outside, soft on
+              the inside. Served with ketchup.
+            </p>
+            <div class="card-footer">
+              <div class="card-price"><span>₱</span>120.00</div>
+              <button class="order-btn">
+                Order Now
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 2 -->
+        <div class="food-card">
+          <div class="card-img-wrap">
+            <img src="../IMAGES/mojos 1.png" alt="Mojos" />
+            <span class="card-badge">Best Seller</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-name">Mojos</h3>
+            <p class="card-desc">
+              Slices of potato seasoned with a golden-brown special spicy dip —
+              good for sharing and perfect with any meal.
+            </p>
+            <div class="card-footer">
+              <div class="card-price"><span>₱</span>135.00</div>
+              <button class="order-btn">
+                Order Now
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 3 -->
+        <div class="food-card">
+          <div class="card-img-wrap">
+            <img
+              src="../IMAGES/cheese sticks.jpg"
+              alt="Breaded Cheesy Sticks"
+            />
+            <span class="card-badge">Chef's Pick</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-name">Breaded Cheesy Sticks</h3>
+            <p class="card-desc">
+              Succulent sticks of cheese with a crunchy breadcrumb coating,
+              deep-fried until golden and gooey inside.
+            </p>
+            <div class="card-footer">
+              <div class="card-price"><span>₱</span>175.00</div>
+              <button class="order-btn">
+                Order Now
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-top">
+        <div class="footer-brand">
+          <img src="../IMAGES/logo.jpg" alt="Cubiertos Food Hub" />
+          <p class="footer-tagline">
+            "Savor the flavors where every bite tells a story."
+          </p>
+        </div>
+        <div class="footer-links">
+          <a href="../HTML/main.html">Home</a>
+          <a href="../HTML/about.html">About</a>
+          <a href="../HTML/Store.html">Our Stores</a>
+          <a href="menu.html">Menu</a>
+          <a href="../HTML/contacts.html">Contacts</a>
+          <a href="../HTML/login.html">Log in</a>
+        </div>
+        <div class="footer-contact">
+          <strong>Get in touch</strong>
+          Food &amp; Drink · Virac, Philippines 4800<br />
+          Contact: 0981 027 0704
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2025 Cubiertos.food.hub — All rights reserved.</span>
+        <div class="footer-socials">
+          <a
+            href="https://www.facebook.com/profile.php?id=61555258696901"
+            target="_blank"
+            aria-label="Facebook"
+          >
+            <img src="../IMAGES/Facebook.png" alt="Facebook" />
+          </a>
+          <a
+            href="https://www.instagram.com/cubiertos2024/"
+            target="_blank"
+            aria-label="Instagram"
+          >
+            <img src="../IMAGES/Instagram.png" alt="Instagram" />
+          </a>
+          <a
+            href="https://mail.google.com/mail/u/0/#inbox?compose=new"
+            target="_blank"
+            aria-label="Mail"
+          >
+            <img src="../IMAGES/Mail.png" alt="Mail" />
+          </a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      const header = document.getElementById("header");
+      window.addEventListener("scroll", () => {
+        header.classList.toggle("scrolled", window.scrollY > 50);
+      });
+    </script>
+  </body>
 </html>
