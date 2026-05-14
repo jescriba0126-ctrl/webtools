@@ -28,8 +28,7 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
     </div>
     <ul class="sidebar-menu">
         <li><a href="admin.php"><span></span>Dashboard</a></li>
-        <li><a href="appointments.php"><span></span>Appointments</a></li>
-        <li><a href="venues.php"><span></span>Venues</a></li>
+        <li><a href="revenue.php"><span></span>Revenue</a></li>
         <li><a href="calendar.php"><span></span>Calendar</a></li>
         <li class="active"><a href="customer.php"><span></span>Customers</a></li> <li><a href="report.php"><span></span>Reports</a></li>
     </ul>
@@ -156,40 +155,96 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
 
 </main>
 
-<script>function loadCustomers(){
+<script>
 
-    const orders =
-        JSON.parse(
-            localStorage.getItem("orders")
-        ) || [];
+// ================= GLOBAL =================
+
+let customersData = [];
+
+// ================= FETCH BOOKINGS =================
+
+async function fetchCustomers(){
+
+    try{
+
+        const response =
+            await fetch(
+                "admin_bookings.php?action=list"
+            );
+
+        const data =
+            await response.json();
+
+        if(data.success){
+
+            customersData =
+                data.bookings || [];
+
+            loadCustomers();
+
+        }
+
+    }catch(error){
+
+        console.error(error);
+
+    }
+
+}
+
+// ================= LOAD CUSTOMERS =================
+
+function loadCustomers(){
 
     const tableBody =
         document.getElementById(
             "customerTableBody"
         );
 
+    if(!tableBody) return;
+
     tableBody.innerHTML = "";
 
     const customers = {};
 
-    orders.forEach(order => {
+    // ================= BUILD CUSTOMER DATA =================
 
-        const key = order.contact;
+    customersData.forEach(order => {
+
+        const key =
+            order.phone ||
+            order.email ||
+            order.name;
 
         if(!customers[key]){
 
             customers[key] = {
 
-                name: order.name,
-                contact: order.contact,
-                bookings: 0,
-                guests: 0,
-                spending: 0,
-                latest: order.datetime
+                name:
+                    order.name || "N/A",
+
+                contact:
+                    `
+                    ${order.phone || ""}
+                    <br>
+                    ${order.email || ""}
+                    `,
+
+                bookings:0,
+
+                guests:0,
+
+                spending:0,
+
+                latest:
+                    order.booking_datetime
+
             };
+
         }
 
         customers[key].bookings++;
+
         customers[key].guests +=
             Number(order.guests || 0);
 
@@ -197,33 +252,46 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
             Number(order.amount || 0);
 
         customers[key].latest =
-            order.datetime;
+            order.booking_datetime;
+
     });
+
+    // ================= CONVERT TO ARRAY =================
 
     const customerArray =
         Object.values(customers);
 
+    // ================= STATS =================
+
     let vipCount = 0;
     let repeatCount = 0;
 
-    let highestSpender = "";
+    let highestSpender = "N/A";
     let highestAmount = 0;
 
-    let mostBookings = "";
+    let mostBookings = "N/A";
     let bookingMax = 0;
 
     let totalGuests = 0;
 
+    // ================= SEARCH + FILTER =================
+
     const search =
         document
-        .getElementById("searchCustomer")
-        .value
-        .toLowerCase();
+        .getElementById(
+            "searchCustomer"
+        )
+        ?.value
+        .toLowerCase() || "";
 
     const filter =
         document
-        .getElementById("filterCustomer")
-        .value;
+        .getElementById(
+            "filterCustomer"
+        )
+        ?.value || "all";
+
+    // ================= LOOP CUSTOMERS =================
 
     customerArray.forEach((customer,index)=>{
 
@@ -231,18 +299,29 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
 
         let type = "normal";
 
+        // VIP
         if(customer.spending >= 10000){
 
             type = "vip";
+
             vipCount++;
+
         }
 
+        // REPEAT
         if(customer.bookings >= 2){
 
             repeatCount++;
-            type = "repeat";
+
+            if(type !== "vip"){
+
+                type = "repeat";
+
+            }
+
         }
 
+        // HIGHEST SPENDER
         if(customer.spending > highestAmount){
 
             highestAmount =
@@ -250,8 +329,10 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
 
             highestSpender =
                 customer.name;
+
         }
 
+        // MOST BOOKINGS
         if(customer.bookings > bookingMax){
 
             bookingMax =
@@ -259,24 +340,40 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
 
             mostBookings =
                 customer.name;
+
         }
 
+        // SEARCH
         if(
             customer.name
             .toLowerCase()
             .includes(search) === false
-        ) return;
+        ){
+            return;
+        }
 
-        if(filter === "vip" &&
-            type !== "vip") return;
+        // FILTER
+        if(
+            filter === "vip" &&
+            type !== "vip"
+        ){
+            return;
+        }
 
-        if(filter === "repeat" &&
-            type !== "repeat") return;
+        if(
+            filter === "repeat" &&
+            type !== "repeat"
+        ){
+            return;
+        }
+
+        // ================= TABLE ROW =================
 
         const row =
             document.createElement("tr");
 
         row.innerHTML = `
+
             <td>${index + 1}</td>
 
             <td>${customer.name}</td>
@@ -288,92 +385,110 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
             <td>${customer.guests}</td>
 
             <td>
-                ₱${customer.spending
-                    .toLocaleString()}
+                ₱${customer.spending.toLocaleString()}
             </td>
 
             <td>
+
                 <span class="
                     customer-type
                     ${type}
                 ">
                     ${type.toUpperCase()}
                 </span>
+
             </td>
 
             <td>
-                ${new Date(
+
+                ${
                     customer.latest
-                ).toLocaleString()}
+                    ? new Date(
+                        customer.latest
+                    ).toLocaleString()
+                    : "N/A"
+                }
+
             </td>
+
         `;
 
         tableBody.appendChild(row);
+
     });
 
-    document
-    .getElementById("totalCustomers")
-    .textContent =
+    // ================= UPDATE DASHBOARD =================
+
+    document.getElementById(
+        "totalCustomers"
+    ).textContent =
         customerArray.length;
 
-    document
-    .getElementById("vipCustomers")
-    .textContent =
+    document.getElementById(
+        "vipCustomers"
+    ).textContent =
         vipCount;
 
-    document
-    .getElementById("repeatCustomers")
-    .textContent =
+    document.getElementById(
+        "repeatCustomers"
+    ).textContent =
         repeatCount;
 
-    document
-    .getElementById("topCustomer")
-    .textContent =
-        highestSpender || "N/A";
+    document.getElementById(
+        "topCustomer"
+    ).textContent =
+        highestSpender;
 
-    document
-    .getElementById("highestSpender")
-    .textContent =
-        highestSpender || "N/A";
+    document.getElementById(
+        "highestSpender"
+    ).textContent =
+        highestSpender;
 
-    document
-    .getElementById("mostBookings")
-    .textContent =
-        mostBookings || "N/A";
+    document.getElementById(
+        "mostBookings"
+    ).textContent =
+        mostBookings;
 
-    document
-    .getElementById("averageGuests")
-    .textContent =
+    document.getElementById(
+        "averageGuests"
+    ).textContent =
+
         customerArray.length > 0
+
         ? Math.round(
             totalGuests /
             customerArray.length
         )
+
         : 0;
+
 }
 
-loadCustomers();
+// ================= REALTIME =================
 
-setInterval(loadCustomers,3000);
+fetchCustomers();
 
-window.addEventListener(
-    "storage",
-    loadCustomers
-);
+setInterval(fetchCustomers,3000);
+
+// ================= SEARCH =================
 
 document
 .getElementById("searchCustomer")
-.addEventListener(
+?.addEventListener(
     "input",
     loadCustomers
 );
 
+// ================= FILTER =================
+
 document
 .getElementById("filterCustomer")
-.addEventListener(
+?.addEventListener(
     "change",
     loadCustomers
-);</script>
+);
+
+</script>
 
 </body>
 </html>

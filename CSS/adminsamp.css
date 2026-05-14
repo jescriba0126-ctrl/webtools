@@ -1008,3 +1008,74 @@ td:nth-child(5)::after{
 .overview-card.cancelled p{
     color:#f44336;
 }
+
+/* ================= ACTION BUTTONS ================= */
+
+.action-buttons{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+}
+
+.action-btn{
+    border:none;
+    padding:10px 14px;
+    border-radius:12px;
+    font-size:0.78rem;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s ease;
+    color:white;
+    min-width:120px;
+}
+
+.action-btn:hover{
+    transform:translateY(-2px) scale(1.03);
+}
+
+/* APPROVE */
+
+.approve-btn{
+    background:linear-gradient(
+        135deg,
+        #2196f3,
+        #42a5f5
+    );
+    box-shadow:0 8px 18px rgba(33,150,243,0.25);
+}
+
+/* COMPLETE */
+
+.complete-btn{
+    background:linear-gradient(
+        135deg,
+        #43a047,
+        #66bb6a
+    );
+    box-shadow:0 8px 18px rgba(76,175,80,0.25);
+}
+
+/* CANCEL */
+
+.cancel-btn{
+    background:linear-gradient(
+        135deg,
+        #e53935,
+        #ef5350
+    );
+    box-shadow:0 8px 18px rgba(244,67,54,0.25);
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    .action-buttons{
+        flex-direction:column;
+    }
+
+    .action-btn{
+        width:100%;
+    }
+
+}

@@ -98,27 +98,27 @@ function loadOrders() {
                     class="btn approve"
                     onclick="approveOrder(${order.id})"
                 >
-                    Approve
+                    Approve Booking
                 </button>
 
                 <button
                     class="btn completed"
                     onclick="completeOrder(${order.id})"
                 >
-                    Complete
+                    Complete Booking
                 </button>
 
                 <button
                     class="btn cancel"
                     onclick="cancelOrder(${order.id})"
                 >
-                    Cancel
+                    Cancel Booking
                 </button>
 
             </td>
         `;
 
-    ordersTable.appendChild(row);
+    ordersTable.appendChild(row);/////////////////////////////////////////////////////////////////////
   });
 
   // ================= DASHBOARD =================

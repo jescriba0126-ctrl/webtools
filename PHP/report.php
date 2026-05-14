@@ -28,8 +28,7 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
     </div>
     <ul class="sidebar-menu">
         <li><a href="admin.php"><span></span>Dashboard</a></li>
-        <li><a href="appointments.php"><span></span>Appointments</a></li>
-        <li><a href="venues.php"><span></span>Venues</a></li>
+        <li><a href="revenue.php"><span></span>Revenue</a></li>
         <li><a href="calendar.php"><span></span>Calendar</a></li>
         <li><a href="customer.php"><span></span>Customers</a></li>
         <li class="active"><a href="report.php"><span></span>Reports</a></li> </ul>

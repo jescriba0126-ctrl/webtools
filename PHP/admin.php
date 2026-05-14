@@ -38,14 +38,8 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
         </li>
 
         <li>
-            <a href="appointments.php"> <span></span>
-                Appointments
-            </a>
-        </li>
-
-        <li>
-            <a href="venues.php"> <span></span>
-                Venues
+            <a href="Revenue.php"> <span></span>
+                Revenue
             </a>
         </li>
 

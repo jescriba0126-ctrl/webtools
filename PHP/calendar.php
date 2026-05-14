@@ -28,8 +28,7 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
     </div>
     <ul class="sidebar-menu">
         <li><a href="admin.php"><span></span>Dashboard</a></li>
-        <li><a href="appointments.php"><span></span>Appointments</a></li>
-        <li><a href="venues.php"><span></span>Venues</a></li>
+        <li><a href="revenue.php"><span></span>Revenue</a></li>
         <li class="active"><a href="calendar.php"><span></span>Calendar</a></li> <li><a href="customer.php"><span></span>Customers</a></li>
         <li><a href="report.php"><span></span>Reports</a></li>
     </ul>
@@ -207,6 +206,69 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
 <script>
 
 let nav = 0;
+let orders = [];
+
+// ================= FETCH BOOKINGS =================
+
+async function fetchOrders() {
+
+    try {
+
+        const response =
+            await fetch("admin_bookings.php?action=list");
+
+        const data = await response.json();
+
+        if(data.success){
+
+            orders = data.bookings;
+
+            renderCalendar();
+            loadReservationList();
+            updateStats();
+            updateCapacity();
+
+        }
+
+    } catch(error){
+
+        console.error(error);
+
+    }
+
+}
+
+// ================= UPDATE STATUS =================
+
+async function updateStatus(id, status){
+
+    try{
+
+        await fetch(
+            "admin_bookings.php?action=update_status",
+            {
+                method:"POST",
+
+                headers:{
+                    "Content-Type":
+                    "application/x-www-form-urlencoded"
+                },
+
+                body:`id=${id}&status=${status}`
+            }
+        );
+
+        fetchOrders();
+
+    }catch(error){
+
+        console.error(error);
+
+    }
+
+}
+
+// ================= CALENDAR =================
 
 function renderCalendar() {
 
@@ -215,9 +277,6 @@ function renderCalendar() {
 
     const monthDisplay =
         document.getElementById("monthDisplay");
-
-    let orders =
-        JSON.parse(localStorage.getItem("orders")) || [];
 
     const dt = new Date();
 
@@ -239,8 +298,8 @@ function renderCalendar() {
 
     monthDisplay.innerText =
         dt.toLocaleDateString("en-us", {
-            month: "long",
-            year: "numeric"
+            month:"long",
+            year:"numeric"
         });
 
     calendarGrid.innerHTML = "";
@@ -249,10 +308,10 @@ function renderCalendar() {
 
     orders.forEach(order => {
 
-        if(order.datetime){
+        if(order.booking_datetime){
 
             const date =
-                new Date(order.datetime);
+                new Date(order.booking_datetime);
 
             const key =
                 `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
@@ -262,6 +321,7 @@ function renderCalendar() {
             }
 
             ordersByDate[key].push(order);
+
         }
 
     });
@@ -289,25 +349,26 @@ function renderCalendar() {
 
             if(bookings){
 
-    daySquare.classList.add("has-booking");
+                daySquare.classList.add("has-booking");
 
-    // TOTAL BOOKINGS
-    const badge =
-        document.createElement("small");
+                const badge =
+                    document.createElement("small");
 
-    badge.innerText =
-        bookings.length + " booking";
+                badge.innerText =
+                    bookings.length + " booking";
 
-    daySquare.appendChild(badge);
+                daySquare.appendChild(badge);
 
-    // CLICK EVENT
-    daySquare.addEventListener("click", () => {
+                daySquare.addEventListener(
+                    "click",
+                    () => {
 
-        showBookings(bookings);
+                        showBookings(bookings);
 
-    });
+                    }
+                );
 
-}
+            }
 
             const today = new Date();
 
@@ -322,45 +383,12 @@ function renderCalendar() {
         }
 
         calendarGrid.appendChild(daySquare);
-        const allOrders =
-    JSON.parse(localStorage.getItem("orders")) || [];
-
-document.getElementById("totalReservations")
-.innerText = allOrders.length;
-
-document.getElementById("pendingBookings")
-.innerText =
-    allOrders.filter(o => o.status === "Pending").length;
-
-document.getElementById("approvedBookings")
-.innerText =
-    allOrders.filter(o => o.status === "Approved").length;
-
-const today = new Date();
-
-const todayKey =
-`${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`;
-
-document.getElementById("todayBookings")
-.innerText =
-    allOrders.filter(order => {
-
-        if(!order.datetime) return false;
-
-        const d =
-            new Date(order.datetime);
-
-        const key =
-`${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
-
-        return key === todayKey;
-
-    }).length;
-
 
     }
 
 }
+
+// ================= SHOW BOOKINGS =================
 
 function showBookings(bookings){
 
@@ -369,7 +397,7 @@ function showBookings(bookings){
 
     container.innerHTML = "";
 
-    bookings.forEach((order,index) => {
+    bookings.forEach((order) => {
 
         container.innerHTML += `
 
@@ -387,34 +415,46 @@ function showBookings(bookings){
 
             <div class="booking-grid">
 
-                <p><b>📞 Contact:</b><br>${order.contact}</p>
+                <p><b>📞 Contact:</b><br>
+                ${order.phone}</p>
 
-                <p><b>🎉 Service:</b><br>${order.service}</p>
+                <p><b>🎉 Service:</b><br>
+                ${order.occasion}</p>
 
-                <p><b>👥 Guests:</b><br>${order.guests}</p>
+                <p><b>👥 Guests:</b><br>
+                ${order.guests}</p>
 
-                <p><b>💳 Payment:</b><br>${order.payment}</p>
+                <p><b>💳 Payment:</b><br>
+                ${order.payment_method}</p>
 
-                <p><b>💰 Amount:</b><br>₱${Number(order.amount).toLocaleString()}</p>
+                <p><b>💰 Amount:</b><br>
+                ₱${Number(order.amount).toLocaleString()}</p>
 
                 <p><b>📅 Schedule:</b><br>
-                ${new Date(order.datetime).toLocaleString()}
+                ${new Date(order.booking_datetime)
+                    .toLocaleString()}
                 </p>
 
             </div>
 
             <div class="booking-actions">
 
-                <button onclick="approveBooking(${index})">
+                <button
+                    onclick="approveBooking(${order.id})"
+                >
                     Approve
                 </button>
 
-                <button onclick="completeBooking(${index})">
+                <button
+                    onclick="completeBooking(${order.id})"
+                >
                     Complete
                 </button>
 
-                <button class="danger"
-                    onclick="cancelBooking(${index})">
+                <button
+                    class="danger"
+                    onclick="cancelBooking(${order.id})"
+                >
                     Cancel
                 </button>
 
@@ -423,8 +463,258 @@ function showBookings(bookings){
         </div>
 
         `;
+
     });
+
 }
+
+// ================= BUTTON ACTIONS =================
+
+window.approveBooking = function(id){
+
+    updateStatus(id, "Approved");
+
+}
+
+window.completeBooking = function(id){
+
+    updateStatus(id, "Completed");
+
+}
+
+window.cancelBooking = function(id){
+
+    updateStatus(id, "Cancelled");
+
+}
+
+// ================= STATS =================
+
+function updateStats(){
+
+    document.getElementById(
+        "totalReservations"
+    ).innerText = orders.length;
+
+    document.getElementById(
+        "pendingBookings"
+    ).innerText =
+        orders.filter(
+            o => o.status === "Pending"
+        ).length;
+
+    document.getElementById(
+        "approvedBookings"
+    ).innerText =
+        orders.filter(
+            o => o.status === "Approved"
+        ).length;
+
+    const today = new Date();
+
+    const todayKey =
+        `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`;
+
+    document.getElementById(
+        "todayBookings"
+    ).innerText =
+        orders.filter(order => {
+
+            if(!order.booking_datetime)
+                return false;
+
+            const d =
+                new Date(order.booking_datetime);
+
+            const key =
+                `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+
+            return key === todayKey;
+
+        }).length;
+
+}
+
+// ================= RESERVATION TABLE =================
+
+function loadReservationList(){
+
+    const tableBody =
+        document.getElementById(
+            "reservationTableBody"
+        );
+
+    tableBody.innerHTML = "";
+
+    const searchValue =
+        document.getElementById("searchClient")
+        ?.value
+        .toLowerCase() || "";
+
+    const filterValue =
+        document.getElementById("statusFilter")
+        ?.value || "all";
+
+    orders.forEach((order,index) => {
+
+        if(
+            order.name &&
+            !order.name
+            .toLowerCase()
+            .includes(searchValue)
+        ) return;
+
+        if(
+            filterValue !== "all" &&
+            order.status !== filterValue
+        ) return;
+
+        const row =
+            document.createElement("tr");
+
+        row.innerHTML = `
+
+        <td>${index + 1}</td>
+
+        <td>${order.name}</td>
+
+        <td>${order.phone}</td>
+
+        <td>${order.occasion}</td>
+
+        <td>${order.guests}</td>
+
+        <td>
+            ₱${Number(order.amount)
+                .toLocaleString()}
+        </td>
+
+        <td>${order.payment_method}</td>
+
+        <td>
+            <span class="status-badge
+                ${order.status.toLowerCase()}">
+                ${order.status}
+            </span>
+        </td>
+
+        <td>
+            ${new Date(order.booking_datetime)
+                .toLocaleString()}
+        </td>
+
+        `;
+
+        tableBody.appendChild(row);
+
+    });
+
+}
+
+// ================= CAPACITY =================
+
+function updateCapacity(){
+
+    let maxCap =
+        parseInt(
+            localStorage.getItem("dailyCapacity")
+        ) || 100;
+
+    let totalGuests = 0;
+
+    const today = new Date();
+
+    const todayKey =
+        `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`;
+
+    orders.forEach(order => {
+
+        if(
+            (
+                order.status === "Pending" ||
+                order.status === "Approved"
+            ) &&
+            order.booking_datetime
+        ){
+
+            const d =
+                new Date(order.booking_datetime);
+
+            const key =
+                `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+
+            if(key === todayKey){
+
+                totalGuests +=
+                    Number(order.guests) || 0;
+
+            }
+
+        }
+
+    });
+
+    document.getElementById("maxCapacity")
+    .textContent = maxCap;
+
+    document.getElementById("currentBooked")
+    .textContent = totalGuests;
+
+    document.getElementById("slotsAvailable")
+    .textContent = Math.max(
+        0,
+        maxCap - totalGuests
+    );
+
+    const fillEl =
+        document.getElementById("capacityFill");
+
+    let percentage =
+        (totalGuests / maxCap) * 100;
+
+    if(percentage > 100)
+        percentage = 100;
+
+    fillEl.style.width =
+        percentage + "%";
+
+}
+
+// ================= LIMIT =================
+
+window.setNewLimit = function(){
+
+    let currentLimit =
+        parseInt(
+            localStorage.getItem("dailyCapacity")
+        ) || 100;
+
+    let input =
+        prompt(
+            "Enter new maximum guests per day:",
+            currentLimit
+        );
+
+    if(input !== null){
+
+        let newLimit = parseInt(input);
+
+        if(!isNaN(newLimit) && newLimit > 0){
+
+            localStorage.setItem(
+                "dailyCapacity",
+                newLimit
+            );
+
+            updateCapacity();
+
+        }
+
+    }
+
+}
+
+// ================= CONTROLS =================
 
 document.getElementById("prevMonth")
 .addEventListener("click", () => {
@@ -444,207 +734,23 @@ document.getElementById("nextMonth")
 
 });
 
-window.addEventListener("storage", renderCalendar);
-
-setInterval(renderCalendar, 3000);
-
-renderCalendar();
-
-function approveBooking(index){
-
-    let orders =
-        JSON.parse(localStorage.getItem("orders")) || [];
-
-    orders[index].status = "Approved";
-
-    localStorage.setItem(
-        "orders",
-        JSON.stringify(orders)
-    );
-
-    renderCalendar();
-}
-
-function completeBooking(index){
-
-    let orders =
-        JSON.parse(localStorage.getItem("orders")) || [];
-
-    orders[index].status = "Completed";
-
-    localStorage.setItem(
-        "orders",
-        JSON.stringify(orders)
-    );
-
-    renderCalendar();
-}
-
-function cancelBooking(index){
-
-    let orders =
-        JSON.parse(localStorage.getItem("orders")) || [];
-
-    orders[index].status = "Cancelled";
-
-    localStorage.setItem(
-        "orders",
-        JSON.stringify(orders)
-    );
-
-    renderCalendar();
-
-}
-
-// ================= CLIENT RESERVATION LIST =================
-
-function loadReservationList() {
-
-    const tableBody =
-        document.getElementById(
-            "reservationTableBody"
-        );
-
-    if (!tableBody) return;
-
-    tableBody.innerHTML = "";
-
-    let orders =
-        JSON.parse(
-            localStorage.getItem("orders")
-        ) || [];
-
-    const searchValue =
-        document.getElementById("searchClient")
-        ?.value
-        .toLowerCase() || "";
-
-    const filterValue =
-        document.getElementById("statusFilter")
-        ?.value || "all";
-
-    orders.forEach((order, index) => {
-
-        if (
-            order.name &&
-            !order.name
-                .toLowerCase()
-                .includes(searchValue)
-        ) return;
-
-        if (
-            filterValue !== "all" &&
-            order.status !== filterValue
-        ) return;
-
-        const row =
-            document.createElement("tr");
-
-        const bookingDate =
-            order.datetime
-            ? new Date(order.datetime)
-                .toLocaleString()
-            : "—";
-
-        row.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${order.name || "—"}</td>
-            <td>${order.contact || "—"}</td>
-            <td>${order.service || "—"}</td>
-            <td>${order.guests || 0}</td>
-            <td>₱${Number(order.amount || 0).toLocaleString()}</td>
-            <td>${order.payment || "—"}</td>
-            <td>
-                <span class="status-badge ${order.status.toLowerCase()}">
-                    ${order.status}
-                </span>
-            </td>
-            <td>${bookingDate}</td>
-        `;
-
-        tableBody.appendChild(row);
-    });
-}
-
-document
-.getElementById("searchClient")
+document.getElementById("searchClient")
 ?.addEventListener(
     "input",
     loadReservationList
 );
 
-document
-.getElementById("statusFilter")
+document.getElementById("statusFilter")
 ?.addEventListener(
     "change",
     loadReservationList
 );
 
-window.addEventListener(
-    "storage",
-    loadReservationList
-);
+// ================= START =================
 
-setInterval(
-    loadReservationList,
-    3000
-);
+fetchOrders();
 
-loadReservationList();
-
-// ================= CAPACITY LOGIC =================
-function updateCapacity() {
-    let maxCap = parseInt(localStorage.getItem("dailyCapacity")) || 100;
-    let allOrders = JSON.parse(localStorage.getItem("orders")) || [];
-    let totalGuests = 0;
-
-    const today = new Date();
-    const todayKey = `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`;
-
-    // Calculate guests ONLY for today's Pending or Approved bookings
-    allOrders.forEach(order => {
-        if ((order.status === "Pending" || order.status === "Approved") && order.datetime) {
-            const d = new Date(order.datetime);
-            const key = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
-
-            if (key === todayKey) {
-                totalGuests += Number(order.guests) || 0;
-            }
-        }
-    });
-
-    // Update Text Elements
-    document.getElementById("maxCapacity").textContent = maxCap;
-    document.getElementById("currentBooked").textContent = totalGuests;
-    document.getElementById("slotsAvailable").textContent = Math.max(0, maxCap - totalGuests);
-
-    // Update Progress Bar
-    const fillEl = document.getElementById("capacityFill");
-    if (fillEl) {
-        let percentage = (totalGuests / maxCap) * 100;
-        if (percentage > 100) percentage = 100;
-        fillEl.style.width = percentage + "%";
-    }
-}
-
-// Function triggered by the "Set Limit" button
-window.setNewLimit = function () {
-    let currentLimit = parseInt(localStorage.getItem("dailyCapacity")) || 100;
-    let input = prompt("Enter new maximum guests per day:", currentLimit);
-
-    if (input !== null) {
-        let newLimit = parseInt(input);
-        if (!isNaN(newLimit) && newLimit > 0) {
-            localStorage.setItem("dailyCapacity", newLimit);
-            updateCapacity(); // Refresh UI instantly
-        }
-    }
-};
-
-// Run immediately and every 3 seconds
-updateCapacity();
-setInterval(updateCapacity, 3000);
-window.addEventListener("storage", updateCapacity);
+setInterval(fetchOrders, 5000);
 
 </script>
 
