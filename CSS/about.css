@@ -35,10 +35,7 @@ body {
   color: #222;
 }
 
-/* ========================================= */
-/* HEADER (existing — kept as-is)            */
-/* ========================================= */
-
+/* HEADER */
 header {
   position: fixed;
   top: 20px;
@@ -48,26 +45,28 @@ header {
   width: 92%;
   z-index: 1000;
 
-  padding: 14px 35px;
+  padding: 16px 35px;
 
   display: flex;
   justify-content: space-between;
   align-items: center;
 
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.18);
+
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
 
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+
   border-radius: 28px;
 
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
 
   transition: 0.4s ease;
 }
 
 header.scrolled {
-  background: rgba(255, 255, 255, 0.88);
+  background: rgba(255, 255, 255, 0.9);
 }
 
 .logo {
@@ -77,41 +76,48 @@ header.scrolled {
 }
 
 .logo img {
-  width: 145px;
+  width: 150px;
   height: auto;
 }
 
-/* ========================================= */
-/* NAVIGATION */
-/* ========================================= */
-
-nav {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.logo h1 {
+  font-size: 1.6rem;
+  color: #222;
 }
 
+.logo span {
+  color: #606c38;
+  font-style: italic;
+}
 nav a {
+  margin: 0 12px;
   text-decoration: none;
-  color: var(--dark);
+  color: #222;
+  font-weight: 500;
   font-size: 1rem;
-  font-weight: 600;
-  padding: 10px 18px;
-  border-radius: 14px;
-  transition: 0.3s ease;
+  position: relative;
+  transition: 0.3s;
 }
 
 nav a:hover {
-  background: rgba(255, 255, 255, 0.45);
-  color: var(--primary);
-  transform: translateY(-2px);
+  color: #dda15e;
+}
+nav a::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 3px;
+  background: #dda15e;
+  left: 0;
+  bottom: -4px;
+  transition: 0.3s;
+}
+nav a:hover::after {
+  width: 100%;
 }
 
 .login {
-  background: linear-gradient(135deg, #dda15e, #bc6c25);
-  color: white !important;
-  border-radius: 14px;
-  padding: 10px 20px;
+  color: #007bff;
 }
 
 /* ========================================= */
