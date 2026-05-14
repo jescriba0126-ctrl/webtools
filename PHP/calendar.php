@@ -38,7 +38,6 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
     <div class="logo">
         <h1><span>Calendar</span> Dashboard</h1> </div>
     <nav>
-        <a href="admin.php">Dashboard</a>
         <a href="logout.php" class="btn logout">Logout</a> </nav>
 </header>
 
