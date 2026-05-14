@@ -43,6 +43,7 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
             </a>
         </li>
 
+
         <li>
             <a href="calendar.php">
                 <span></span>
@@ -77,7 +78,7 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
     </div>
 
     <nav>
-        
+        <a href="main.html">Home</a>
         <a href="logout.php" class="btn logout">Logout</a>
     </nav>
 
@@ -227,6 +228,32 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
     </div>
 </div>
 
+
+<!-- ================= CUSTOMER SPECIAL NOTES ================= -->
+
+<section class="card special-notes-card">
+
+    <div class="notes-header">
+
+        <h2>Customer Special Notes</h2>
+
+        <input
+            type="text"
+            id="searchNotes"
+            placeholder="Search notes..."
+        >
+
+    </div>
+
+    <div id="notesContainer" class="notes-grid">
+
+        <p class="empty-note">
+            No special notes available.
+        </p>
+
+    </div>
+
+</section>
 
 
 <script src="../JS/admin.js"></script>

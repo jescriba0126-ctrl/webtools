@@ -312,3 +312,129 @@ window.addEventListener("load", function () {
     }
   }
 });
+
+
+async function loadSpecialNotes(){
+
+    const container =
+        document.getElementById("notesContainer");
+
+    const search =
+        document.getElementById("searchNotes")
+        .value
+        .toLowerCase();
+
+    try{
+
+        const response =
+            await fetch("fetch_notes.php");
+
+        const notes =
+            await response.json();
+
+        container.innerHTML = "";
+
+        if(notes.length === 0){
+
+            container.innerHTML = `
+                <p class="empty-note">
+                    No special notes found.
+                </p>
+            `;
+
+            return;
+        }
+
+        let hasResult = false;
+
+        notes.forEach(note => {
+
+            const customer =
+                (note.name || "")
+                .toLowerCase();
+
+            const message =
+                (note.special_notes || "")
+                .toLowerCase();
+
+            if(
+                !customer.includes(search) &&
+                !message.includes(search)
+            ){
+                return;
+            }
+
+            hasResult = true;
+
+            container.innerHTML += `
+
+            <div class="note-box">
+
+                <div class="note-top">
+
+                    <h3>${note.name}</h3>
+
+                    <span>
+                        ${new Date(note.booking_datetime)
+                        .toLocaleString()}
+                    </span>
+
+                </div>
+
+                <div class="note-body">
+
+                    <p>
+                        <strong>Occasion:</strong>
+                        ${note.occasion}
+                    </p>
+
+                    <p>
+                        <strong>Guests:</strong>
+                        ${note.guests}
+                    </p>
+
+                    <p>
+                        <strong>Status:</strong>
+                        ${note.status}
+                    </p>
+
+                    <div class="special-message">
+
+                        ${note.special_notes || "No note"}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            `;
+        });
+
+        if(!hasResult){
+
+            container.innerHTML = `
+                <p class="empty-note">
+                    No matching notes found.
+                </p>
+            `;
+        }
+
+    }catch(error){
+
+        console.log(error);
+
+    }
+
+}
+
+document
+.getElementById("searchNotes")
+.addEventListener(
+    "input",
+    loadSpecialNotes
+);
+
+loadSpecialNotes();
+
+setInterval(loadSpecialNotes,3000);

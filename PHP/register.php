@@ -7,81 +7,162 @@ include 'connect.php';
 // ================= SIGN UP =================
 if(isset($_POST['signUp'])){
 
-    $firstName       = mysqli_real_escape_string($conn, $_POST['firstName']);
-    $lastName        = mysqli_real_escape_string($conn, $_POST['lastName']);
-    $gender          = mysqli_real_escape_string($conn, $_POST['gender']);
-    $email           = mysqli_real_escape_string($conn, $_POST['email']);
-    $password        = $_POST['password'];
-    $confirmPassword = $_POST['confirmPassword'];
+    $firstName = mysqli_real_escape_string(
+        $conn,
+        $_POST['firstName']
+    );
+
+    $lastName = mysqli_real_escape_string(
+        $conn,
+        $_POST['lastName']
+    );
+
+    $gender = mysqli_real_escape_string(
+        $conn,
+        $_POST['gender']
+    );
+
+    $email = mysqli_real_escape_string(
+        $conn,
+        $_POST['email']
+    );
+
+    $password =
+        $_POST['password'] ?? '';
+
+    $confirmPassword =
+        $_POST['confirmPassword'] ?? '';
+
+    // CHECK EMPTY
+    if(
+        empty($password) ||
+        empty($confirmPassword)
+    ){
+
+        die("Please fill all password fields!");
+
+    }
 
     // CHECK PASSWORD MATCH
     if($password !== $confirmPassword){
+
         die("Passwords do not match!");
+
     }
 
     // ENCRYPT PASSWORD
-    $password = md5($password);
+    $hashedPassword =
+        md5($password);
 
     // CHECK EMAIL
-    $checkEmail = "SELECT * FROM users WHERE email='$email'";
-    $result = $conn->query($checkEmail);
+    $checkEmail = "
+        SELECT *
+        FROM users
+        WHERE email='$email'
+    ";
+
+    $result =
+        $conn->query($checkEmail);
 
     if($result->num_rows > 0){
+
         die("Email Already Exists!");
+
     }
 
     // INSERT USER
     $insertQuery = "
+
         INSERT INTO users
-        (firstName, lastName, gender, email, password, role)
+        (
+            firstName,
+            lastName,
+            gender,
+            email,
+            password,
+            role
+        )
+
         VALUES
-        ('$firstName', '$lastName', '$gender', '$email', '$password', 'user')
+        (
+            '$firstName',
+            '$lastName',
+            '$gender',
+            '$email',
+            '$hashedPassword',
+            'user'
+        )
+
     ";
 
     if($conn->query($insertQuery) == TRUE){
 
         header("Location: http://localhost/webtools-main/HTML/login.html");
+
         exit();
 
-    } else {
+    }else{
 
-        die("Error: " . $conn->error);
+        die(
+            "Error: " .
+            $conn->error
+        );
 
     }
+
 }
 
 
 
 // ================= SIGN IN =================
-// ================= SIGN IN =================
+
 if(isset($_POST['signIn'])){
 
-    $email    = mysqli_real_escape_string($conn, $_POST['email']);
-    $password = md5($_POST['password']);
+    $email = mysqli_real_escape_string(
+        $conn,
+        $_POST['email']
+    );
+
+    $password =
+        md5($_POST['password']);
 
     $sql = "
-        SELECT * FROM users
+
+        SELECT *
+        FROM users
+
         WHERE email='$email'
         AND password='$password'
+
     ";
 
-    $result = $conn->query($sql);
+    $result =
+        $conn->query($sql);
 
     // LOGIN SUCCESS
     if($result->num_rows > 0){
 
-        $row = $result->fetch_assoc();
+        $row =
+            $result->fetch_assoc();
 
         // STORE SESSION
-        $_SESSION['email']     = $row['email'];
-        $_SESSION['firstName'] = $row['firstName'];
-        $_SESSION['role']      = $row['role'];
-        $_SESSION['just_logged_in'] = true; // ADDED THIS LINE for the loader animation
+        $_SESSION['email'] =
+            $row['email'];
+
+        $_SESSION['firstName'] =
+            $row['firstName'];
+
+        $_SESSION['role'] =
+            $row['role'];
+
+        $_SESSION['just_logged_in'] =
+            true;
 
         // ADMIN
         if($row['role'] == 'admin'){
 
             header("Location: http://localhost/webtools-main/PHP/admin.php");
+
             exit();
 
         }
@@ -90,6 +171,7 @@ if(isset($_POST['signIn'])){
         else{
 
             header("Location: http://localhost/webtools-main/PHP/homepage.php");
+
             exit();
 
         }
@@ -102,6 +184,6 @@ if(isset($_POST['signIn'])){
         die("Incorrect Email or Password!");
 
     }
-}
 
+}
 ?>
