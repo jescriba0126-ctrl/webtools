@@ -6,7 +6,7 @@
     <title>Cubiertos Food Hub — Menu</title>
     <link rel="icon" type="image/jpg" href="../IMAGES/logo.jpg" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Poppins:wght@400;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../CSS/menu.css"/> 
@@ -41,19 +41,17 @@
         href="https://www.facebook.com/profile.php?id=61555258696901"
         target="_blank"
         aria-label="Facebook"
-      >
-        <img src="../IMAGES/Facebook.png" alt="Facebook" />
-      </a>
+        ><img src="../IMAGES/Facebook.png" alt="Facebook"
+      /></a>
       <a
         href="https://www.instagram.com/cubiertos2024/"
         target="_blank"
         aria-label="Instagram"
-      >
-        <img src="../IMAGES/Instagram.png" alt="Instagram" />
-      </a>
-      <a href="#" target="_blank" aria-label="Mail">
-        <img src="../IMAGES/Mail.png" alt="Mail" />
-      </a>
+        ><img src="../IMAGES/Instagram.png" alt="Instagram"
+      /></a>
+      <a href="#" target="_blank" aria-label="Mail"
+        ><img src="../IMAGES/Mail.png" alt="Mail"
+      /></a>
     </div>
 
     <section class="hero">
@@ -113,6 +111,13 @@
             <span class="card-tag">Start here</span>
             <div class="card-title">Appetizer</div>
           </div>
+          <button class="quick-view-btn" aria-label="Quick view Appetizer">
+            <svg viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            Quick View
+          </button>
           <div class="card-arrow">
             <svg viewBox="0 0 24 24">
               <line x1="7" y1="17" x2="17" y2="7" />
@@ -132,6 +137,13 @@
             <span class="card-tag">Fresh &amp; crisp</span>
             <div class="card-title">Salad</div>
           </div>
+          <button class="quick-view-btn" aria-label="Quick view Salad">
+            <svg viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            Quick View
+          </button>
           <div class="card-arrow">
             <svg viewBox="0 0 24 24">
               <line x1="7" y1="17" x2="17" y2="7" />
@@ -151,6 +163,13 @@
             <span class="card-tag">Handmade</span>
             <div class="card-title">Pasta</div>
           </div>
+          <button class="quick-view-btn" aria-label="Quick view Pasta">
+            <svg viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            Quick View
+          </button>
           <div class="card-arrow">
             <svg viewBox="0 0 24 24">
               <line x1="7" y1="17" x2="17" y2="7" />
@@ -170,6 +189,13 @@
             <span class="card-tag">Rolled to order</span>
             <div class="card-title">Pita Wrap</div>
           </div>
+          <button class="quick-view-btn" aria-label="Quick view Pita Wrap">
+            <svg viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            Quick View
+          </button>
           <div class="card-arrow">
             <svg viewBox="0 0 24 24">
               <line x1="7" y1="17" x2="17" y2="7" />
@@ -189,6 +215,13 @@
             <span class="card-tag">The centerpiece</span>
             <div class="card-title">Main Course</div>
           </div>
+          <button class="quick-view-btn" aria-label="Quick view Main Course">
+            <svg viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            Quick View
+          </button>
           <div class="card-arrow">
             <svg viewBox="0 0 24 24">
               <line x1="7" y1="17" x2="17" y2="7" />
@@ -241,6 +274,86 @@
       window.addEventListener("scroll", function () {
         const header = document.querySelector(".glass-header");
         if (header) header.classList.toggle("scrolled", window.scrollY > 50);
+      });
+
+      // ── SCROLL REVEAL ──
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("revealed");
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.12 },
+      );
+
+      document.querySelectorAll(".menu-card").forEach((card) => {
+        revealObserver.observe(card);
+      });
+
+      // ── QUICK VIEW MODAL ──
+      const backdrop = document.getElementById("modalBackdrop");
+      const modalImg = document.getElementById("modalImg");
+      const modalTag = document.getElementById("modalTag");
+      const modalTitle = document.getElementById("modalTitle");
+      const modalDesc = document.getElementById("modalDesc");
+      const modalItems = document.getElementById("modalItems");
+
+      function openModal(card) {
+        const cat = card.dataset.category;
+        const tag = card.dataset.tag;
+        const desc = card.dataset.desc;
+        const img = card.dataset.img;
+        const items = JSON.parse(card.dataset.items);
+
+        modalImg.src = img;
+        modalImg.alt = cat;
+        modalTag.textContent = tag;
+        modalTitle.innerHTML = cat.includes(" ")
+          ? cat.replace(/(\S+)\s(.+)/, "$1 <em>$2</em>")
+          : `<em>${cat}</em>`;
+        modalDesc.textContent = desc;
+
+        modalItems.innerHTML = items
+          .map(
+            (item) => `
+          <div class="modal-item">
+            <span class="modal-item-name">${item.name}</span>
+            <span class="modal-item-price">${item.price}</span>
+          </div>
+        `,
+          )
+          .join("");
+
+        backdrop.classList.add("open");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeModal() {
+        backdrop.classList.remove("open");
+        document.body.style.overflow = "";
+      }
+
+      document.querySelectorAll(".quick-view-btn").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          openModal(btn.closest(".menu-card"));
+        });
+      });
+
+      document
+        .getElementById("modalClose")
+        .addEventListener("click", closeModal);
+
+      backdrop.addEventListener("click", (e) => {
+        if (e.target === backdrop) closeModal();
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeModal();
       });
     </script>
   </body>

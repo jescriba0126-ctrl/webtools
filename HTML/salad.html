@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Salads — Cubiertos Food Hub</title>
+    <title>Salad — Cubiertos Food Hub</title>
     <link rel="icon" type="image/jpg" href="../IMAGES/logo.jpg" />
     <link
       href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Poppins:wght@300;400;500;600;700&display=swap"
@@ -19,7 +19,7 @@
       html { scroll-behavior: smooth; }
       body {
         font-family: "Poppins", sans-serif;
-        background-color: #f8f5ee;
+        background: var(--bg);
         color: var(--text);
         overflow-x: hidden;
       }
@@ -169,7 +169,7 @@
     </div>
 
     <section class="hero">
-      <img src="../IMAGES/gardensalad.png" alt="Salads" class="hero-bg" />
+      <img src="../IMAGES/salad.jpg" alt="Salad" class="hero-bg" />
       <div class="hero-overlay"></div>
       <div class="hero-content">
         <div class="hero-eyebrow">Cubiertos Menu</div>
@@ -179,85 +179,68 @@
       </div>
     </section>
 
-    <section class="items-section">
-      <div class="section-header">
+    <!-- MENU -->
+    <section class="menu-section">
+      <div class="section-intro">
         <div>
-          <p class="section-label">Fresh &amp; Crisp</p>
-          <h2 class="section-title">Choose your<br /><em>salad</em></h2>
+          <p class="section-label">Category</p>
+          <h2 class="section-title">Fresh <em>Salads</em></h2>
         </div>
-        <p class="item-count"><strong>3</strong> items available</p>
+        <div class="section-count">
+          <strong>4</strong>
+          items available
+        </div>
       </div>
 
       <div class="items-grid">
         
         <div class="food-card">
           <div class="card-img-wrap">
-            <img src="../IMAGES/salad.jpg" alt="Classic Garden Salad" />
-            <span class="card-badge">Fresh Pick</span>
+            <img src="../IMAGES/thai.png" alt="Thai Mango Salad" />
+            <span class="card-badge">Bestseller</span>
           </div>
           <div class="card-body">
-            <h3 class="card-name">Classic Garden Salad</h3>
-            <p class="card-desc">
-              A refreshing mix of romaine lettuce, cherry tomatoes, cucumbers,
-              and red onion tossed in our signature vinaigrette.
+            <h3>Thai Mango Salad</h3>
+            <p>
+              Refreshing salad made with shredded green mango, herbs, and a
+              tangy sweet-spicy dressing.
             </p>
             <div class="card-footer">
-              <div class="card-price"><span>₱</span>140.00</div>
-              <button class="order-btn">
-                Order Now
-                <svg viewBox="0 0 24 24">
-                  <line x1="5" y1="12" x2="19" y2="12" />
-                  <polyline points="12 5 19 12 12 19" />
-                </svg>
-              </button>
+              <span class="price">₱185.00</span>
             </div>
           </div>
         </div>
 
-        <div class="food-card">
+        <div class="item-card">
           <div class="card-img-wrap">
-            <img src="../IMAGES/salad.jpg" alt="Caesar Salad" />
-            <span class="card-badge">Best Seller</span>
+            <img src="../IMAGES/gardensalad.png" alt="Cubiertos Garden Salad" />
+            <span class="card-badge">Signature</span>
           </div>
           <div class="card-body">
-            <h3 class="card-name">Caesar Salad</h3>
-            <p class="card-desc">
-              Crisp romaine lettuce with house-made Caesar dressing, parmesan
-              shavings, and golden croutons.
+            <h3>Cubiertos Garden Salad</h3>
+            <p>
+              Fresh lettuce, tomatoes, cucumber, and croutons served with our
+              signature creamy dressing.
             </p>
             <div class="card-footer">
-              <div class="card-price"><span>₱</span>165.00</div>
-              <button class="order-btn">
-                Order Now
-                <svg viewBox="0 0 24 24">
-                  <line x1="5" y1="12" x2="19" y2="12" />
-                  <polyline points="12 5 19 12 12 19" />
-                </svg>
-              </button>
+              <span class="price">₱185.00</span>
             </div>
           </div>
         </div>
 
-        <div class="food-card">
+        <div class="item-card">
           <div class="card-img-wrap">
             <img src="../IMAGES/grilled chicken salad.jpg" alt="Grilled Chicken Salad" />
             <span class="card-badge">Chef's Pick</span>
           </div>
           <div class="card-body">
-            <h3 class="card-name">Grilled Chicken Salad</h3>
-            <p class="card-desc">
-              Tender grilled chicken breast over mixed greens with bell peppers,
-              corn, and honey-mustard dressing.
+            <h3>Kani Mango Roll</h3>
+            <p>
+              Japanese-inspired roll made with crab stick, mango, and veggies —
+              light and delicious.
             </p>
             <div class="card-footer">
-              <div class="card-price"><span>₱</span>210.00</div>
-              <button class="order-btn">
-                Order Now
-                <svg viewBox="0 0 24 24">
-                  <line x1="5" y1="12" x2="19" y2="12" />
-                  <polyline points="12 5 19 12 12 19" />
-                </svg>
-              </button>
+              <span class="price">₱185.00</span>
             </div>
           </div>
         </div>
@@ -265,6 +248,7 @@
       </div>
     </section>
 
+    <!-- FOOTER -->
     <footer>
       <div class="footer-top">
         <div class="footer-brand">
@@ -275,13 +259,13 @@
           <a href="../HTML/main.html">Home</a>
           <a href="../HTML/about.html">About</a>
           <a href="../HTML/Store.html">Our Stores</a>
-          <a href="menu.html">Menu</a>
           <a href="../HTML/contacts.html">Contacts</a>
           <a href="../HTML/login.html">Log in</a>
         </div>
         <div class="footer-contact">
           <strong>Get in touch</strong>
-          Food &amp; Drink · Virac, Philippines 4800<br />Contact: 0981 027 0704
+          Food &amp; Drink · Virac, Philippines 4800<br />
+          Contact: 0981 027 0704
         </div>
       </div>
       <div class="footer-bottom">
