@@ -3,187 +3,81 @@ ob_start();
 session_start();
 include 'connect.php';
 
-
 // ================= SIGN UP =================
-if(isset($_POST['signUp'])){
+if (isset($_POST['signUp'])) {
 
-    $firstName = mysqli_real_escape_string(
-        $conn,
-        $_POST['firstName']
-    );
+    $firstName       = $_POST['firstName'];
+    $lastName        = $_POST['lastName'];
+    $gender          = $_POST['gender'];
+    $email           = $_POST['email'];
+    $password        = $_POST['password'];
+    $confirmPassword = $_POST['confirmPassword'];
 
-    $lastName = mysqli_real_escape_string(
-        $conn,
-        $_POST['lastName']
-    );
-
-    $gender = mysqli_real_escape_string(
-        $conn,
-        $_POST['gender']
-    );
-
-    $email = mysqli_real_escape_string(
-        $conn,
-        $_POST['email']
-    );
-
-    $password =
-        $_POST['password'] ?? '';
-
-    $confirmPassword =
-        $_POST['confirmPassword'] ?? '';
-
-    // CHECK EMPTY
-    if(
-        empty($password) ||
-        empty($confirmPassword)
-    ){
-
-        die("Please fill all password fields!");
-
-    }
-
-    // CHECK PASSWORD MATCH
-    if($password !== $confirmPassword){
-
-        die("Passwords do not match!");
-
-    }
-
-    // ENCRYPT PASSWORD
-    $hashedPassword =
-        md5($password);
-
-    // CHECK EMAIL
-    $checkEmail = "
-        SELECT *
-        FROM users
-        WHERE email='$email'
-    ";
-
-    $result =
-        $conn->query($checkEmail);
-
-    if($result->num_rows > 0){
-
-        die("Email Already Exists!");
-
-    }
-
-    // INSERT USER
-    $insertQuery = "
-
-        INSERT INTO users
-        (
-            firstName,
-            lastName,
-            gender,
-            email,
-            password,
-            role
-        )
-
-        VALUES
-        (
-            '$firstName',
-            '$lastName',
-            '$gender',
-            '$email',
-            '$hashedPassword',
-            'user'
-        )
-
-    ";
-
-    if($conn->query($insertQuery) == TRUE){
-
-        header("Location: http://localhost/webtools-main/HTML/login.html");
-
+    if (empty($password) || empty($confirmPassword)) {
+        header("Location: ../HTML/login.html?error=Please+fill+all+password+fields&panel=register");
         exit();
-
-    }else{
-
-        die(
-            "Error: " .
-            $conn->error
-        );
-
     }
 
+    if ($password !== $confirmPassword) {
+        header("Location: ../HTML/login.html?error=Passwords+do+not+match&panel=register");
+        exit();
+    }
+
+    // CHECK EMAIL EXISTS
+    $checkResult = mysqli_query($conn, "SELECT Id FROM users WHERE email = '$email'");
+
+    if (mysqli_num_rows($checkResult) > 0) {
+        header("Location: ../HTML/login.html?error=Email+already+exists&panel=register");
+        exit();
+    }
+
+    // MD5 — matches existing database hashes
+    $hashedPassword = md5($password);
+
+    $insertQuery = "INSERT INTO users (firstName, lastName, gender, email, password, role)
+                    VALUES ('$firstName', '$lastName', '$gender', '$email', '$hashedPassword', 'user')";
+
+    if (mysqli_query($conn, $insertQuery)) {
+        header("Location: ../HTML/login.html?success=Account+created!+Please+log+in.");
+        exit();
+    } else {
+        header("Location: ../HTML/login.html?error=Registration+failed.+Try+again.&panel=register");
+        exit();
+    }
 }
 
-
-
 // ================= SIGN IN =================
+if (isset($_POST['signIn'])) {
 
-if(isset($_POST['signIn'])){
+    $email          = $_POST['email'];
+    $password       = $_POST['password'];
+    $hashedPassword = md5($password);
 
-    $email = mysqli_real_escape_string(
-        $conn,
-        $_POST['email']
-    );
+    $result = mysqli_query($conn, "SELECT * FROM users WHERE email = '$email' AND password = '$hashedPassword'");
 
-    $password =
-        md5($_POST['password']);
+    if (mysqli_num_rows($result) > 0) {
 
-    $sql = "
+        $row = mysqli_fetch_assoc($result);
 
-        SELECT *
-        FROM users
+        session_regenerate_id(true);
 
-        WHERE email='$email'
-        AND password='$password'
+        $_SESSION['id']             = $row['Id'];
+        $_SESSION['email']          = $row['email'];
+        $_SESSION['firstName']      = $row['firstName'];
+        $_SESSION['role']           = $row['role'];
+        $_SESSION['just_logged_in'] = true;
 
-    ";
-
-    $result =
-        $conn->query($sql);
-
-    // LOGIN SUCCESS
-    if($result->num_rows > 0){
-
-        $row =
-            $result->fetch_assoc();
-
-        // STORE SESSION
-        $_SESSION['email'] =
-            $row['email'];
-
-        $_SESSION['firstName'] =
-            $row['firstName'];
-
-        $_SESSION['role'] =
-            $row['role'];
-
-        $_SESSION['just_logged_in'] =
-            true;
-
-        // ADMIN
-        if($row['role'] == 'admin'){
-
-            header("Location: http://localhost/webtools-main/PHP/admin.php");
-
+        if ($row['role'] === 'admin') {
+            header("Location: admin.php");
             exit();
-
         }
 
-        // USER
-        else{
+        header("Location: homepage.php");
+        exit();
 
-            header("Location: http://localhost/webtools-main/PHP/homepage.php");
-
-            exit();
-
-        }
-
+    } else {
+        header("Location: ../HTML/login.html?error=Incorrect+email+or+password");
+        exit();
     }
-
-    // LOGIN FAILED
-    else{
-
-        die("Incorrect Email or Password!");
-
-    }
-
 }
 ?>

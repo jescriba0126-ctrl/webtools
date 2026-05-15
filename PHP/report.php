@@ -158,132 +158,216 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
 
 </main>
 
-<script>javascript
-function loadReports(){
+<script>
 
-    const orders =
-        JSON.parse(
-            localStorage.getItem("orders")
-        ) || [];
+async function loadReports(){
 
-    const tableBody =
-        document.getElementById(
-            "reportTableBody"
-        );
+    try{
 
-    tableBody.innerHTML = "";
+        const response =
+            await fetch(
+                "admin_bookings.php?action=list"
+            );
 
-    let revenue = 0;
-    let guests = 0;
-    let completed = 0;
-    let pending = 0;
-    let approved = 0;
-    let cancelled = 0;
+        const data =
+            await response.json();
 
-    let services = {};
-
-    const search =
-        document.getElementById(
-            "searchReport"
-        ).value.toLowerCase();
-
-    const filter =
-        document.getElementById(
-            "filterReport"
-        ).value;
-
-    orders.forEach((order,index)=>{
-
-        if(order.name &&
-            !order.name
-            .toLowerCase()
-            .includes(search)) return;
-
-        if(filter !== "all" &&
-            order.status !== filter) return;
-
-        revenue += Number(order.amount || 0);
-        guests += Number(order.guests || 0);
-
-        if(order.status === "Completed") completed++;
-        if(order.status === "Pending") pending++;
-        if(order.status === "Approved") approved++;
-        if(order.status === "Cancelled") cancelled++;
-
-        if(order.service){
-            services[order.service] =
-                (services[order.service] || 0) + 1;
+        if(!data.success){
+            console.log("Failed to load reports");
+            return;
         }
 
-        const row = document.createElement("tr");
+        const orders = data.bookings;
 
-        row.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${order.name || "—"}</td>
-            <td>${order.contact || "—"}</td>
-            <td>${order.service || "—"}</td>
-            <td>${order.guests || 0}</td>
-            <td>₱${Number(order.amount || 0).toLocaleString()}</td>
-            <td>${order.payment || "—"}</td>
-            <td>
-                <span class="status ${order.status.toLowerCase()}">
-                    ${order.status}
-                </span>
-            </td>
-            <td>
-                ${new Date(order.datetime)
-                    .toLocaleString()}
-            </td>
-        `;
+        const tableBody =
+            document.getElementById(
+                "reportTableBody"
+            );
 
-        tableBody.appendChild(row);
-    });
+        tableBody.innerHTML = "";
 
-    let popular = "N/A";
-    let max = 0;
+        let revenue = 0;
+        let guests = 0;
 
-    for(let service in services){
+        let completed = 0;
+        let pending = 0;
+        let approved = 0;
+        let cancelled = 0;
 
-        if(services[service] > max){
-            max = services[service];
-            popular = service;
+        let services = {};
+
+        const search =
+            document.getElementById(
+                "searchReport"
+            ).value.toLowerCase();
+
+        const filter =
+            document.getElementById(
+                "filterReport"
+            ).value;
+
+        let totalBookings = 0;
+
+        orders.forEach((order,index)=>{
+
+            if(
+                order.name &&
+                !order.name
+                .toLowerCase()
+                .includes(search)
+            ) return;
+
+            if(
+                filter !== "all" &&
+                order.status !== filter
+            ) return;
+
+            totalBookings++;
+
+            guests += Number(order.guests || 0);
+
+            // ONLY COMPLETED COUNTS AS REVENUE
+            if(order.status === "Completed"){
+                completed++;
+                revenue += Number(order.amount || 0);
+            }
+
+            if(order.status === "Pending"){
+                pending++;
+            }
+
+            if(order.status === "Approved"){
+                approved++;
+            }
+
+            if(order.status === "Cancelled"){
+                cancelled++;
+            }
+
+            // POPULAR SERVICE
+            if(order.occasion){
+
+                services[order.occasion] =
+                    (services[order.occasion] || 0) + 1;
+            }
+
+            const row =
+                document.createElement("tr");
+
+            row.innerHTML = `
+
+                <td>${index + 1}</td>
+
+                <td>${order.name || "—"}</td>
+
+                <td>${order.phone || "—"}</td>
+
+                <td>${order.occasion || "—"}</td>
+
+                <td>${order.guests || 0}</td>
+
+                <td>
+                    ₱${Number(order.amount || 0)
+                        .toLocaleString()}
+                </td>
+
+                <td>
+                    ${order.payment_method || "—"}
+                </td>
+
+                <td>
+                    <span class="status ${order.status.toLowerCase()}">
+                        ${order.status}
+                    </span>
+                </td>
+
+                <td>
+                    ${new Date(order.booking_datetime)
+                        .toLocaleString()}
+                </td>
+
+            `;
+
+            tableBody.appendChild(row);
+
+        });
+
+        // ================= POPULAR SERVICE =================
+
+        let popular = "N/A";
+
+        let max = 0;
+
+        for(let service in services){
+
+            if(services[service] > max){
+
+                max = services[service];
+
+                popular = service;
+            }
         }
+
+        // ================= DASHBOARD =================
+
+        document.getElementById(
+            "totalRevenue"
+        ).textContent =
+            revenue.toLocaleString();
+
+        document.getElementById(
+            "totalBookings"
+        ).textContent =
+            totalBookings;
+
+        document.getElementById(
+            "totalGuests"
+        ).textContent =
+            guests;
+
+        document.getElementById(
+            "completedBookings"
+        ).textContent =
+            completed;
+
+        document.getElementById(
+            "pendingCount"
+        ).textContent =
+            pending;
+
+        document.getElementById(
+            "approvedCount"
+        ).textContent =
+            approved;
+
+        document.getElementById(
+            "cancelledCount"
+        ).textContent =
+            cancelled;
+
+        document.getElementById(
+            "popularService"
+        ).textContent =
+            popular;
+
     }
+    catch(error){
 
-    document.getElementById("totalRevenue")
-        .textContent = revenue.toLocaleString();
-
-    document.getElementById("totalBookings")
-        .textContent = orders.length;
-
-    document.getElementById("totalGuests")
-        .textContent = guests;
-
-    document.getElementById("completedBookings")
-        .textContent = completed;
-
-    document.getElementById("pendingCount")
-        .textContent = pending;
-
-    document.getElementById("approvedCount")
-        .textContent = approved;
-
-    document.getElementById("cancelledCount")
-        .textContent = cancelled;
-
-    document.getElementById("popularService")
-        .textContent = popular;
+        console.log(
+            "Report fetch error:",
+            error
+        );
+    }
 }
+
+// ================= START =================
 
 loadReports();
 
-setInterval(loadReports,3000);
+// AUTO REFRESH REALTIME
+setInterval(loadReports, 2000);
 
-window.addEventListener(
-    "storage",
-    loadReports
-);
-
+// SEARCH
 document
 .getElementById("searchReport")
 .addEventListener(
@@ -291,12 +375,15 @@ document
     loadReports
 );
 
+// FILTER
 document
 .getElementById("filterReport")
 .addEventListener(
     "change",
     loadReports
-);</script>
+);
+
+</script>
 
 </body>
 </html>

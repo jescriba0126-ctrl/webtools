@@ -210,11 +210,8 @@ function loadCustomers(){
 
     customersData.forEach(order => {
 
-        const key =
-            order.phone ||
-            order.email ||
-            order.name;
-
+       const key =
+    order.name?.trim().toLowerCase();
         if(!customers[key]){
 
             customers[key] = {
@@ -308,17 +305,13 @@ function loadCustomers(){
         }
 
         // REPEAT
-        if(customer.bookings >= 2){
-
-            repeatCount++;
-
-            if(type !== "vip"){
-
-                type = "repeat";
-
-            }
-
-        }
+// FILTER REPEAT
+if (
+    filter === "repeat" &&
+    customer.bookings < 2
+){
+    return;
+}
 
         // HIGHEST SPENDER
         if(customer.spending > highestAmount){
@@ -352,19 +345,23 @@ function loadCustomers(){
         }
 
         // FILTER
-        if(
-            filter === "vip" &&
-            type !== "vip"
-        ){
-            return;
-        }
+   // FILTER VIP
+if (
+    filter === "vip" &&
+    customer.spending < 10000
+){
+    return;
+}
 
-        if(
-            filter === "repeat" &&
-            type !== "repeat"
-        ){
-            return;
-        }
+
+
+// FILTER REPEAT
+if (
+    filter === "repeat" &&
+    customer.bookings < 2
+){
+    return;
+}
 
         // ================= TABLE ROW =================
 

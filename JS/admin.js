@@ -363,22 +363,22 @@ async function loadSpecialNotes() {
 
                     <p>
                         <strong>Occasion:</strong>
-                        ${note.occasion}
+                        ${note.occasion || "—"}
                     </p>
 
                     <p>
                         <strong>Guests:</strong>
-                        ${note.guests}
+                        ${note.guests || 0}
                     </p>
 
                     <p>
                         <strong>Status:</strong>
-                        ${note.status}
+                        ${note.status || "Pending"}
                     </p>
 
                     <div class="special-message">
 
-                        ${note.special_notes || "No note"}
+                        ${note.special_notes || "No special note"}
 
                     </div>
 
@@ -401,10 +401,12 @@ async function loadSpecialNotes() {
   }
 }
 
+// SEARCH NOTES
 document
   .getElementById("searchNotes")
   .addEventListener("input", loadSpecialNotes);
 
+// LOAD NOTES
 loadSpecialNotes();
 
 setInterval(loadSpecialNotes, 3000);
