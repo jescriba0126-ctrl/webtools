@@ -11,6 +11,43 @@ if (!isset($_SESSION['email'])) {
 
 $email = $_SESSION['email'];
 
+// ── Handle profile picture upload ──
+if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] === UPLOAD_ERR_OK) {
+    $file     = $_FILES['profile_picture'];
+    $allowed  = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    $maxSize  = 2 * 1024 * 1024; // 2MB
+
+    if (!in_array($file['type'], $allowed)) {
+        $pic_error = "Only JPG, PNG, GIF, or WEBP images are allowed.";
+    } elseif ($file['size'] > $maxSize) {
+        $pic_error = "Image must be under 2MB.";
+    } else {
+        // Save to /webtools-main/IMAGES/profiles/
+        $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/webtools-main/IMAGES/profiles/';
+
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0755, true);
+        }
+
+        // Unique filename using email hash
+        $ext      = pathinfo($file['name'], PATHINFO_EXTENSION);
+        $filename = md5($email) . '.' . $ext;
+        $destPath = $uploadDir . $filename;
+
+        if (move_uploaded_file($file['tmp_name'], $destPath)) {
+            $picPath = 'profiles/' . $filename;
+            $stmt = $conn->prepare("UPDATE users SET profile_picture=? WHERE email=?");
+            $stmt->bind_param("ss", $picPath, $email);
+            $stmt->execute();
+            $stmt->close();
+            header("Location: profile.php?saved=1");
+            exit();
+        } else {
+            $pic_error = "Failed to upload image. Check folder permissions.";
+        }
+    }
+}
+
 // ── Handle profile update ──
 if (isset($_POST['updateProfile'])) {
     $full_name = trim($_POST['full_name']);
@@ -60,47 +97,37 @@ if (isset($_POST['submitReview'])) {
     }
 }
 
-// ── Fetch user data (now includes firstName, lastName) ──
-$stmt = $conn->prepare("SELECT firstName, lastName, email, full_name, phone, address, birthday FROM users WHERE email=?");
+// ── Fetch user data ──
+$stmt = $conn->prepare("SELECT firstName, lastName, email, full_name, phone, address, birthday, profile_picture FROM users WHERE email=?");
 $stmt->bind_param("s", $email);
 $stmt->execute();
 $user = $stmt->get_result()->fetch_assoc();
 $stmt->close();
 
-// ── Auto-fill full_name from firstName + lastName if not set yet ──
+// ── Auto-fill full_name ──
 if (empty($user['full_name']) && !empty($user['firstName'])) {
     $user['full_name'] = trim($user['firstName'] . ' ' . $user['lastName']);
 }
 
-// ── Fetch bookings ──
-$bookings = [];
-
-$tableCheck = $conn->query("SHOW TABLES LIKE 'bookings'");
-
-if ($tableCheck && $tableCheck->num_rows > 0) {
-
-    $stmt = $conn->prepare("
-        SELECT 
-            ticket,
-            occasion,
-            package,
-            booking_datetime,
-            amount,
-            payment_method,
-            status
-        FROM bookings
-        WHERE email=?
-        ORDER BY created_at DESC
-    ");
-
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-
-    $bookings = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-
-    $stmt->close();
+// ── Profile picture path ──
+$picSrc = null;
+if (!empty($user['profile_picture'])) {
+    $picSrc = '/webtools-main/IMAGES/' . $user['profile_picture'];
 }
 
+// ── Fetch bookings ──
+$bookings   = [];
+$tableCheck = $conn->query("SHOW TABLES LIKE 'bookings'");
+if ($tableCheck && $tableCheck->num_rows > 0) {
+    $stmt = $conn->prepare("
+        SELECT ticket, occasion, package, booking_datetime, amount, payment_method, status
+        FROM bookings WHERE email=? ORDER BY created_at DESC
+    ");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $bookings = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+}
 
 // ── Fetch existing review ──
 $stmt = $conn->prepare("SELECT rating, comment FROM reviews WHERE user_email=? ORDER BY created_at DESC LIMIT 1");
@@ -133,8 +160,7 @@ function statusBadge($status) {
 function val($v)      { return !empty($v) ? htmlspecialchars($v) : ''; }
 function ph($v, $lbl) { return empty($v)  ? "<span class=\"empty\">$lbl</span>" : htmlspecialchars($v); }
 
-// ── Display name (firstName for hero, full name for profile) ──
-$display_first = htmlspecialchars($user['firstName'] ?? 'User');
+$display_first    = htmlspecialchars($user['firstName'] ?? 'User');
 $default_fullname = val($user['full_name'] ?: trim(($user['firstName'] ?? '') . ' ' . ($user['lastName'] ?? '')));
 ?>
 <!DOCTYPE html>
@@ -144,6 +170,74 @@ $default_fullname = val($user['full_name'] ?: trim(($user['firstName'] ?? '') . 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Profile – Cubiertos Food Hub</title>
     <link rel="stylesheet" href="../CSS/profile.css">
+    <style>
+        /* ── AVATAR / PICTURE UPLOAD ── */
+        .avatar {
+            position: relative;
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            overflow: hidden;
+            border: 3px solid rgba(255,255,255,0.4);
+            transition: border-color 0.2s;
+            flex-shrink: 0;
+        }
+
+        .avatar:hover { border-color: #fff; }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        /* Overlay shown on hover */
+        .avatar-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s;
+            gap: 2px;
+        }
+
+        .avatar:hover .avatar-overlay { opacity: 1; }
+
+        .avatar-overlay span {
+            color: #fff;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            line-height: 1;
+        }
+
+        .avatar-overlay svg { color: #fff; }
+
+        /* Hidden file input */
+        #picInput { display: none; }
+
+        /* Error message */
+        .pic-error {
+            background: #fee2e2;
+            color: #b91c1c;
+            font-size: 12px;
+            padding: 8px 14px;
+            border-radius: 8px;
+            margin: 8px 16px 0;
+        }
+    </style>
 </head>
 <body>
 <div class="page">
@@ -173,13 +267,32 @@ $default_fullname = val($user['full_name'] ?: trim(($user['firstName'] ?? '') . 
 
         <div class="hero-bottom">
             <div class="hero-left">
-                <div class="avatar">
-                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.5">
-                        <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
-                    </svg>
-                </div>
+
+                <!-- AVATAR — click to upload -->
+                <form method="POST" action="profile.php" enctype="multipart/form-data" id="picForm">
+                    <div class="avatar" onclick="document.getElementById('picInput').click()" title="Change profile picture">
+
+                        <?php if ($picSrc): ?>
+                            <img src="<?= htmlspecialchars($picSrc) ?>" alt="Profile picture" id="avatarImg">
+                        <?php else: ?>
+                            <svg id="avatarSvg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.5">
+                                <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+                            </svg>
+                            <img id="avatarImg" src="" alt="" style="display:none;">
+                        <?php endif; ?>
+
+                        <div class="avatar-overlay">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                                <circle cx="12" cy="13" r="4"/>
+                            </svg>
+                            <span>Change</span>
+                        </div>
+                    </div>
+                    <input type="file" name="profile_picture" id="picInput" accept="image/*">
+                </form>
+
                 <div>
-                    <!-- firstName shown as display name next to avatar -->
                     <div class="hero-name"><?= $display_first ?></div>
                     <span class="hero-badge">🌱 New Customer</span>
                     <?php if ($is_birthday): ?>
@@ -192,6 +305,10 @@ $default_fullname = val($user['full_name'] ?: trim(($user['firstName'] ?? '') . 
                 <div class="welcome-sub">Your favourite food, delivered fresh.</div>
             </div>
         </div>
+
+        <?php if (!empty($pic_error)): ?>
+            <div class="pic-error">⚠️ <?= htmlspecialchars($pic_error) ?></div>
+        <?php endif; ?>
     </div>
 
     <?php if (isset($_GET['saved'])): ?>
@@ -219,7 +336,6 @@ $default_fullname = val($user['full_name'] ?: trim(($user['firstName'] ?? '') . 
                 <form method="POST" action="profile.php" id="profileForm">
                     <input type="hidden" name="updateProfile" value="1">
 
-                    <!-- FULL NAME (auto-filled from firstName + lastName) -->
                     <div class="field">
                         <div class="field-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
                         <div class="field-body">
@@ -229,7 +345,6 @@ $default_fullname = val($user['full_name'] ?: trim(($user['firstName'] ?? '') . 
                         </div>
                     </div>
 
-                    <!-- EMAIL (read-only) -->
                     <div class="field">
                         <div class="field-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
                         <div class="field-body">
@@ -238,7 +353,6 @@ $default_fullname = val($user['full_name'] ?: trim(($user['firstName'] ?? '') . 
                         </div>
                     </div>
 
-                    <!-- PHONE -->
                     <div class="field">
                         <div class="field-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.69 3.22 2 2 0 0 1 3.68 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.65a16 16 0 0 0 6 6l1.02-1.02a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
                         <div class="field-body">
@@ -248,7 +362,6 @@ $default_fullname = val($user['full_name'] ?: trim(($user['firstName'] ?? '') . 
                         </div>
                     </div>
 
-                    <!-- ADDRESS -->
                     <div class="field">
                         <div class="field-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
                         <div class="field-body">
@@ -258,7 +371,6 @@ $default_fullname = val($user['full_name'] ?: trim(($user['firstName'] ?? '') . 
                         </div>
                     </div>
 
-                    <!-- BIRTHDAY -->
                     <div class="field">
                         <div class="field-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
                         <div class="field-body">
@@ -346,16 +458,15 @@ $default_fullname = val($user['full_name'] ?: trim(($user['firstName'] ?? '') . 
                                         <span style="font-size:11px;color:#aaa;font-weight:400;margin-left:6px;">#<?= htmlspecialchars($b['ticket']) ?></span>
                                     </div>
                                     <div class="order-meta">
-    <?= ucfirst($b['package']) ?> &nbsp;·&nbsp;
-    ₱<?= number_format($b['amount'], 2) ?> &nbsp;·&nbsp;
-    <?= date("M j, Y", strtotime($b['booking_datetime'])) ?>
-</div>
-
-<div class="order-meta" style="margin-top:2px;">
-    Payment Method:
-    <?= htmlspecialchars($b['payment_method']) ?>
-</div>
-                                <div><?= statusBadge($b['status']) ?></div>
+                                        <?= ucfirst($b['package']) ?> &nbsp;·&nbsp;
+                                        ₱<?= number_format($b['amount'], 2) ?> &nbsp;·&nbsp;
+                                        <?= date("M j, Y", strtotime($b['booking_datetime'])) ?>
+                                    </div>
+                                    <div class="order-meta" style="margin-top:2px;">
+                                        Payment Method: <?= htmlspecialchars($b['payment_method']) ?>
+                                    </div>
+                                    <div><?= statusBadge($b['status']) ?></div>
+                                </div>
                             </div>
                         <?php endforeach; ?>
                     </div>
@@ -383,6 +494,26 @@ function cancelEdit() {
     document.getElementById('editBtn').style.display     = 'inline-flex';
     document.getElementById('formActions').style.display = 'none';
 }
+
+// ── Profile picture: preview before upload, then auto-submit ──
+document.getElementById('picInput').addEventListener('change', function () {
+    const file = this.files[0];
+    if (!file) return;
+
+    // Show instant preview
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        const img = document.getElementById('avatarImg');
+        const svg = document.getElementById('avatarSvg');
+        img.src = e.target.result;
+        img.style.display = 'block';
+        if (svg) svg.style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+
+    // Auto-submit the form to upload
+    document.getElementById('picForm').submit();
+});
 
 // ── Star rating ──
 const rLabels = ['','Poor','Fair','Good','Great','Excellent'];
