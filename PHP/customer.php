@@ -160,7 +160,7 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
 
 let customersData = [];
 
-// ================= FETCH BOOKINGS =================
+// ================= FETCHh BOOKINGS =================
 
 async function fetchCustomers(){
 
