@@ -67,94 +67,109 @@
       </div>
     </section>
     <!-- Main content -->
-    <main class="site-wrap contact-layout" id="main">
-      <!-- Left column: contact cards -->
-      <aside class="contact-cards" aria-labelledby="contact-info-heading">
+    <section class="contact-section">
+      <h2 class="section-title">GET IN TOUCH</h2>
+      <div class="title-bar"></div>
+
+      <div class="contact-layout">
         
-        <div class="card contact-card" id="contact-info">
-          <h2 id="contact-info-heading">Contact Information</h2>
-          <p class="muted">Food & Drink · Virac, Philippines 4800</p>
+        <div class="contact-info-side">
+          <span class="mini-title">WE ARE HERE FOR YOU</span>
           
-          <div class="contact-item">
-            <i class="fa-solid fa-phone"></i>
-            <a href="tel:+639810270704">0981 027 0704</a>
-          </div>
+          <h2>
+            Reach Out To
+            <span>Cubiertos</span>
+          </h2>
           
-          <div class="contact-item">
-            <i class="fa-solid fa-location-dot"></i>
-            <p>Along Imelda Blvd., Rawis, Virac, Catanduanes</p>
-          </div>
-          
-          <div class="contact-buttons">
-            <a class="btn btn-primary" href="https://www.google.com/maps/search/Along+Imelda+Blvd,+Rawis,+Virac,+Catanduanes" target="_blank" rel="noopener">Open in Maps</a>
-            <a class="btn btn-secondary" href="tel:+639810270704">Call Now</a>
+          <p class="desc">
+            Questions, reservations, or feedback — we'd love to hear from you. Visit our branch or send us a message!
+          </p>
+
+          <div class="contact-features">
+            <div class="contact-feature-card">
+              <div class="icon-circle">
+                <i class="fa-solid fa-phone"></i>
+              </div>
+              <div>
+                <h4>Call Us</h4>
+                <a href="tel:+639810270704">0981 027 0704</a>
+              </div>
+            </div>
+
+            <div class="contact-feature-card">
+              <div class="icon-circle">
+                <i class="fa-solid fa-location-dot"></i>
+              </div>
+              <div>
+                <h4>Visit Us</h4>
+                <p>Along Imelda Blvd., Rawis, Virac, Catanduanes</p>
+              </div>
+            </div>
+
+            <div class="contact-feature-card">
+              <div class="icon-circle">
+                <i class="fa-solid fa-envelope"></i>
+              </div>
+              <div>
+                <h4>Email Us</h4>
+                <p>support@cubiertos.com</p>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="card stores-card" aria-labelledby="stores-heading">
-          <h3 id="stores-heading">Store Address</h3>
-          <ul class="stores-list">
-            <li>
-              <strong>Cubiertos Virac</strong><br />
-              <span class="muted">Along Imelda Blvd., Rawis — 0981 027 0704</span>
-            </li>
-          </ul>
-        </div>
+        <div class="contact-form-side">
+          <div class="form-card">
+            <h3>Send a Message</h3>
+            <p class="muted">We typically reply within 1–2 business days.</p>
 
-        </aside>
+            <form id="contactForm" class="contact-form" novalidate>
+              
+              <div class="form-row">
+                <label>Name: <span>*</span></label>
+                <div class="split-inputs">
+                  <input id="firstName" name="firstName" type="text" placeholder="First" required />
+                  <input id="lastName" name="lastName" type="text" placeholder="Last" required />
+                </div>
+              </div>
+              
+              <div class="form-row">
+                <label for="email">Email address:</label>
+                <input id="email" name="email" type="email" placeholder="" />
+              </div>
+              
+              <div class="form-row">
+                <label for="phone">Phone number: <span>*</span></label>
+                <input id="phone" name="phone" type="tel" placeholder="Ex. 0954 678 9012" required />
+              </div>
 
-      <!-- Right column: form -->
-      <section class="contact-main" aria-labelledby="send-heading">
-        <div class="card form-card">
-          <h2 id="send-heading">Send Us a Message</h2>
-          <p class="muted">We typically reply within 1–2 business days.</p>
+              <div class="form-row">
+                <label>Have you tasted our dishes?</label>
+                <div class="radio-options">
+                  <label class="radio-box">
+                    <input type="radio" name="tasted" value="Yes"> Yes
+                  </label>
+                  <label class="radio-box">
+                    <input type="radio" name="tasted" value="No"> No
+                  </label>
+                </div>
+              </div>
+              
+              <div class="form-row">
+                <label for="message">What can we do for you? <span>*</span></label>
+                <textarea id="message" name="message" rows="5" required></textarea>
+              </div>
+              
+              <div class="form-actions">
+                <button type="submit" class="submit-btn">SUBMIT FORM &rarr;</button>
+              </div>
 
-          <form id="contactForm" class="contact-form" novalidate>
-            <div class="form-row">
-              <label for="name">Name<span aria-hidden="true">*</span></label>
-              <input id="name" name="name" type="text" required />
-            </div>
-            <div class="form-row">
-              <label for="email">Email<span aria-hidden="true">*</span></label>
-              <input id="email" name="email" type="email" required />
-            </div>
-            <div class="form-row">
-              <label for="phone">Phone (optional)</label>
-              <input id="phone" name="phone" type="tel" />
-            </div>
-            <div class="form-row">
-              <label for="message"
-                >Message<span aria-hidden="true">*</span></label
-              >
-              <textarea
-                id="message"
-                name="message"
-                rows="5"
-                required
-              ></textarea>
-            </div>
-            <div class="form-actions">
-              <button type="submit" class="btn primary">Send Message</button>
-              <button type="reset" class="btn ghost">Clear</button>
-            </div>
-            <p
-              id="formStatus"
-              class="form-status"
-              role="status"
-              aria-live="polite"
-            ></p>
-          </form>
-
-          <div class="booking-info">
-            <h4>📞 Need Help?</h4>
-            <p>
-              Contact us at <b>0981 027 0704</b><br />
-              or visit <em>Imelda Blvd., Rawis, Virac, Catanduanes</em>
-            </p>
+            </form>
           </div>
         </div>
-      </section>
-    </main>
+
+      </div>
+    </section>
 
     <!-- FOOTER -->
     <footer>

@@ -219,24 +219,40 @@ body{
 }
 
 /* TITLE */
-.title {
-  font-size: 48px;
-  font-weight: 700;
-  margin: 80px 60px;
-  margin-left: 10%;
+/* ========================================= */
+/* STORE SECTION TITLE ALIGNMENT */
+/* ========================================= */
+.title-container {
+  width: 92%; /* Matches the width of the image grid below it */
+  margin: 80px auto 30px auto; 
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #283618;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.title-bar {
+  width: 120px;
+  height: 6px;
+  background: linear-gradient(to right, #606c38, #bc6c25);
+  border-radius: 10px;
 }
 
 /* MAIN */
-.store-container{
-  width:92%;
-  margin:auto;
+.store-container {
+  width: 92%;
+  
+  /* NEW: Added 100px to the bottom to push the footer down */
+  margin: 0 auto 100px auto; 
 
-  display:grid;
-  grid-template-columns:2fr 1fr;
-
-  gap:35px;
-
-  align-items:start;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 35px;
+  align-items: start;
 }
 
 .store-grid{
