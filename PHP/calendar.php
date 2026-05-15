@@ -141,9 +141,10 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
           <span>Booked: <strong id="currentBooked" style="color:var(--brand)">0</strong></span>
           <span>Available: <strong id="slotsAvailable">100</strong></span>
         </div>
-      </div>
 
-    </div>
+      </div> <!-- end cap-card -->
+
+    </div> <!-- end cal-left -->
 
     <!-- RIGHT: booking detail panel -->
     <div class="det-card">
@@ -162,7 +163,6 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
 <style>
 /* ── CALENDAR PAGE STYLES ──────────────────────────────── */
 
-/* STAT CARDS */
 .cal-stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -218,7 +218,6 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
   border-radius: 99px;
 }
 
-/* RESERVATION LIST CARD */
 .res-list-card {
   background: var(--surface);
   border-radius: var(--r-xl);
@@ -244,12 +243,7 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
   color: var(--text-1);
 }
 
-.res-list-controls {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
+.res-list-controls { display: flex; gap: 10px; flex-wrap: wrap; }
 .res-table-wrap { overflow-x: auto; }
 
 .res-table {
@@ -307,7 +301,6 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
 .status-badge.completed { background: rgba(39,174,96,.12);  color: #27ae60; }
 .status-badge.cancelled { background: rgba(231,76,60,.10);  color: #e74c3c; }
 
-/* CALENDAR WRAPPER */
 .cal-wrapper {
   display: grid;
   grid-template-columns: 360px 1fr;
@@ -317,7 +310,6 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
 
 .cal-left { display: flex; flex-direction: column; gap: 16px; }
 
-/* CALENDAR CARD */
 .cal-card {
   background: var(--surface);
   border-radius: var(--r-xl);
@@ -402,11 +394,7 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
   line-height: 1;
 }
 
-.day.has-booking {
-  border-color: var(--brand);
-  background: var(--brand-lt);
-}
-
+.day.has-booking { border-color: var(--brand); background: var(--brand-lt); }
 .day.has-booking span { color: var(--brand-dk); }
 
 .day.has-booking small {
@@ -417,13 +405,15 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
   line-height: 1;
 }
 
-.day.today {
-  background: var(--brand);
-  border-color: var(--brand-dk);
-}
-
+.day.today { background: var(--brand); border-color: var(--brand-dk); }
 .day.today span { color: #fff; }
 .day.today small { color: rgba(255,255,255,0.85); }
+
+.day.selected {
+  border-color: var(--brand-dk);
+  box-shadow: 0 0 0 2px var(--brand);
+  transform: translateY(-2px);
+}
 
 /* CAPACITY CARD */
 .cap-card {
@@ -432,6 +422,7 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
   padding: 22px 24px;
   border: 1px solid var(--border);
   box-shadow: var(--shadow-sm);
+  position: relative;
 }
 
 .cap-header {
@@ -500,7 +491,7 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
   height: 100%;
   background: var(--brand);
   border-radius: 99px;
-  transition: width 0.4s ease;
+  transition: width 0.6s ease, background 0.4s ease;
 }
 
 .cap-footer {
@@ -509,6 +500,7 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
   font-size: 0.8rem;
   color: var(--text-2);
 }
+
 
 /* DETAIL CARD */
 .det-card {
@@ -543,7 +535,6 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
   padding: 40px 0;
 }
 
-/* BOOKING CARD inside detail panel */
 .booking-card {
   background: var(--surface-2);
   border-radius: var(--r-lg);
@@ -568,7 +559,6 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
   color: var(--text-1);
 }
 
-/* status badges inside detail card */
 .status {
   display: inline-flex;
   align-items: center;
@@ -610,11 +600,7 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
 
 .booking-grid p b { color: var(--text-3); font-weight: 600; }
 
-.booking-actions {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
+.booking-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 
 .booking-actions button {
   border: none;
@@ -630,22 +616,10 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
 }
 
 .booking-actions button:hover { opacity: 0.8; transform: translateY(-1px); }
+.booking-actions button:nth-child(2) { background: rgba(39,174,96,.12); color: #27ae60; }
+.booking-actions button.danger { background: rgba(231,76,60,.10); color: #e74c3c; }
 
-.booking-actions button:nth-child(2) {
-  background: rgba(39,174,96,.12);
-  color: #27ae60;
-}
-
-.booking-actions button.danger {
-  background: rgba(231,76,60,.10);
-  color: #e74c3c;
-}
-
-/* RESPONSIVE */
-@media (max-width: 1100px) {
-  .cal-wrapper { grid-template-columns: 1fr; }
-}
-
+@media (max-width: 1100px) { .cal-wrapper { grid-template-columns: 1fr; } }
 @media (max-width: 700px) {
   .cal-stats { grid-template-columns: 1fr 1fr; }
   .res-list-controls { flex-direction: column; }
@@ -655,55 +629,98 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
 <script>
 let nav = 0;
 let orders = [];
-let todayData = {};
 let dbCapacity = 100;
+let selectedDateKey = null; // null = show today's capacity
 
-/* ── FETCH ──────────────────────────────── */
+/* ── FETCH (called every 5 seconds) ─────────────────────── */
 async function fetchOrders() {
   try {
     const response = await fetch("admin_bookings.php?action=list");
     const data = await response.json();
 
-    if (data.success) {
-      orders = data.bookings;
+    if (!data.success) return;
 
-      if (data.stats) {
-        document.getElementById("totalReservations").innerText = data.stats.total    || 0;
-        document.getElementById("pendingBookings").innerText   = data.stats.pending  || 0;
-        document.getElementById("approvedBookings").innerText  = data.stats.approved || 0;
-      }
+    orders = data.bookings;
 
-      if (data.today) {
-        todayData = data.today;
-        document.getElementById("todayBookings").innerText = data.today.today_count || 0;
-      }
-
-      if (data.capacity) {
-        dbCapacity = parseInt(data.capacity) || 100;
-      }
-
-      renderCalendar();
-      loadReservationList();
-      updateStats();
-      updateCapacity();
+    if (data.capacity) {
+      dbCapacity = parseInt(data.capacity) || 100;
     }
+
+    updateStats();
+    updateCapacity();
+    renderCalendar();
+    loadReservationList();
+
   } catch (error) {
-    console.error(error);
+    console.error("fetchOrders error:", error);
   }
 }
 
-/* ── UPDATE STATUS ──────────────────────── */
-async function updateStatus(id, status) {
-  try {
-    await fetch("admin_bookings.php?action=update_status", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `id=${id}&status=${status}`
-    });
-    fetchOrders();
-  } catch (error) {
-    console.error(error);
+/* ── CAPACITY ────────────────────────────────────────────────
+   If a date is selected on the calendar, shows capacity for
+   that date. Otherwise defaults to today.
+───────────────────────────────────────────────────────────── */
+function updateCapacity(dateKey) {
+  // If a date was just clicked, store it; otherwise use whatever was stored
+  if (dateKey !== undefined) selectedDateKey = dateKey;
+
+  const today    = new Date();
+  const todayKey = `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`;
+  const targetKey = selectedDateKey || todayKey;
+
+  // Sum guests for the target date, excluding Cancelled
+  const bookedGuests = orders.reduce((sum, order) => {
+    if (order.status === "Cancelled") return sum;
+    if (!order.booking_datetime) return sum;
+    const d   = new Date(order.booking_datetime);
+    const key = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+    return key === targetKey ? sum + Number(order.guests || 0) : sum;
+  }, 0);
+
+  const available = Math.max(0, dbCapacity - bookedGuests);
+  const pct       = Math.min((bookedGuests / dbCapacity) * 100, 100);
+
+  // Update the cap-label to show which date we're viewing
+  const isToday   = targetKey === todayKey;
+  const labelEl   = document.querySelector(".cap-label");
+  if (labelEl) {
+    if (isToday) {
+      labelEl.textContent = "Maximum Guests — Today";
+    } else {
+      // Format the selected date nicely e.g. "May 16, 2026"
+      const [y, m, d] = targetKey.split("-").map(Number);
+      const dateLabel  = new Date(y, m, d).toLocaleDateString("en-us", {
+        month: "long", day: "numeric", year: "numeric"
+      });
+      labelEl.textContent = `Maximum Guests — ${dateLabel}`;
+    }
   }
+
+  document.getElementById("maxCapacity").textContent    = dbCapacity;
+  document.getElementById("currentBooked").textContent  = bookedGuests;
+  document.getElementById("slotsAvailable").textContent = available;
+
+  const fill = document.getElementById("capacityFill");
+  fill.style.width      = pct + "%";
+  fill.style.background = bookedGuests >= dbCapacity ? "#e74c3c" : "var(--brand)";
+}
+
+/* ── STATS CARDS ────────────────────────── */
+function updateStats() {
+  const today    = new Date();
+  const todayStr = `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`;
+
+  const todayCount = orders.filter(o => {
+    if (!o.booking_datetime) return false;
+    const d   = new Date(o.booking_datetime);
+    const key = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+    return key === todayStr;
+  }).length;
+
+  document.getElementById("totalReservations").textContent = orders.length;
+  document.getElementById("todayBookings").textContent     = todayCount;
+  document.getElementById("pendingBookings").textContent   = orders.filter(o => o.status === "Pending").length;
+  document.getElementById("approvedBookings").textContent  = orders.filter(o => o.status === "Approved").length;
 }
 
 /* ── CALENDAR RENDER ────────────────────── */
@@ -714,23 +731,25 @@ function renderCalendar() {
   const dt = new Date();
   if (nav !== 0) dt.setMonth(new Date().getMonth() + nav);
 
-  const month = dt.getMonth();
-  const year  = dt.getFullYear();
+  const month       = dt.getMonth();
+  const year        = dt.getFullYear();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const paddingDays = new Date(year, month, 1).getDay();
 
   monthDisplay.innerText = dt.toLocaleDateString("en-us", { month: "long", year: "numeric" });
   calendarGrid.innerHTML = "";
 
-  let ordersByDate = {};
+  // Group orders by date
+  const ordersByDate = {};
   orders.forEach(order => {
-    if (order.booking_datetime) {
-      const d   = new Date(order.booking_datetime);
-      const key = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
-      if (!ordersByDate[key]) ordersByDate[key] = [];
-      ordersByDate[key].push(order);
-    }
+    if (!order.booking_datetime) return;
+    const d   = new Date(order.booking_datetime);
+    const key = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+    if (!ordersByDate[key]) ordersByDate[key] = [];
+    ordersByDate[key].push(order);
   });
+
+  const today = new Date();
 
   for (let i = 1; i <= paddingDays + daysInMonth; i++) {
     const daySquare = document.createElement("div");
@@ -748,14 +767,27 @@ function renderCalendar() {
         const badge = document.createElement("small");
         badge.innerText = bookings.length + (bookings.length === 1 ? " booking" : " bookings");
         daySquare.appendChild(badge);
-        daySquare.addEventListener("click", () => showBookings(bookings));
+        daySquare.addEventListener("click", (e) => {
+          document.querySelectorAll(".day").forEach(d => d.classList.remove("selected"));
+          e.currentTarget.classList.add("selected");
+          showBookings(bookings, key);
+        });
+      } else {
+        // Clicking an empty day resets capacity to that day (0 guests)
+        daySquare.addEventListener("click", (e) => {
+          document.querySelectorAll(".day").forEach(d => d.classList.remove("selected"));
+          e.currentTarget.classList.add("selected");
+          selectedDateKey = key;
+          updateCapacity(key);
+          document.getElementById("bookingDetails").innerHTML =
+            `<p class="det-empty">No bookings on this date.</p>`;
+        });
       }
 
-      const today = new Date();
       if (
-        dayNumber   === today.getDate()  &&
-        month       === today.getMonth() &&
-        year        === today.getFullYear()
+        dayNumber === today.getDate()  &&
+        month     === today.getMonth() &&
+        year      === today.getFullYear()
       ) {
         daySquare.classList.add("today");
       }
@@ -765,10 +797,38 @@ function renderCalendar() {
   }
 }
 
-/* ── SHOW BOOKINGS ──────────────────────── */
-function showBookings(bookings) {
+/* ── SHOW BOOKINGS IN DETAIL PANEL ──────── */
+function showBookings(bookings, dateKey) {
+  // Update capacity bar for the clicked date
+  updateCapacity(dateKey);
+
+  // Highlight selected day on calendar
+  document.querySelectorAll(".day").forEach(d => d.classList.remove("selected"));
+  if (event && event.currentTarget) event.currentTarget.classList.add("selected");
+
   const container = document.getElementById("bookingDetails");
   container.innerHTML = "";
+
+  // Show a back-to-today button if not today
+  const today    = new Date();
+  const todayKey = `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`;
+  if (dateKey !== todayKey) {
+    container.innerHTML += `
+      <div style="margin-bottom:14px;">
+        <button onclick="resetToToday()" style="
+          border:1px solid var(--border);
+          background:var(--surface-2);
+          color:var(--text-2);
+          padding:6px 14px;
+          border-radius:99px;
+          font-size:0.75rem;
+          font-weight:600;
+          cursor:pointer;
+          font-family:'DM Sans',sans-serif;
+        ">← Back to Today</button>
+      </div>
+    `;
+  }
 
   bookings.forEach(order => {
     container.innerHTML += `
@@ -785,37 +845,37 @@ function showBookings(bookings) {
           <p><b>💰 Amount</b><br>₱${Number(order.amount).toLocaleString()}</p>
           <p><b>📅 Schedule</b><br>${new Date(order.booking_datetime).toLocaleString()}</p>
         </div>
-        <div class="booking-actions">
-          <button onclick="approveBooking(${order.id})">Approve</button>
-          <button onclick="completeBooking(${order.id})">Complete</button>
-          <button class="danger" onclick="cancelBooking(${order.id})">Cancel</button>
-        </div>
       </div>
     `;
   });
 }
 
-/* ── BUTTON ACTIONS ─────────────────────── */
+/* ── RESET TO TODAY ─────────────────────── */
+window.resetToToday = function () {
+  selectedDateKey = null;
+  updateCapacity();
+  document.querySelectorAll(".day").forEach(d => d.classList.remove("selected"));
+  document.getElementById("bookingDetails").innerHTML =
+    `<p class="det-empty">Select a date to view reservations.</p>`;
+};
+
+/* ── STATUS UPDATES ─────────────────────── */
+async function updateStatus(id, status) {
+  try {
+    await fetch("admin_bookings.php?action=update_status", {
+      method:  "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body:    `id=${id}&status=${status}`
+    });
+    fetchOrders(); // refresh everything including capacity
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 window.approveBooking  = id => updateStatus(id, "Approved");
 window.completeBooking = id => updateStatus(id, "Completed");
-window.cancelBooking   = id => updateStatus(id, "Cancelled");
-
-/* ── STATS ──────────────────────────────── */
-function updateStats() {
-  document.getElementById("totalReservations").innerText = orders.length;
-  document.getElementById("pendingBookings").innerText   = orders.filter(o => o.status === "Pending").length;
-  document.getElementById("approvedBookings").innerText  = orders.filter(o => o.status === "Approved").length;
-
-  const today    = new Date();
-  const todayKey = `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`;
-
-  document.getElementById("todayBookings").innerText = orders.filter(o => {
-    if (!o.booking_datetime) return false;
-    const d   = new Date(o.booking_datetime);
-    const key = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
-    return key === todayKey;
-  }).length;
-}
+window.cancelBooking   = id => { if (confirm("Cancel this booking?")) updateStatus(id, "Cancelled"); };
 
 /* ── RESERVATION TABLE ──────────────────── */
 function loadReservationList() {
@@ -836,7 +896,7 @@ function loadReservationList() {
       <td>${order.name}</td>
       <td>${order.phone}</td>
       <td>${order.occasion}</td>
-      <td>${order.guests}</td>
+      <td>${order.guests} pax</td>
       <td>₱${Number(order.amount).toLocaleString()}</td>
       <td>${order.payment_method}</td>
       <td><span class="status-badge ${order.status.toLowerCase()}">${order.status}</span></td>
@@ -844,28 +904,27 @@ function loadReservationList() {
     `;
     tableBody.appendChild(row);
   });
+
+  if (count === 1) {
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="9" style="text-align:center;padding:24px;color:#999;">
+          No reservations found.
+        </td>
+      </tr>
+    `;
+  }
 }
 
-/* ── CAPACITY ───────────────────────────── */
-function updateCapacity() {
-  const totalGuests = parseInt(todayData.today_guests) || 0;
-
-  document.getElementById("maxCapacity").textContent    = dbCapacity;
-  document.getElementById("currentBooked").textContent  = totalGuests;
-  document.getElementById("slotsAvailable").textContent = Math.max(0, dbCapacity - totalGuests);
-
-  const pct  = Math.min((totalGuests / dbCapacity) * 100, 100);
-  const fill = document.getElementById("capacityFill");
-  fill.style.width      = pct + "%";
-  fill.style.background = totalGuests >= dbCapacity ? "#e74c3c" : "var(--brand)";
-}
-
-/* ── SET LIMIT ──────────────────────────── */
+/* ── SET CAPACITY LIMIT ─────────────────── */
 window.setNewLimit = async function () {
   const input    = prompt("Enter new maximum guests per day:", dbCapacity);
   if (input === null) return;
   const newLimit = parseInt(input);
-  if (isNaN(newLimit) || newLimit < 1) { alert("Please enter a valid number greater than 0."); return; }
+  if (isNaN(newLimit) || newLimit < 1) {
+    alert("Please enter a valid number greater than 0.");
+    return;
+  }
 
   try {
     const res  = await fetch("admin_bookings.php?action=set_capacity", {
@@ -874,21 +933,27 @@ window.setNewLimit = async function () {
       body:    `limit=${newLimit}`
     });
     const json = await res.json();
-    if (json.success) { dbCapacity = newLimit; updateCapacity(); }
-    else alert("Failed to save limit. Please try again.");
+    if (json.success) {
+      dbCapacity = newLimit;
+      updateCapacity(); // immediately reflect new limit
+    } else {
+      alert("Failed to save limit. Please try again.");
+    }
   } catch (err) {
     console.error("setNewLimit error:", err);
     alert("Network error. Please try again.");
   }
 };
 
-/* ── CONTROLS ───────────────────────────── */
+/* ── CALENDAR NAV ───────────────────────── */
 document.getElementById("prevMonth").addEventListener("click", () => { nav--; renderCalendar(); });
 document.getElementById("nextMonth").addEventListener("click", () => { nav++; renderCalendar(); });
+
+/* ── SEARCH / FILTER ────────────────────── */
 document.getElementById("searchClient")?.addEventListener("input", loadReservationList);
 document.getElementById("statusFilter")?.addEventListener("change", loadReservationList);
 
-/* ── INIT ───────────────────────────────── */
+/* ── INIT + AUTO-REFRESH every 5 seconds ── */
 fetchOrders();
 setInterval(fetchOrders, 5000);
 </script>
