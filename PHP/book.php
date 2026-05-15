@@ -10,21 +10,35 @@ include("connect.php");
   <title>Cubiertos Food Hub Book</title>
   <link rel="stylesheet" href="../CSS/book.css">
   <link rel="icon" type="image/jpg" href="/IMAGES/logo.jpg">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-  <header>
-    <div class="logo">
-      <img src="../IMAGES/logo.jpg" alt="Cubiertos Food Hub Logo">
-    </div>
-    <nav>
+ <header class="glass-header">
+    <div class="nav-container">
+      
+      <a href="../HTML/main.html" class="logo">
+        <img src="../IMAGES/logo2.jpg" alt="Cubiertos Logo">
+        <div class="logo-text">
+          <h2>Cubiertos</h2>
+          <span>FOOD HUB</span>
+        </div>
+      </a>
+
+      <nav class="navbar">
         <a href="../HTML/main.html">Home</a>
         <a href="../HTML/about.html">About</a>
-        <a href="../HTML/Store.html">Our Stores</a>
+        <a href="../HTML/Store.html">Stores</a>
         <a href="../HTML/contacts.html">Contacts</a>
-        <a href="profile.php" class="login"><i>👤</i> Profile</a>
-    </nav>
+      </nav>
+
+      <a href="profile.php" class="login-btn">
+          <i>👤</i> Profile
+      </a>
+
+      <div class="menu-toggle" id="menuToggle">☰</div>
+      
+    </div>
   </header>
 
   <div class="socials">
@@ -253,6 +267,43 @@ include("connect.php");
     </div>
   </section>
 
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img src="../IMAGES/logo.jpg" alt="Cubiertos Food Hub" />
+        <p class="footer-tagline">
+          "Savor the flavors where every bite tells a story."
+        </p>
+      </div>
+      <div class="footer-links">
+        <a href="../HTML/main.html">Home</a>
+        <a href="../HTML/about.html">About</a>
+        <a href="../HTML/Store.html">Our Stores</a>
+        <a href="../HTML/contacts.html">Contacts</a>
+        <a href="../HTML/login.html">Log in</a>
+      </div>
+      <div class="footer-contact">
+        <strong>Get in touch</strong>
+        Food & Drink · Virac, Philippines 4800<br />
+        Contact: 0981 027 0704
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Cubiertos.food.hub — All rights reserved.</span>
+      <div class="footer-socials">
+        <a href="https://www.facebook.com/profile.php?id=61555258696901" target="_blank" aria-label="Facebook">
+          <img src="../IMAGES/Facebook.png" alt="Facebook" />
+        </a>
+        <a href="https://www.instagram.com/cubiertos2024/" target="_blank" aria-label="Instagram">
+          <img src="../IMAGES/Instagram.png" alt="Instagram" />
+        </a>
+        <a href="https://mail.google.com/mail/u/0/#inbox?compose=new" target="_blank" aria-label="Mail">
+          <img src="../IMAGES/Mail.png" alt="Mail" />
+        </a>
+      </div>
+    </div>
+  </footer>
+
   <!-- ================= JS ================= -->
   <script>
   document.addEventListener("DOMContentLoaded", function () {
@@ -314,6 +365,13 @@ include("connect.php");
     });
 
   });
+
+  // Glass Header Scroll Effect
+    window.addEventListener("scroll", function () {
+      const header = document.querySelector(".glass-header");
+      if(header) header.classList.toggle("scrolled", window.scrollY > 50);
+    });
+    
   </script>
 
 </body>

@@ -232,10 +232,19 @@ body {
 .hero-content {
   max-width: 700px;
   z-index: 2;
-  text-align: center; /* ADDED: Centers the text itself */
-  display: flex; /* ADDED: Flexbox for better structural alignment */
-  flex-direction: column; /* ADDED: Stacks heading and paragraph */
-  align-items: center; /* ADDED: Ensures perfect center alignment */
+  text-align: center; 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  
+  /* NEW: Adds a beautiful dark glass box behind the text */
+  background: rgba(0, 0, 0, 0.35); 
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 50px 60px;
+  border-radius: 35px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
 }
 
 .hero-badge {
@@ -258,14 +267,15 @@ body {
 }
 
 .hero h1 {
-  font-size: 5rem;
+  /* Reduced from 5rem to 4rem so it fits the box perfectly */
+  font-size: 4rem; 
   line-height: 1.05;
-
   color: white;
-
-  margin-bottom: 22px;
-
+  margin-bottom: 18px;
   font-weight: 800;
+  
+  /* NEW: Adds a soft shadow to the text to make it pop */
+  text-shadow: 2px 4px 10px rgba(0, 0, 0, 0.5); 
 }
 
 .hero h1 span {
