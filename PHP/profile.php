@@ -15,25 +15,18 @@ $email = $_SESSION['email'];
 if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] === UPLOAD_ERR_OK) {
     $file     = $_FILES['profile_picture'];
     $allowed  = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-    $maxSize  = 2 * 1024 * 1024; // 2MB
+    $maxSize  = 2 * 1024 * 1024;
 
     if (!in_array($file['type'], $allowed)) {
         $pic_error = "Only JPG, PNG, GIF, or WEBP images are allowed.";
     } elseif ($file['size'] > $maxSize) {
         $pic_error = "Image must be under 2MB.";
     } else {
-        // Save to /webtools-main/IMAGES/profiles/
         $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/webtools-main/IMAGES/profiles/';
-
-        if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0755, true);
-        }
-
-        // Unique filename using email hash
+        if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
         $ext      = pathinfo($file['name'], PATHINFO_EXTENSION);
         $filename = md5($email) . '.' . $ext;
         $destPath = $uploadDir . $filename;
-
         if (move_uploaded_file($file['tmp_name'], $destPath)) {
             $picPath = 'profiles/' . $filename;
             $stmt = $conn->prepare("UPDATE users SET profile_picture=? WHERE email=?");
@@ -59,7 +52,6 @@ if (isset($_POST['updateProfile'])) {
     $stmt->bind_param("sssss", $full_name, $phone, $address, $birthday, $email);
     $stmt->execute();
     $stmt->close();
-
     header("Location: profile.php?saved=1");
     exit();
 }
@@ -104,24 +96,25 @@ $stmt->execute();
 $user = $stmt->get_result()->fetch_assoc();
 $stmt->close();
 
-// ── Auto-fill full_name ──
 if (empty($user['full_name']) && !empty($user['firstName'])) {
     $user['full_name'] = trim($user['firstName'] . ' ' . $user['lastName']);
 }
 
-// ── Profile picture path ──
 $picSrc = null;
 if (!empty($user['profile_picture'])) {
     $picSrc = '/webtools-main/IMAGES/' . $user['profile_picture'];
 }
 
-// ── Fetch bookings ──
+// ── Fetch bookings from DB (real-time status) ──
 $bookings   = [];
 $tableCheck = $conn->query("SHOW TABLES LIKE 'bookings'");
 if ($tableCheck && $tableCheck->num_rows > 0) {
     $stmt = $conn->prepare("
-        SELECT ticket, occasion, package, booking_datetime, amount, payment_method, status
-        FROM bookings WHERE email=? ORDER BY created_at DESC
+        SELECT ticket, occasion, package, booking_datetime,
+               amount, payment_method, status, guests, special_notes
+        FROM bookings
+        WHERE email = ?
+        ORDER BY created_at DESC
     ");
     $stmt->bind_param("s", $email);
     $stmt->execute();
@@ -147,15 +140,15 @@ $is_birthday = ($bday_value === date("Y-m-d"));
 
 // ── Helpers ──
 function statusBadge($status) {
+    $s = strtolower(trim($status));
     $map = [
-        'pending'   => ['Pending',   '#b45309', '#fef3c7'],
-        'approved'  => ['Approved',  '#1d6fa4', '#e0f0fb'],
-        'completed' => ['Completed', '#15803d', '#dcfce7'],
-        'cancelled' => ['Cancelled', '#b91c1c', '#fee2e2'],
+        'pending'   => ['Pending',   '#b45309', '#fef3c7', '🕐'],
+        'approved'  => ['Approved',  '#1d6fa4', '#dbeafe', '✅'],
+        'completed' => ['Completed', '#15803d', '#dcfce7', '🎉'],
+        'cancelled' => ['Cancelled', '#b91c1c', '#fee2e2', '✖'],
     ];
-    $s = strtolower($status);
-    [$label, $color, $bg] = $map[$s] ?? [ucfirst($status), '#555', '#f3f4f6'];
-    return "<span style=\"background:$bg;color:$color;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;\">$label</span>";
+    [$label, $color, $bg, $icon] = $map[$s] ?? [ucfirst($status), '#555', '#f3f4f6', '•'];
+    return "<span class=\"status-badge\" style=\"background:$bg;color:$color;\">$icon $label</span>";
 }
 function val($v)      { return !empty($v) ? htmlspecialchars($v) : ''; }
 function ph($v, $lbl) { return empty($v)  ? "<span class=\"empty\">$lbl</span>" : htmlspecialchars($v); }
@@ -171,71 +164,145 @@ $default_fullname = val($user['full_name'] ?: trim(($user['firstName'] ?? '') . 
     <title>My Profile – Cubiertos Food Hub</title>
     <link rel="stylesheet" href="../CSS/profile.css">
     <style>
-        /* ── AVATAR / PICTURE UPLOAD ── */
+        /* ── AVATAR ── */
         .avatar {
-            position: relative;
-            width: 72px;
-            height: 72px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.15);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            overflow: hidden;
+            position: relative; width: 72px; height: 72px;
+            border-radius: 50%; background: rgba(255,255,255,0.15);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; overflow: hidden;
             border: 3px solid rgba(255,255,255,0.4);
-            transition: border-color 0.2s;
-            flex-shrink: 0;
+            transition: border-color 0.2s; flex-shrink: 0;
         }
-
         .avatar:hover { border-color: #fff; }
+        .avatar img   { width:100%; height:100%; object-fit:cover; border-radius:50%; }
+        .avatar-overlay {
+            position:absolute; inset:0; background:rgba(0,0,0,0.45);
+            border-radius:50%; display:flex; flex-direction:column;
+            align-items:center; justify-content:center;
+            opacity:0; transition:opacity 0.2s; gap:2px;
+        }
+        .avatar:hover .avatar-overlay { opacity:1; }
+        .avatar-overlay span { color:#fff; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; }
+        .avatar-overlay svg  { color:#fff; }
+        #picInput { display:none; }
+        .pic-error { background:#fee2e2; color:#b91c1c; font-size:12px; padding:8px 14px; border-radius:8px; margin:8px 16px 0; }
 
-        .avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
+        /* ── BOOKING CARDS ── */
+        .booking-list { display:flex; flex-direction:column; gap:16px; }
+
+        .booking-card {
+            border: 1px solid #ede8e0;
+            border-radius: 14px;
+            padding: 16px 18px;
+            background: #fdfcfa;
+            transition: box-shadow 0.2s;
+        }
+        .booking-card:hover { box-shadow: 0 4px 18px rgba(0,0,0,0.07); }
+
+        .booking-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .booking-occasion { font-weight: 700; font-size: 15px; color: #2c2416; }
+        .booking-ticket   { font-size: 11px; color: #bbb; font-weight: 400; margin-left: 6px; }
+
+        .status-badge {
+            font-size: 11px; font-weight: 700;
+            padding: 4px 12px; border-radius: 20px;
+            white-space: nowrap; flex-shrink: 0;
         }
 
-        /* Overlay shown on hover */
-        .avatar-overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(0,0,0,0.45);
-            border-radius: 50%;
+        .booking-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 7px 16px;
+            font-size: 12.5px;
+            color: #7a6e62;
+            margin-bottom: 4px;
+        }
+        .booking-detail-item { display:flex; align-items:center; gap:5px; }
+        .booking-detail-item svg { flex-shrink:0; opacity:0.55; }
+
+        .booking-notes {
+            margin-top: 10px;
+            padding: 8px 12px;
+            background: #f5f0e8;
+            border-radius: 8px;
+            font-size: 12px;
+            color: #7a6e62;
+            font-style: italic;
+        }
+
+        /* ── STATUS PROGRESS TRACKER ── */
+        .status-tracker {
+            display: flex;
+            align-items: flex-start;
+            margin-top: 16px;
+            padding-top: 14px;
+            border-top: 1px solid #ede8e0;
+        }
+        .tracker-step {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.2s;
-            gap: 2px;
+            flex: 1;
+            position: relative;
         }
-
-        .avatar:hover .avatar-overlay { opacity: 1; }
-
-        .avatar-overlay span {
-            color: #fff;
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            line-height: 1;
+        /* connector line between steps */
+        .tracker-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 11px;
+            left: 50%;
+            width: 100%;
+            height: 2px;
+            background: #e5ddd4;
+            z-index: 0;
         }
+        .tracker-step.done:not(:last-child)::after { background: #c49a3c; }
 
-        .avatar-overlay svg { color: #fff; }
+        .tracker-dot {
+            width: 22px; height: 22px;
+            border-radius: 50%;
+            background: #ede8e0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 10px; font-weight: 700;
+            position: relative; z-index: 1;
+            border: 2px solid #e5ddd4;
+            transition: all 0.3s;
+            color: #bbb;
+        }
+        .tracker-step.done   .tracker-dot { background:#c49a3c; border-color:#c49a3c; color:#fff; }
+        .tracker-step.active .tracker-dot { background:#fff; border-color:#c49a3c; color:#c49a3c; box-shadow:0 0 0 3px rgba(196,154,60,0.18); }
+        .tracker-step.cancelled .tracker-dot { background:#fee2e2; border-color:#b91c1c; color:#b91c1c; }
 
-        /* Hidden file input */
-        #picInput { display: none; }
+        .tracker-label {
+            margin-top: 6px; font-size: 10px;
+            color: #bbb; font-weight: 500; text-align: center;
+        }
+        .tracker-step.done   .tracker-label { color:#c49a3c; font-weight:600; }
+        .tracker-step.active .tracker-label { color:#5c3d1e; font-weight:700; }
+        .tracker-step.cancelled .tracker-label { color:#b91c1c; font-weight:600; }
 
-        /* Error message */
-        .pic-error {
-            background: #fee2e2;
-            color: #b91c1c;
-            font-size: 12px;
-            padding: 8px 14px;
-            border-radius: 8px;
-            margin: 8px 16px 0;
+        /* ── EMPTY STATE ── */
+        .order-empty { text-align:center; padding:36px 20px; }
+        .order-empty p { color:#aaa; font-size:13.5px; margin-bottom:16px; line-height:1.6; }
+        .browse-btn {
+            display:inline-block; padding:10px 24px;
+            background:#5c3d1e; color:#fff;
+            border-radius:10px; text-decoration:none;
+            font-size:13px; font-weight:600;
+            transition:background 0.2s;
+        }
+        .browse-btn:hover { background:#7a5230; }
+
+        .order-count {
+            font-size:11px; background:#f0ebe3;
+            color:#7a6e62; padding:3px 10px;
+            border-radius:20px; font-weight:500;
         }
     </style>
 </head>
@@ -267,11 +334,8 @@ $default_fullname = val($user['full_name'] ?: trim(($user['firstName'] ?? '') . 
 
         <div class="hero-bottom">
             <div class="hero-left">
-
-                <!-- AVATAR — click to upload -->
                 <form method="POST" action="profile.php" enctype="multipart/form-data" id="picForm">
                     <div class="avatar" onclick="document.getElementById('picInput').click()" title="Change profile picture">
-
                         <?php if ($picSrc): ?>
                             <img src="<?= htmlspecialchars($picSrc) ?>" alt="Profile picture" id="avatarImg">
                         <?php else: ?>
@@ -280,7 +344,6 @@ $default_fullname = val($user['full_name'] ?: trim(($user['firstName'] ?? '') . 
                             </svg>
                             <img id="avatarImg" src="" alt="" style="display:none;">
                         <?php endif; ?>
-
                         <div class="avatar-overlay">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
@@ -291,7 +354,6 @@ $default_fullname = val($user['full_name'] ?: trim(($user['firstName'] ?? '') . 
                     </div>
                     <input type="file" name="profile_picture" id="picInput" accept="image/*">
                 </form>
-
                 <div>
                     <div class="hero-name"><?= $display_first ?></div>
                     <span class="hero-badge">🌱 New Customer</span>
@@ -398,14 +460,12 @@ $default_fullname = val($user['full_name'] ?: trim(($user['firstName'] ?? '') . 
                         <?= $existing_review ? 'Update your review' : 'Leave a review' ?>
                     </div>
                 </div>
-
                 <?php if ($review_success): ?>
                     <div class="alert-success">✅ <?= htmlspecialchars($review_success) ?></div>
                 <?php endif; ?>
                 <?php if ($review_error): ?>
                     <div class="alert-error">⚠️ <?= htmlspecialchars($review_error) ?></div>
                 <?php endif; ?>
-
                 <form method="POST" action="profile.php">
                     <input type="hidden" name="submitReview" value="1">
                     <div class="stars" id="stars">
@@ -427,15 +487,13 @@ $default_fullname = val($user['full_name'] ?: trim(($user['firstName'] ?? '') . 
 
         </div>
 
-        <!-- RIGHT COL -->
+        <!-- RIGHT COL — BOOKING STATUS -->
         <div class="right-col">
-
-            <!-- BOOKING HISTORY -->
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                        Booking History
+                        Booking Status
                     </div>
                     <?php if (count($bookings) > 0): ?>
                         <span class="order-count"><?= count($bookings) ?> booking<?= count($bookings) > 1 ? 's' : '' ?></span>
@@ -444,36 +502,100 @@ $default_fullname = val($user['full_name'] ?: trim(($user['firstName'] ?? '') . 
 
                 <?php if (empty($bookings)): ?>
                     <div class="order-empty">
-                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="display:block;margin:0 auto 10px;color:#ccc;"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="display:block;margin:0 auto 10px;color:#ccc;">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/>
+                        </svg>
                         <p>No bookings yet.<br>Book an event with us!</p>
                         <a href="homepage.php" class="browse-btn">Book now</a>
                     </div>
+
                 <?php else: ?>
-                    <div class="order-list">
-                        <?php foreach ($bookings as $b): ?>
-                            <div class="order-row">
-                                <div class="order-info">
-                                    <div class="order-name">
-                                        <?= htmlspecialchars($b['occasion']) ?>
-                                        <span style="font-size:11px;color:#aaa;font-weight:400;margin-left:6px;">#<?= htmlspecialchars($b['ticket']) ?></span>
-                                    </div>
-                                    <div class="order-meta">
-                                        <?= ucfirst($b['package']) ?> &nbsp;·&nbsp;
-                                        ₱<?= number_format($b['amount'], 2) ?> &nbsp;·&nbsp;
-                                        <?= date("M j, Y", strtotime($b['booking_datetime'])) ?>
-                                    </div>
-                                    <div class="order-meta" style="margin-top:2px;">
-                                        Payment Method: <?= htmlspecialchars($b['payment_method']) ?>
-                                    </div>
-                                    <div><?= statusBadge($b['status']) ?></div>
+                    <div class="booking-list">
+                        <?php foreach ($bookings as $b):
+                            $s           = strtolower(trim($b['status']));
+                            $isCancelled = ($s === 'cancelled');
+                            // Step order for the progress tracker
+                            $stepOrder   = ['pending' => 0, 'approved' => 1, 'completed' => 2];
+                            $currentIdx  = $stepOrder[$s] ?? -1;
+                            $steps       = [
+                                'pending'   => 'Pending',
+                                'approved'  => 'Approved',
+                                'completed' => 'Completed',
+                            ];
+                        ?>
+                        <div class="booking-card">
+
+                            <!-- TOP ROW: occasion + status badge -->
+                            <div class="booking-card-top">
+                                <div>
+                                    <span class="booking-occasion"><?= htmlspecialchars($b['occasion']) ?></span>
+                                    <span class="booking-ticket">#<?= htmlspecialchars($b['ticket']) ?></span>
+                                </div>
+                                <?= statusBadge($b['status']) ?>
+                            </div>
+
+                            <!-- DETAIL GRID -->
+                            <div class="booking-details">
+                                <div class="booking-detail-item">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                                    <?= date("M j, Y · g:i A", strtotime($b['booking_datetime'])) ?>
+                                </div>
+                                <div class="booking-detail-item">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                                    <?= (int)$b['guests'] ?> guest<?= (int)$b['guests'] !== 1 ? 's' : '' ?>
+                                </div>
+                                <div class="booking-detail-item">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                                    ₱<?= number_format($b['amount'], 2) ?> · <?= htmlspecialchars($b['package']) ?>
+                                </div>
+                                <div class="booking-detail-item">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                                    <?= htmlspecialchars($b['payment_method']) ?>
                                 </div>
                             </div>
+
+                            <!-- SPECIAL NOTES -->
+                            <?php if (!empty($b['special_notes'])): ?>
+                                <div class="booking-notes">📝 <?= htmlspecialchars($b['special_notes']) ?></div>
+                            <?php endif; ?>
+
+                            <!-- STATUS PROGRESS TRACKER -->
+                            <?php if (!$isCancelled): ?>
+                            <div class="status-tracker">
+                                <?php foreach ($steps as $key => $label):
+                                    $idx = $stepOrder[$key];
+                                    if      ($idx < $currentIdx)       $cls = 'done';
+                                    elseif  ($idx === $currentIdx)     $cls = 'active';
+                                    else                               $cls = '';
+                                ?>
+                                <div class="tracker-step <?= $cls ?>">
+                                    <div class="tracker-dot">
+                                        <?php if ($idx < $currentIdx): ?>✓
+                                        <?php elseif ($idx === $currentIdx): ?>●
+                                        <?php else: ?>○
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="tracker-label"><?= $label ?></div>
+                                </div>
+                                <?php endforeach; ?>
+                            </div>
+                            <?php else: ?>
+                            <div class="status-tracker">
+                                <div class="tracker-step cancelled" style="flex:none;align-items:flex-start;flex-direction:row;gap:8px;">
+                                    <div class="tracker-dot" style="flex-shrink:0;">✖</div>
+                                    <div class="tracker-label" style="margin-top:4px;">This booking was cancelled.</div>
+                                </div>
+                            </div>
+                            <?php endif; ?>
+
+                        </div>
                         <?php endforeach; ?>
                     </div>
                 <?php endif; ?>
             </div>
-
         </div>
+
     </div>
 </div>
 
@@ -495,12 +617,10 @@ function cancelEdit() {
     document.getElementById('formActions').style.display = 'none';
 }
 
-// ── Profile picture: preview before upload, then auto-submit ──
+// ── Profile picture: preview + auto-submit ──
 document.getElementById('picInput').addEventListener('change', function () {
     const file = this.files[0];
     if (!file) return;
-
-    // Show instant preview
     const reader = new FileReader();
     reader.onload = function (e) {
         const img = document.getElementById('avatarImg');
@@ -510,8 +630,6 @@ document.getElementById('picInput').addEventListener('change', function () {
         if (svg) svg.style.display = 'none';
     };
     reader.readAsDataURL(file);
-
-    // Auto-submit the form to upload
     document.getElementById('picForm').submit();
 });
 
@@ -520,13 +638,9 @@ const rLabels = ['','Poor','Fair','Good','Great','Excellent'];
 let rating = parseInt(document.getElementById('ratingInput').value) || 0;
 const stars = document.querySelectorAll('#stars .star');
 stars.forEach(s => {
-    s.addEventListener('click', () => {
-        rating = +s.dataset.v;
-        document.getElementById('ratingInput').value = rating;
-        updateStars(rating);
-    });
-    s.addEventListener('mouseover', () => updateStars(+s.dataset.v));
-    s.addEventListener('mouseout',  () => updateStars(rating));
+    s.addEventListener('click',    () => { rating = +s.dataset.v; document.getElementById('ratingInput').value = rating; updateStars(rating); });
+    s.addEventListener('mouseover',() => updateStars(+s.dataset.v));
+    s.addEventListener('mouseout', () => updateStars(rating));
 });
 function updateStars(n) {
     stars.forEach(s => s.classList.toggle('on', +s.dataset.v <= n));
