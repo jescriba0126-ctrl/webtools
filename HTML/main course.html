@@ -1,70 +1,786 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Main Course - Cubiertos</title>
-  <link rel="stylesheet" href="../CSS/main course.css">
-<link rel="icon" type="image/jpg" href="/IMAGES/logo.jpg">
-</head>
-<body>
-  <section class="menu-section">
-    <div class="menu-header">
-      <img src="../IMAGES/main course.jpg" alt="Main Course Header" class="header-img">
-      <h1>Main Course</h1>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Main Course — Cubiertos Food Hub</title>
+    <link rel="icon" type="image/jpg" href="../IMAGES/logo.jpg" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      :root {
+        --olive: #606c38;
+        --olive-light: #8a9c52;
+        --amber: #dda15e;
+        --amber-dark: #bc6c25;
+        --cream: #fefae0;
+        --dark: #1a1a14;
+        --text: #2d2d20;
+        --muted: #7a7a62;
+        --bg: #f8f5ee;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: "Poppins", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        overflow-x: hidden;
+      }
+
+      header {
+        position: fixed;
+        top: 18px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 94%;
+        max-width: 1300px;
+        z-index: 1000;
+        padding: 14px 32px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(254, 250, 224, 0.75);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(96, 108, 56, 0.2);
+        border-radius: 60px;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+        transition:
+          background 0.4s,
+          box-shadow 0.4s;
+      }
+      header.scrolled {
+        background: rgba(254, 250, 224, 0.96);
+        box-shadow: 0 6px 32px rgba(0, 0, 0, 0.1);
+      }
+      .logo img {
+        width: 120px;
+        height: auto;
+        display: block;
+      }
+      nav {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      nav a {
+        padding: 8px 16px;
+        text-decoration: none;
+        color: var(--text);
+        font-size: 0.875rem;
+        font-weight: 400;
+        letter-spacing: 0.02em;
+        border-radius: 40px;
+        transition:
+          background 0.2s,
+          color 0.2s;
+      }
+      nav a:hover {
+        background: rgba(96, 108, 56, 0.12);
+        color: var(--olive);
+      }
+      nav a.login {
+        background: var(--olive);
+        color: #fff;
+        font-weight: 500;
+        padding: 8px 20px;
+      }
+      nav a.login:hover {
+        background: var(--amber-dark);
+      }
+
+      .hero {
+        position: relative;
+        height: 55vh;
+        min-height: 400px;
+        overflow: hidden;
+        display: flex;
+        align-items: flex-end;
+      }
+      .hero-bg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        animation: slowZoom 18s ease-in-out infinite alternate;
+      }
+      @keyframes slowZoom {
+        from {
+          transform: scale(1);
+        }
+        to {
+          transform: scale(1.06);
+        }
+      }
+      .hero-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0.08) 0%,
+          rgba(10, 10, 5, 0.72) 80%,
+          rgba(10, 10, 5, 0.92) 100%
+        );
+      }
+      .hero-content {
+        position: relative;
+        z-index: 2;
+        padding: 0 100px 64px;
+      }
+      .hero-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.72rem;
+        font-weight: 500;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--amber);
+        margin-bottom: 14px;
+      }
+      .hero-eyebrow::before {
+        content: "";
+        display: block;
+        width: 36px;
+        height: 1px;
+        background: var(--amber);
+      }
+      .hero-content h1 {
+        font-family: "Poppins", serif;
+        font-size: clamp(2.8rem, 5vw, 4.5rem);
+        font-weight: 400;
+        line-height: 1.05;
+        color: #fff;
+      }
+      .hero-content h1 em {
+        font-style: italic;
+        color: var(--amber);
+      }
+
+      .back-wrap {
+        padding: 36px 100px 0;
+      }
+      .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 22px;
+        border: 1.5px solid rgba(96, 108, 56, 0.35);
+        border-radius: 40px;
+        background: transparent;
+        font-family: "Poppins", sans-serif;
+        font-size: 0.8rem;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--olive);
+        cursor: pointer;
+        transition:
+          background 0.25s,
+          color 0.25s,
+          border-color 0.25s;
+        text-decoration: none;
+      }
+      .back-btn:hover {
+        background: var(--olive);
+        color: #fff;
+        border-color: var(--olive);
+      }
+      .back-btn svg {
+        width: 16px;
+        height: 16px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .menu-section {
+        padding: 56px 100px 100px;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+      .section-intro {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        margin-bottom: 56px;
+        padding-bottom: 32px;
+        border-bottom: 1px solid rgba(96, 108, 56, 0.15);
+      }
+      .section-label {
+        font-size: 0.72rem;
+        font-weight: 500;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--olive);
+        margin-bottom: 10px;
+      }
+      .section-title {
+        font-family: "Poppins", serif;
+        font-size: clamp(1.8rem, 3vw, 2.6rem);
+        font-weight: 400;
+        color: var(--dark);
+        line-height: 1.15;
+      }
+      .section-title em {
+        font-style: italic;
+        color: var(--olive);
+      }
+      .section-count {
+        font-size: 0.82rem;
+        color: var(--muted);
+        font-weight: 300;
+        text-align: right;
+      }
+      .section-count strong {
+        font-size: 2rem;
+        font-weight: 600;
+        color: var(--olive);
+        display: block;
+        line-height: 1;
+      }
+
+      /* Category heading */
+      .category-heading {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 28px;
+        margin-top: 56px;
+      }
+      .category-heading:first-of-type {
+        margin-top: 0;
+      }
+      .category-heading h3 {
+        font-family: "Poppins", sans-serif;
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: var(--olive);
+      }
+      .category-heading::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: rgba(96, 108, 56, 0.18);
+      }
+      .category-icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: var(--olive);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+      }
+
+      .cards-grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+      }
+      .cards-grid-4 {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+      }
+
+      .item-card {
+        background: #fff;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 2px 16px rgba(0, 0, 0, 0.055);
+        transition:
+          transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+          box-shadow 0.35s;
+        position: relative;
+      }
+      .item-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.11);
+      }
+      .card-img-wrap {
+        position: relative;
+        overflow: hidden;
+        height: 220px;
+      }
+      .card-img-wrap img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+      .item-card:hover .card-img-wrap img {
+        transform: scale(1.08);
+      }
+      .card-badge {
+        position: absolute;
+        top: 14px;
+        left: 14px;
+        background: rgba(254, 250, 224, 0.92);
+        backdrop-filter: blur(8px);
+        border-radius: 30px;
+        padding: 4px 12px;
+        font-size: 0.65rem;
+        font-weight: 500;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--olive);
+      }
+      .card-body {
+        padding: 22px 22px 24px;
+      }
+      .card-body h3 {
+        font-family: "Poppins", serif;
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: var(--dark);
+        margin-bottom: 8px;
+        line-height: 1.3;
+      }
+      .card-body p {
+        font-size: 0.82rem;
+        color: var(--muted);
+        font-weight: 300;
+        line-height: 1.6;
+        margin-bottom: 18px;
+      }
+      .card-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .price {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: var(--amber-dark);
+        letter-spacing: -0.01em;
+      }
+      .order-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 16px;
+        border-radius: 30px;
+        background: var(--olive);
+        color: #fff;
+        font-family: "Poppins", sans-serif;
+        font-size: 0.72rem;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        border: none;
+        cursor: pointer;
+        transition:
+          background 0.25s,
+          transform 0.2s;
+      }
+      .order-btn:hover {
+        background: var(--amber-dark);
+        transform: scale(1.04);
+      }
+
+      .flavor-strip {
+        background: var(--olive);
+        overflow: hidden;
+        padding: 18px 0;
+        white-space: nowrap;
+      }
+      .flavor-track {
+        display: inline-flex;
+        gap: 0;
+        animation: marquee 22s linear infinite;
+      }
+      @keyframes marquee {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-50%);
+        }
+      }
+      .flavor-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 16px;
+        padding: 0 32px;
+        font-size: 0.78rem;
+        font-weight: 400;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.7);
+      }
+      .flavor-item .dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--amber);
+        flex-shrink: 0;
+      }
+
+      footer {
+        background: var(--dark);
+        padding: 56px 80px 36px;
+        color: rgba(255, 255, 255, 0.55);
+      }
+      .footer-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding-bottom: 40px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: 32px;
+      }
+      .footer-brand {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .footer-brand img {
+        width: 100px;
+        filter: brightness(0) invert(1) opacity(0.8);
+      }
+      .footer-tagline {
+        font-size: 0.82rem;
+        font-style: italic;
+        color: rgba(255, 255, 255, 0.4);
+        max-width: 200px;
+        line-height: 1.5;
+        font-family: "Poppins", serif;
+      }
+      .footer-links {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .footer-links a {
+        text-decoration: none;
+        color: rgba(255, 255, 255, 0.55);
+        font-size: 0.875rem;
+        transition: color 0.2s;
+      }
+      .footer-links a:hover {
+        color: var(--amber);
+      }
+      .footer-contact {
+        font-size: 0.82rem;
+        line-height: 1.8;
+      }
+      .footer-contact strong {
+        color: rgba(255, 255, 255, 0.8);
+        display: block;
+        margin-bottom: 6px;
+      }
+      .footer-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.78rem;
+      }
+      .footer-socials {
+        display: flex;
+        gap: 16px;
+      }
+      .footer-socials a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        transition:
+          border-color 0.2s,
+          background 0.2s;
+      }
+      .footer-socials a:hover {
+        border-color: var(--amber);
+        background: rgba(221, 161, 94, 0.1);
+      }
+      .footer-socials img {
+        width: 16px;
+        height: 16px;
+        filter: brightness(0) invert(1) opacity(0.7);
+      }
+
+      @media (max-width: 1100px) {
+        .cards-grid-4 {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (max-width: 700px) {
+        .hero-content,
+        .back-wrap,
+        .menu-section {
+          padding-left: 24px;
+          padding-right: 24px;
+        }
+        .cards-grid-2,
+        .cards-grid-4 {
+          grid-template-columns: 1fr;
+        }
+        .section-intro {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 12px;
+        }
+        footer {
+          padding: 40px 24px 24px;
+        }
+        .footer-top {
+          flex-direction: column;
+          gap: 30px;
+        }
+        .footer-bottom {
+          flex-direction: column;
+          gap: 14px;
+          text-align: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header id="header">
+      <div class="logo">
+        <img src="../IMAGES/logo.jpg" alt="Cubiertos Food Hub Logo" />
+      </div>
+      <nav>
+        <a href="../HTML/main.html">Home</a>
+        <a href="../HTML/about.html">About</a>
+        <a href="../HTML/Store.html">Stores</a>
+        <a href="../HTML/contacts.html">Contacts</a>
+        <a href="../HTML/login.html" class="login">👤 Log in</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <img src="../IMAGES/main course.jpg" alt="Main Course" class="hero-bg" />
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <div class="hero-eyebrow">The Centerpiece</div>
+        <h1>Main <em>Course</em></h1>
+      </div>
+    </section>
+
+    <div class="back-wrap">
+      <a href="menu.html" class="back-btn">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6" /></svg>
+        Back to Menu
+      </a>
     </div>
 
-    <div class="menu-container">
-      <button class="back-btn" onclick="window.location.href='menu.html'">⮌ GO BACK</button>
+    <div class="flavor-strip" aria-hidden="true" style="margin-top: 36px">
+      <div class="flavor-track">
+        <span class="flavor-item"
+          ><span class="dot"></span>Crispy Fried Chicken</span
+        >
+        <span class="flavor-item"><span class="dot"></span>Chicken Curry</span>
+        <span class="flavor-item"><span class="dot"></span>Kare-Kare</span>
+        <span class="flavor-item"><span class="dot"></span>Sizzling Sisig</span>
+        <span class="flavor-item"
+          ><span class="dot"></span>Binagoongang Bagnet</span
+        >
+        <span class="flavor-item"><span class="dot"></span>Lechon Kawali</span>
+        <span class="flavor-item"
+          ><span class="dot"></span>Crispy Fried Chicken</span
+        >
+        <span class="flavor-item"><span class="dot"></span>Chicken Curry</span>
+        <span class="flavor-item"><span class="dot"></span>Kare-Kare</span>
+        <span class="flavor-item"><span class="dot"></span>Sizzling Sisig</span>
+        <span class="flavor-item"
+          ><span class="dot"></span>Binagoongang Bagnet</span
+        >
+        <span class="flavor-item"><span class="dot"></span>Lechon Kawali</span>
+      </div>
+    </div>
 
-      <h2 class="section-title">CHICKEN</h2>
-      <div class="menu-items">
-        <div class="card">
-          <img src="../IMAGES/fried chicken.jpg" alt="Crispy Fried Chicken">
-          <h3>Crispy Fried Chicken</h3>
-          <p>Crunchy battered fried chicken served with house gravy.</p>
-          <span class="price">₱255.00</span>
+    <section class="menu-section">
+      <div class="section-intro">
+        <div>
+          <p class="section-label">Category</p>
+          <h2 class="section-title">Main <em>Course</em></h2>
         </div>
-
-        <div class="card">
-          <img src="../IMAGES/chicken curry.jpg" alt="Crispy Chicken Curry">
-          <h3>Crispy Chicken Curry</h3>
-          <p>Golden fried chicken fillet simmered in creamy coconut curry sauce.</p>
-          <span class="price">₱275.00</span>
+        <div class="section-count">
+          <strong>6</strong>
+          items available
         </div>
       </div>
 
-      <h2 class="section-title">PORK</h2>
-      <div class="menu-items">
-        <div class="card">
-          <img src="../IMAGES/kare kare.jpg" alt="Kare-Kare">
-          <h3>Kare-Kare</h3>
-          <p>Pork belly with vegetables in a rich peanut sauce. Served with bagoong.</p>
-          <span class="price">₱310.00</span>
+      <!-- CHICKEN -->
+      <div class="category-heading">
+        <div class="category-icon">🍗</div>
+        <h3>Chicken</h3>
+      </div>
+      <div class="cards-grid-2">
+        <div class="item-card">
+          <div class="card-img-wrap">
+            <img src="../IMAGES/fried chicken.jpg" alt="Crispy Fried Chicken" />
+            <span class="card-badge">Bestseller</span>
+          </div>
+          <div class="card-body">
+            <h3>Crispy Fried Chicken</h3>
+            <p>Crunchy battered fried chicken served with house gravy.</p>
+            <div class="card-footer">
+              <span class="price">₱255.00</span>
+            </div>
+          </div>
         </div>
 
-        <div class="card">
-          <img src="../IMAGES/SISIG.jpg" alt="Sizzling Crispy Sisig">
-          <h3>Sizzling Crispy Sisig</h3>
-          <p>Crispy chopped pork maskara served sizzling with egg, chilies, and calamansi.</p>
-          <span class="price">₱275.00</span>
-        </div>
-
-        <div class="card">
-          <img src="../IMAGES/binangoonang bagnet.jpg" alt="Binagoongang Bagnet">
-          <h3>Binagoongang Bagnet</h3>
-          <p>Crispy pork belly simmered in savory shrimp paste sauce.</p>
-          <span class="price">₱285.00</span>
-        </div>
-
-        <div class="card">
-          <img src="../IMAGES/lechon kawali.jpg" alt="Lechon Kawali">
-          <h3>Lechon Kawali</h3>
-          <p>Deep-fried pork belly served with liver sauce and a fresh salad.</p>
-          <span class="price">₱285.00</span>
+        <div class="item-card">
+          <div class="card-img-wrap">
+            <img src="../IMAGES/chicken curry.jpg" alt="Crispy Chicken Curry" />
+            <span class="card-badge">Chef's pick</span>
+          </div>
+          <div class="card-body">
+            <h3>Crispy Chicken Curry</h3>
+            <p>
+              Golden fried chicken fillet simmered in creamy coconut curry
+              sauce.
+            </p>
+            <div class="card-footer">
+              <span class="price">₱275.00</span>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
-</body>
+
+      <!-- PORK -->
+      <div class="category-heading">
+        <div class="category-icon">🥩</div>
+        <h3>Pork</h3>
+      </div>
+      <div class="cards-grid-4">
+        <div class="item-card">
+          <div class="card-img-wrap">
+            <img src="../IMAGES/kare kare.jpg" alt="Kare-Kare" />
+            <span class="card-badge">Filipino classic</span>
+          </div>
+          <div class="card-body">
+            <h3>Kare-Kare</h3>
+            <p>
+              Pork belly with vegetables in a rich peanut sauce. Served with
+              bagoong.
+            </p>
+            <div class="card-footer">
+              <span class="price">₱310.00</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="item-card">
+          <div class="card-img-wrap">
+            <img src="../IMAGES/SISIG.jpg" alt="Sizzling Crispy Sisig" />
+            <span class="card-badge">Sizzling</span>
+          </div>
+          <div class="card-body">
+            <h3>Sizzling Crispy Sisig</h3>
+            <p>
+              Crispy chopped pork maskara served sizzling with egg, chilies, and
+              calamansi.
+            </p>
+            <div class="card-footer">
+              <span class="price">₱275.00</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="item-card">
+          <div class="card-img-wrap">
+            <img
+              src="../IMAGES/binangoonang bagnet.jpg"
+              alt="Binagoongang Bagnet"
+            />
+            <span class="card-badge">Bold flavor</span>
+          </div>
+          <div class="card-body">
+            <h3>Binagoongang Bagnet</h3>
+            <p>Crispy pork belly simmered in savory shrimp paste sauce.</p>
+            <div class="card-footer">
+              <span class="price">₱285.00</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="item-card">
+          <div class="card-img-wrap">
+            <img src="../IMAGES/lechon kawali.jpg" alt="Lechon Kawali" />
+            <span class="card-badge">Crispy</span>
+          </div>
+          <div class="card-body">
+            <h3>Lechon Kawali</h3>
+            <p>
+              Deep-fried pork belly served with liver sauce and a fresh salad.
+            </p>
+            <div class="card-footer">
+              <span class="price">₱285.00</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footer-top">
+        <div class="footer-brand">
+          <img src="../IMAGES/logo.jpg" alt="Cubiertos Food Hub" />
+          <p class="footer-tagline">
+            "Savor the flavors where every bite tells a story."
+          </p>
+        </div>
+        <div class="footer-links">
+          <a href="../HTML/main.html">Home</a>
+          <a href="../HTML/about.html">About</a>
+          <a href="../HTML/Store.html">Our Stores</a>
+          <a href="../HTML/contacts.html">Contacts</a>
+          <a href="../HTML/login.html">Log in</a>
+        </div>
+        <div class="footer-contact">
+          <strong>Get in touch</strong>
+          Food &amp; Drink · Virac, Philippines 4800<br />
+          Contact: 0981 027 0704
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2025 Cubiertos.food.hub — All rights reserved.</span>
+        <div class="footer-socials">
+          <a
+            href="https://www.facebook.com/profile.php?id=61555258696901"
+            target="_blank"
+            ><img src="../IMAGES/Facebook.png" alt="Facebook"
+          /></a>
+          <a href="https://www.instagram.com/cubiertos2024/" target="_blank"
+            ><img src="../IMAGES/Instagram.png" alt="Instagram"
+          /></a>
+          <a
+            href="https://mail.google.com/mail/u/0/#inbox?compose=new"
+            target="_blank"
+            ><img src="../IMAGES/Mail.png" alt="Mail"
+          /></a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      const header = document.getElementById("header");
+      window.addEventListener("scroll", () => {
+        header.classList.toggle("scrolled", window.scrollY > 50);
+      });
+    </script>
+  </body>
 </html>

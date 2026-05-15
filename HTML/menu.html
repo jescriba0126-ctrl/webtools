@@ -6,7 +6,7 @@
     <title>Cubiertos Food Hub — Menu</title>
     <link rel="icon" type="image/jpg" href="../IMAGES/logo.jpg" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Poppins:wght@400;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&display=swap"
       rel="stylesheet"
     />
     <style>
@@ -32,7 +32,6 @@
       html {
         scroll-behavior: smooth;
       }
-
       body {
         font-family: "Poppins", sans-serif;
         background-color: #f8f5ee;
@@ -60,8 +59,8 @@
         border-radius: 60px;
         box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
         transition:
-          background 0.4s ease,
-          box-shadow 0.4s ease;
+          background 0.4s,
+          box-shadow 0.4s;
       }
       header.scrolled {
         background: rgba(254, 250, 224, 0.96);
@@ -300,13 +299,42 @@
         gap: 18px;
       }
 
+      /* ── SCROLL REVEAL ── */
       .menu-card {
         position: relative;
         border-radius: 20px;
         overflow: hidden;
         cursor: pointer;
         background: #e0dbd0;
+        /* reveal state */
+        opacity: 0;
+        transform: translateY(40px);
+        transition:
+          opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+          transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       }
+      .menu-card.revealed {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* stagger delays */
+      .menu-card:nth-child(1) {
+        transition-delay: 0s;
+      }
+      .menu-card:nth-child(2) {
+        transition-delay: 0.1s;
+      }
+      .menu-card:nth-child(3) {
+        transition-delay: 0.2s;
+      }
+      .menu-card:nth-child(4) {
+        transition-delay: 0.1s;
+      }
+      .menu-card:nth-child(5) {
+        transition-delay: 0.25s;
+      }
+
       .menu-card:hover .card-img {
         transform: scale(1.07);
       }
@@ -429,7 +457,223 @@
         text-decoration: none;
       }
 
-      /* ── DIVIDER STRIP ── */
+      /* ── QUICK VIEW BUTTON ── */
+      .quick-view-btn {
+        position: absolute;
+        bottom: 24px;
+        right: 28px;
+        z-index: 3;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 16px;
+        border-radius: 30px;
+        background: rgba(254, 250, 224, 0.92);
+        backdrop-filter: blur(8px);
+        border: none;
+        cursor: pointer;
+        font-family: "Poppins", sans-serif;
+        font-size: 0.7rem;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--olive);
+        opacity: 0;
+        transform: translateY(6px);
+        transition:
+          opacity 0.3s ease,
+          transform 0.3s ease,
+          background 0.2s;
+      }
+      .menu-card:hover .quick-view-btn {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .quick-view-btn:hover {
+        background: #fff;
+      }
+      .quick-view-btn svg {
+        width: 13px;
+        height: 13px;
+        stroke: var(--olive);
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      /* ── MODAL ── */
+      .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 2000;
+        background: rgba(10, 10, 5, 0.7);
+        backdrop-filter: blur(6px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.35s ease;
+      }
+      .modal-backdrop.open {
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      .modal {
+        background: var(--cream);
+        border-radius: 24px;
+        overflow: hidden;
+        max-width: 860px;
+        width: 100%;
+        max-height: 90vh;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        box-shadow: 0 32px 80px rgba(0, 0, 0, 0.25);
+        transform: scale(0.93) translateY(20px);
+        transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+      .modal-backdrop.open .modal {
+        transform: scale(1) translateY(0);
+      }
+
+      .modal-img-wrap {
+        position: relative;
+        overflow: hidden;
+        min-height: 340px;
+      }
+      .modal-img-wrap img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s ease;
+      }
+      .modal-backdrop.open .modal-img-wrap img {
+        transform: scale(1.04);
+      }
+      .modal-img-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          160deg,
+          transparent 50%,
+          rgba(10, 10, 5, 0.4) 100%
+        );
+      }
+
+      .modal-body {
+        padding: 48px 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 20px;
+        overflow-y: auto;
+      }
+      .modal-eyebrow {
+        font-size: 0.68rem;
+        font-weight: 500;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--olive);
+      }
+      .modal-title {
+        font-family: "Poppins", serif;
+        font-size: 2rem;
+        font-weight: 400;
+        color: var(--dark);
+        line-height: 1.1;
+      }
+      .modal-title em {
+        font-style: italic;
+        color: var(--olive);
+      }
+      .modal-divider {
+        width: 40px;
+        height: 2px;
+        background: var(--amber);
+        border-radius: 2px;
+      }
+      .modal-desc {
+        font-size: 0.9rem;
+        color: var(--muted);
+        font-weight: 300;
+        line-height: 1.75;
+      }
+
+      .modal-items {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .modal-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 16px;
+        background: #fff;
+        border-radius: 12px;
+        border: 1px solid rgba(96, 108, 56, 0.1);
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+      }
+      .modal-item:hover {
+        border-color: rgba(96, 108, 56, 0.3);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+      }
+      .modal-item-name {
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--dark);
+      }
+      .modal-item-price {
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: var(--amber-dark);
+      }
+
+      .modal-note {
+        font-size: 0.75rem;
+        color: var(--muted);
+        font-style: italic;
+        opacity: 0.8;
+      }
+
+      .modal-close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        z-index: 10;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(254, 250, 224, 0.9);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(96, 108, 56, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          transform 0.2s;
+      }
+      .modal-close:hover {
+        background: #fff;
+        transform: scale(1.1);
+      }
+      .modal-close svg {
+        width: 16px;
+        height: 16px;
+        stroke: var(--text);
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+      }
+
+      /* ── MARQUEE ── */
       .flavor-strip {
         background: var(--olive);
         overflow: hidden;
@@ -596,6 +840,17 @@
           gap: 14px;
           text-align: center;
         }
+        .modal {
+          grid-template-columns: 1fr;
+        }
+        .modal-img-wrap {
+          min-height: 220px;
+        }
+      }
+      @media (max-width: 560px) {
+        .menu-grid {
+          grid-template-columns: 1fr;
+        }
       }
     </style>
   </head>
@@ -620,19 +875,17 @@
         href="https://www.facebook.com/profile.php?id=61555258696901"
         target="_blank"
         aria-label="Facebook"
-      >
-        <img src="../IMAGES/Facebook.png" alt="Facebook" />
-      </a>
+        ><img src="../IMAGES/Facebook.png" alt="Facebook"
+      /></a>
       <a
         href="https://www.instagram.com/cubiertos2024/"
         target="_blank"
         aria-label="Instagram"
-      >
-        <img src="../IMAGES/Instagram.png" alt="Instagram" />
-      </a>
-      <a href="#" target="_blank" aria-label="Mail">
-        <img src="../IMAGES/Mail.png" alt="Mail" />
-      </a>
+        ><img src="../IMAGES/Instagram.png" alt="Instagram"
+      /></a>
+      <a href="#" target="_blank" aria-label="Mail"
+        ><img src="../IMAGES/Mail.png" alt="Mail"
+      /></a>
     </div>
 
     <!-- HERO -->
@@ -650,7 +903,7 @@
       <div class="scroll-hint">Scroll</div>
     </section>
 
-    <!-- MARQUEE STRIP -->
+    <!-- MARQUEE -->
     <div class="flavor-strip" aria-hidden="true">
       <div class="flavor-track">
         <span class="flavor-item"><span class="dot"></span>Appetizers</span>
@@ -694,7 +947,14 @@
 
       <div class="menu-grid">
         <!-- APPETIZER -->
-        <div class="menu-card card-appetizer">
+        <div
+          class="menu-card card-appetizer"
+          data-category="Appetizer"
+          data-tag="Start here"
+          data-desc="Begin your meal right with our selection of light and flavorful starters, crafted to awaken your appetite."
+          data-img="../IMAGES/mojos 1.png"
+          data-items='[{"name":"Mojos","price":"₱95.00"},{"name":"Garlic Bread","price":"₱75.00"},{"name":"Soup of the Day","price":"₱85.00"}]'
+        >
           <img src="../IMAGES/mojos 1.png" alt="Appetizer" class="card-img" />
           <div class="card-gradient"></div>
           <div class="card-overlay">
@@ -704,6 +964,13 @@
             <span class="card-tag">Start here</span>
             <div class="card-title">Appetizer</div>
           </div>
+          <button class="quick-view-btn" aria-label="Quick view Appetizer">
+            <svg viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            Quick View
+          </button>
           <div class="card-arrow">
             <svg viewBox="0 0 24 24">
               <line x1="7" y1="17" x2="17" y2="7" />
@@ -718,7 +985,14 @@
         </div>
 
         <!-- SALAD -->
-        <div class="menu-card card-salad">
+        <div
+          class="menu-card card-salad"
+          data-category="Salad"
+          data-tag="Fresh &amp; crisp"
+          data-desc="Vibrant, fresh salads tossed with house-made dressings — light enough to start, satisfying enough to share."
+          data-img="../IMAGES/salad.jpg"
+          data-items='[{"name":"Thai Mango Salad","price":"₱185.00"},{"name":"Cubiertos Garden Salad","price":"₱185.00"},{"name":"Grilled Chicken Salad","price":"₱185.00"},{"name":"Kani Mango Roll","price":"₱185.00"}]'
+        >
           <img src="../IMAGES/salad.jpg" alt="Salad" class="card-img" />
           <div class="card-gradient"></div>
           <div class="card-overlay">
@@ -728,6 +1002,13 @@
             <span class="card-tag">Fresh &amp; crisp</span>
             <div class="card-title">Salad</div>
           </div>
+          <button class="quick-view-btn" aria-label="Quick view Salad">
+            <svg viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            Quick View
+          </button>
           <div class="card-arrow">
             <svg viewBox="0 0 24 24">
               <line x1="7" y1="17" x2="17" y2="7" />
@@ -738,7 +1019,14 @@
         </div>
 
         <!-- PASTA -->
-        <div class="menu-card card-pasta">
+        <div
+          class="menu-card card-pasta"
+          data-category="Pasta"
+          data-tag="Handmade"
+          data-desc="From creamy carbonaras to bold red sauces — our handmade pasta dishes are comfort on a plate."
+          data-img="../IMAGES/pasta.jpg"
+          data-items='[{"name":"Classic Carbonara","price":"₱115.00"},{"name":"Spicy Tuna Carbonara","price":"₱115.00"},{"name":"Filipino Style Spaghetti","price":"₱125.00"},{"name":"Chicken Pesto Genovese","price":"₱145.00"},{"name":"Chorizo Penne Pasta","price":"₱135.00"}]'
+        >
           <img src="../IMAGES/pasta.jpg" alt="Pasta" class="card-img" />
           <div class="card-gradient"></div>
           <div class="card-overlay">
@@ -748,6 +1036,13 @@
             <span class="card-tag">Handmade</span>
             <div class="card-title">Pasta</div>
           </div>
+          <button class="quick-view-btn" aria-label="Quick view Pasta">
+            <svg viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            Quick View
+          </button>
           <div class="card-arrow">
             <svg viewBox="0 0 24 24">
               <line x1="7" y1="17" x2="17" y2="7" />
@@ -758,7 +1053,14 @@
         </div>
 
         <!-- PITA WRAP -->
-        <div class="menu-card card-pita">
+        <div
+          class="menu-card card-pita"
+          data-category="Pita Wrap"
+          data-tag="Rolled to order"
+          data-desc="Soft warm pita bread rolled fresh to order — packed with bold fillings that keep you coming back."
+          data-img="../IMAGES/pita wrap.jpg"
+          data-items='[{"name":"Carabeef Smash","price":"₱175.00"},{"name":"California Crunch","price":"₱175.00"},{"name":"Fiery Tuna","price":"₱175.00"},{"name":"Cheesy Mac Crunch","price":"₱175.00"}]'
+        >
           <img src="../IMAGES/pita wrap.jpg" alt="Pita Wrap" class="card-img" />
           <div class="card-gradient"></div>
           <div class="card-overlay">
@@ -768,6 +1070,13 @@
             <span class="card-tag">Rolled to order</span>
             <div class="card-title">Pita Wrap</div>
           </div>
+          <button class="quick-view-btn" aria-label="Quick view Pita Wrap">
+            <svg viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            Quick View
+          </button>
           <div class="card-arrow">
             <svg viewBox="0 0 24 24">
               <line x1="7" y1="17" x2="17" y2="7" />
@@ -782,7 +1091,14 @@
         </div>
 
         <!-- MAIN COURSE -->
-        <div class="menu-card card-main">
+        <div
+          class="menu-card card-main"
+          data-category="Main Course"
+          data-tag="The centerpiece"
+          data-desc="Rich, hearty Filipino and international mains — the heart of every Cubiertos meal."
+          data-img="../IMAGES/main course.jpg"
+          data-items='[{"name":"Crispy Fried Chicken","price":"₱255.00"},{"name":"Crispy Chicken Curry","price":"₱275.00"},{"name":"Kare-Kare","price":"₱310.00"},{"name":"Sizzling Crispy Sisig","price":"₱275.00"},{"name":"Binagoongang Bagnet","price":"₱285.00"},{"name":"Lechon Kawali","price":"₱285.00"}]'
+        >
           <img
             src="../IMAGES/main course.jpg"
             alt="Main Course"
@@ -796,6 +1112,13 @@
             <span class="card-tag">The centerpiece</span>
             <div class="card-title">Main Course</div>
           </div>
+          <button class="quick-view-btn" aria-label="Quick view Main Course">
+            <svg viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            Quick View
+          </button>
           <div class="card-arrow">
             <svg viewBox="0 0 24 24">
               <line x1="7" y1="17" x2="17" y2="7" />
@@ -810,6 +1133,38 @@
         </div>
       </div>
     </section>
+
+    <!-- QUICK VIEW MODAL -->
+    <div
+      class="modal-backdrop"
+      id="modalBackdrop"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Quick view"
+    >
+      <div class="modal" id="modal">
+        <button class="modal-close" id="modalClose" aria-label="Close">
+          <svg viewBox="0 0 24 24">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+        <div class="modal-img-wrap">
+          <img id="modalImg" src="" alt="" />
+          <div class="modal-img-overlay"></div>
+        </div>
+        <div class="modal-body">
+          <p class="modal-eyebrow" id="modalTag"></p>
+          <h2 class="modal-title" id="modalTitle"></h2>
+          <div class="modal-divider"></div>
+          <p class="modal-desc" id="modalDesc"></p>
+          <div class="modal-items" id="modalItems"></div>
+          <p class="modal-note">
+            Click the card to see the full category page.
+          </p>
+        </div>
+      </div>
+    </div>
 
     <!-- FOOTER -->
     <footer>
@@ -840,31 +1195,109 @@
             href="https://www.facebook.com/profile.php?id=61555258696901"
             target="_blank"
             aria-label="Facebook"
-          >
-            <img src="../IMAGES/Facebook.png" alt="Facebook" />
-          </a>
+            ><img src="../IMAGES/Facebook.png" alt="Facebook"
+          /></a>
           <a
             href="https://www.instagram.com/cubiertos2024/"
             target="_blank"
             aria-label="Instagram"
-          >
-            <img src="../IMAGES/Instagram.png" alt="Instagram" />
-          </a>
+            ><img src="../IMAGES/Instagram.png" alt="Instagram"
+          /></a>
           <a
             href="https://mail.google.com/mail/u/0/#inbox?compose=new"
             target="_blank"
             aria-label="Mail"
-          >
-            <img src="../IMAGES/Mail.png" alt="Mail" />
-          </a>
+            ><img src="../IMAGES/Mail.png" alt="Mail"
+          /></a>
         </div>
       </div>
     </footer>
 
     <script>
+      // ── SCROLL HEADER ──
       const header = document.getElementById("header");
       window.addEventListener("scroll", () => {
         header.classList.toggle("scrolled", window.scrollY > 50);
+      });
+
+      // ── SCROLL REVEAL ──
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("revealed");
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.12 },
+      );
+
+      document.querySelectorAll(".menu-card").forEach((card) => {
+        revealObserver.observe(card);
+      });
+
+      // ── QUICK VIEW MODAL ──
+      const backdrop = document.getElementById("modalBackdrop");
+      const modalImg = document.getElementById("modalImg");
+      const modalTag = document.getElementById("modalTag");
+      const modalTitle = document.getElementById("modalTitle");
+      const modalDesc = document.getElementById("modalDesc");
+      const modalItems = document.getElementById("modalItems");
+
+      function openModal(card) {
+        const cat = card.dataset.category;
+        const tag = card.dataset.tag;
+        const desc = card.dataset.desc;
+        const img = card.dataset.img;
+        const items = JSON.parse(card.dataset.items);
+
+        modalImg.src = img;
+        modalImg.alt = cat;
+        modalTag.textContent = tag;
+        modalTitle.innerHTML = cat.includes(" ")
+          ? cat.replace(/(\S+)\s(.+)/, "$1 <em>$2</em>")
+          : `<em>${cat}</em>`;
+        modalDesc.textContent = desc;
+
+        modalItems.innerHTML = items
+          .map(
+            (item) => `
+          <div class="modal-item">
+            <span class="modal-item-name">${item.name}</span>
+            <span class="modal-item-price">${item.price}</span>
+          </div>
+        `,
+          )
+          .join("");
+
+        backdrop.classList.add("open");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeModal() {
+        backdrop.classList.remove("open");
+        document.body.style.overflow = "";
+      }
+
+      document.querySelectorAll(".quick-view-btn").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          openModal(btn.closest(".menu-card"));
+        });
+      });
+
+      document
+        .getElementById("modalClose")
+        .addEventListener("click", closeModal);
+
+      backdrop.addEventListener("click", (e) => {
+        if (e.target === backdrop) closeModal();
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeModal();
       });
     </script>
   </body>
