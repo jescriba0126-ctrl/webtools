@@ -203,21 +203,26 @@ body {
 /* ========================================= */
 
 .hero {
-  width: 86%; 
+  width: 100%; 
   min-height: 88vh;
-  margin: 120px auto 60px; 
-  border-radius: 40px;
+  
+  /* 1. Add 120px top margin to push it down */
+  margin: 120px 0 60px 0; 
+  
+  border-radius: 0; 
+  
+  /* 2. Change padding to 0 so the text centers perfectly again */
+  padding: 0 7%; 
+  
   position: relative;
   overflow: hidden;
   display: flex;
   align-items: center;
-  justify-content: center; /* ADDED: Centers the content block horizontally */
-  padding: 0 7%; 
+  justify-content: center;
 
   background:
     linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
     url("../IMAGES/findus.jpg");
-
   background-size: cover;
   background-position: center;
 
