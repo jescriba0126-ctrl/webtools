@@ -45,7 +45,7 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
 <!-- MAIN -->
 <main class="dashboard-container">
 
-    <!-- TOP STATS -->
+    <!-- TOP STATS s-->
     <section class="stats-grid">
 
         <div class="stat-card revenue">

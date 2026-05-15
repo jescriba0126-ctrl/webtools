@@ -160,7 +160,8 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
 
 let nav = 0;
 let orders = [];
-let todayData = {}; // Holds real today stats from DB
+let todayData = {};
+let dbCapacity = 100; // synced from DB on every fetch
 
 // ================= FETCH BOOKINGS =================
 
@@ -172,17 +173,22 @@ async function fetchOrders() {
         if (data.success) {
             orders = data.bookings;
 
-            // ── Use real DB stats for the top cards ──
+            // ── Top stat cards ──
             if (data.stats) {
-                document.getElementById("totalReservations").innerText = data.stats.total || 0;
-                document.getElementById("pendingBookings").innerText  = data.stats.pending || 0;
-                document.getElementById("approvedBookings").innerText = data.stats.approved || 0;
+                document.getElementById("totalReservations").innerText = data.stats.total   || 0;
+                document.getElementById("pendingBookings").innerText   = data.stats.pending || 0;
+                document.getElementById("approvedBookings").innerText  = data.stats.approved || 0;
             }
 
-            // ── Use real DB today count ──
+            // ── Today count ──
             if (data.today) {
                 todayData = data.today;
                 document.getElementById("todayBookings").innerText = data.today.today_count || 0;
+            }
+
+            // ── Capacity from DB (single source of truth) ──
+            if (data.capacity) {
+                dbCapacity = parseInt(data.capacity) || 100;
             }
 
             renderCalendar();
@@ -329,32 +335,52 @@ function loadReservationList() {
     });
 }
 
-// ================= CAPACITY (now uses real DB today_guests) =================
+// ================= CAPACITY =================
 
 function updateCapacity() {
-    const maxCap      = parseInt(localStorage.getItem("dailyCapacity")) || 100;
-
-    // Use today_guests directly from the DB response (sum of guests for today, non-cancelled)
+    // Always uses dbCapacity — read from DB, never localStorage
     const totalGuests = parseInt(todayData.today_guests) || 0;
 
-    document.getElementById("maxCapacity").textContent  = maxCap;
+    document.getElementById("maxCapacity").textContent   = dbCapacity;
     document.getElementById("currentBooked").textContent = totalGuests;
-    document.getElementById("slotsAvailable").textContent = Math.max(0, maxCap - totalGuests);
+    document.getElementById("slotsAvailable").textContent = Math.max(0, dbCapacity - totalGuests);
 
-    const pct = Math.min((totalGuests / maxCap) * 100, 100);
+    const pct = Math.min((totalGuests / dbCapacity) * 100, 100);
     document.getElementById("capacityFill").style.width = pct + "%";
+
+    // Turn bar red when full
+    document.getElementById("capacityFill").style.background =
+        totalGuests >= dbCapacity ? "#dc2626" : "#bc6c25";
 }
 
-// ================= SET LIMIT =================
+// ================= SET LIMIT (saves to DB) =================
 
-window.setNewLimit = function () {
-    const current  = parseInt(localStorage.getItem("dailyCapacity")) || 100;
+window.setNewLimit = async function () {
+    const current  = dbCapacity;
     const input    = prompt("Enter new maximum guests per day:", current);
     if (input === null) return;
     const newLimit = parseInt(input);
-    if (!isNaN(newLimit) && newLimit > 0) {
-        localStorage.setItem("dailyCapacity", newLimit);
-        updateCapacity();
+    if (isNaN(newLimit) || newLimit < 1) {
+        alert("Please enter a valid number greater than 0.");
+        return;
+    }
+
+    try {
+        const res  = await fetch("admin_bookings.php?action=set_capacity", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `limit=${newLimit}`
+        });
+        const json = await res.json();
+        if (json.success) {
+            dbCapacity = newLimit;
+            updateCapacity();
+        } else {
+            alert("Failed to save limit. Please try again.");
+        }
+    } catch (err) {
+        console.error("setNewLimit error:", err);
+        alert("Network error. Please try again.");
     }
 };
 

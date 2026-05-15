@@ -137,7 +137,7 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
             <span class="tag">Earned Income</span>
         </div>
 
-         <!-- ACTIVE STATUS FLOW -->
+         <!-- ACTIVE STATUSs FLOW -->
         <div class="overview-card flow">
             <h3>Active Booking Flow</h3>
             <div class="status-flow">

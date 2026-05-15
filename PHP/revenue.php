@@ -23,7 +23,7 @@ $totalRevenueData = mysqli_fetch_assoc($totalRevenueQuery);
 $totalRevenue = $totalRevenueData['totalRevenue'] ?? 0;
 
 /* =========================
-   PIE CHART VALUES
+   PIE CHART VALUE
 ========================= */
 
 $completedRevenue = 0;

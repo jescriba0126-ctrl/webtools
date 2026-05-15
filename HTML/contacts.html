@@ -8,17 +8,18 @@
 
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
-      rel="stylesheet"
-    />
+      rel="stylesheet"/>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"/>
     <link rel="stylesheet" href="../CSS/contacts.css" />
-  </head>
   <body>
     <!-- HEADER -->
 <header class="glass-header">
   <div class="nav-container">
 
     <a href="../HTML/main.html" class="logo">
-      <img src="../IMAGES/logo.jpg" alt="Cubiertos Logo">
+      <img src="../IMAGES/logo2.jpg" alt="Cubiertos Logo">
       <div class="logo-text">
         <h2>Cubiertos</h2>
         <span>FOOD HUB</span>
@@ -69,63 +70,38 @@
     <main class="site-wrap contact-layout" id="main">
       <!-- Left column: contact cards -->
       <aside class="contact-cards" aria-labelledby="contact-info-heading">
+        
         <div class="card contact-card" id="contact-info">
           <h2 id="contact-info-heading">Contact Information</h2>
           <p class="muted">Food & Drink · Virac, Philippines 4800</p>
-          <p class="phone">
+          
+          <div class="contact-item">
             <i class="fa-solid fa-phone"></i>
             <a href="tel:+639810270704">0981 027 0704</a>
-          </p>
-          <p class="address">
+          </div>
+          
+          <div class="contact-item">
             <i class="fa-solid fa-location-dot"></i>
-            Along Imelda Blvd., Rawis, Virac, Catanduanes
-          </p>
-          <div class="card-actions">
-            <a
-              class="btn"
-              href="https://www.google.com/maps/search/Along+Imelda+Blvd,+Rawis,+Virac,+Catanduanes"
-              target="_blank"
-              rel="noopener"
-              >Open in Maps</a
-            >
-            <a class="btn ghost" href="tel:+639810270704">Call Now</a>
+            <p>Along Imelda Blvd., Rawis, Virac, Catanduanes</p>
+          </div>
+          
+          <div class="contact-buttons">
+            <a class="btn btn-primary" href="https://www.google.com/maps/search/Along+Imelda+Blvd,+Rawis,+Virac,+Catanduanes" target="_blank" rel="noopener">Open in Maps</a>
+            <a class="btn btn-secondary" href="tel:+639810270704">Call Now</a>
           </div>
         </div>
 
         <div class="card stores-card" aria-labelledby="stores-heading">
-          <h3 id="stores-heading">Our Stores</h3>
+          <h3 id="stores-heading">Store Address</h3>
           <ul class="stores-list">
             <li>
               <strong>Cubiertos Virac</strong><br />
-              <span class="muted"
-                >Along Imelda Blvd., Rawis — 0981 027 0704</span
-              >
+              <span class="muted">Along Imelda Blvd., Rawis — 0981 027 0704</span>
             </li>
           </ul>
         </div>
 
-        <div class="card socials-card">
-          <h3>Follow Us</h3>
-          <div class="social-icons">
-            <a
-              href="https://www.facebook.com/profile.php?id=61555258696901"
-              target="_blank"
-              rel="noopener"
-              aria-label="Cubiertos on Facebook"
-            >
-              <i class="fa-brands fa-facebook-f"></i>
-            </a>
-            <a
-              href="https://www.instagram.com/cubiertos2024/"
-              target="_blank"
-              rel="noopener"
-              aria-label="Cubiertos on Instagram"
-            >
-              <i class="fa-brands fa-instagram"></i>
-            </a>
-          </div>
-        </div>
-      </aside>
+        </aside>
 
       <!-- Right column: form -->
       <section class="contact-main" aria-labelledby="send-heading">
@@ -182,33 +158,51 @@
 
     <!-- FOOTER -->
     <footer>
-      <div class="footer-info">
-        <nav>
-          <a href="main.html">Home</a>
-          <a href="about.html">About</a>
-          <a href="Store/Store.html">Our Stores</a>
-          <a href="contacts.html">Contacts</a>
-          <a href="login.html"><i>👤</i> Log-in</a>
-        </nav>
-        <p>
-          Food & Drink · Virac, Philippines, 4800 | Contact Info: 0981 027 0704
-        </p>
-        <p>Copyright © 2025 Cubiertos.food.hub</p>
+      <div class="footer-top">
+        <div class="footer-brand">
+          <img src="../IMAGES/logo.jpg" alt="Cubiertos Food Hub" />
+          <p class="footer-tagline">
+            "Savor the flavors where every bite tells a story."
+          </p>
+        </div>
+        <div class="footer-links">
+          <a href="../HTML/main.html">Home</a>
+          <a href="../HTML/about.html">About</a>
+          <a href="../HTML/Store.html">Our Stores</a>
+          <a href="../HTML/contacts.html">Contacts</a>
+          <a href="../HTML/login.html">Log in</a>
+        </div>
+        <div class="footer-contact">
+          <strong>Get in touch</strong>
+          Food &amp; Drink · Virac, Philippines 4800<br />
+          Contact: 0981 027 0704
+        </div>
       </div>
-      <div class="footer-socials">
-        <a
-          href="https://www.facebook.com/profile.php?id=61555258696901"
-          target="_blank"
-          ><img src="../IMAGES/Facebook.png" alt="Facebook"
-        /></a>
-        <a href="https://www.instagram.com/cubiertos2024/" target="_blank"
-          ><img src="../IMAGES/Instagram.png" alt="Instagram"
-        /></a>
-        <a
-          href="https://mail.google.com/mail/u/0/#sent?compose=CllgCJTNqrcXTJzgQrjqbjtCXnqKDjzdGRPvdqdcFsXlDWgKNhcCtqcDSQcFtPLcvbmcdswCCcL"
-          target="_blank"
-          ><img src="../IMAGES/Mail.png" alt="YouTube"
-        /></a>
+      <div class="footer-bottom">
+        <span>© 2025 Cubiertos.food.hub — All rights reserved.</span>
+        <div class="footer-socials">
+          <a
+            href="https://www.facebook.com/profile.php?id=61555258696901"
+            target="_blank"
+            aria-label="Facebook"
+          >
+            <img src="../IMAGES/Facebook.png" alt="Facebook" />
+          </a>
+          <a
+            href="https://www.instagram.com/cubiertos2024/"
+            target="_blank"
+            aria-label="Instagram"
+          >
+            <img src="../IMAGES/Instagram.png" alt="Instagram" />
+          </a>
+          <a
+            href="https://mail.google.com/mail/u/0/#inbox?compose=new"
+            target="_blank"
+            aria-label="Mail"
+          >
+            <img src="../IMAGES/Mail.png" alt="Mail" />
+          </a>
+        </div>
       </div>
     </footer>
 

@@ -1,7 +1,7 @@
 <?php
 // admin_bookings.php
 // AJAX endpoint — returns bookings as JSON for the admin dashboard
-// Also handles status updates
+// Also handles status updates, deletes, and capacity setting
 
 session_start();
 header('Content-Type: application/json');
@@ -25,14 +25,14 @@ if ($action === 'list') {
     // Filter by status
     $status = $_GET['status'] ?? 'all';
     if ($status !== 'all' && in_array($status, ['Pending','Approved','Completed','Cancelled'])) {
-        $where   .= " AND status = :status";
-        $params[':status'] = $status;
+        $where             .= " AND status = :status";
+        $params[':status']  = $status;
     }
 
     // Search by name or email
     $search = trim($_GET['search'] ?? '');
     if ($search !== '') {
-        $where   .= " AND (name LIKE :search OR email LIKE :search)";
+        $where            .= " AND (name LIKE :search OR email LIKE :search)";
         $params[':search'] = '%' . $search . '%';
     }
 
@@ -60,20 +60,25 @@ if ($action === 'list') {
         FROM bookings
     ")->fetch();
 
-    // ── Today's bookings count (for capacity bar) ─────────────
-   $today = $pdo->query("
-    SELECT COUNT(*) AS today_count,
-           COALESCE(SUM(guests),0) AS today_guests
-    FROM bookings
-    WHERE DATE(created_at) = CURDATE()
-      AND status NOT IN ('Cancelled')
-")->fetch();
+    // ── Today's bookings count & guest total (for capacity bar) ──
+    $today = $pdo->query("
+        SELECT COUNT(*) AS today_count,
+               COALESCE(SUM(guests), 0) AS today_guests
+        FROM bookings
+        WHERE DATE(booking_datetime) = CURDATE()
+          AND status != 'Cancelled'
+    ")->fetch();
+
+    // ── Daily capacity from settings table ────────────────────
+    $capRow   = $pdo->query("SELECT setting_value FROM settings WHERE setting_key = 'daily_capacity'")->fetch();
+    $capacity = (int)($capRow['setting_value'] ?? 100);
 
     echo json_encode([
         'success'  => true,
         'bookings' => $bookings,
         'stats'    => $stats,
         'today'    => $today,
+        'capacity' => $capacity,
     ]);
     exit;
 }
@@ -111,6 +116,26 @@ if ($action === 'delete' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute([$id]);
 
     echo json_encode(['success' => true, 'message' => 'Booking deleted.']);
+    exit;
+}
+
+// ── SET CAPACITY ──────────────────────────────────────────────
+if ($action === 'set_capacity' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    $limit = (int)($_POST['limit'] ?? 0);
+
+    if ($limit < 1) {
+        echo json_encode(['success' => false, 'message' => 'Limit must be at least 1.']);
+        exit;
+    }
+
+    $pdo->prepare("
+        INSERT INTO settings (setting_key, setting_value)
+        VALUES ('daily_capacity', ?)
+        ON DUPLICATE KEY UPDATE setting_value = ?
+    ")->execute([$limit, $limit]);
+
+    echo json_encode(['success' => true, 'message' => 'Capacity updated.']);
     exit;
 }
 

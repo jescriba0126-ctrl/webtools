@@ -55,7 +55,7 @@ body::after {
 .container {
     position: relative;
     width: 850px;
-    height: 650px;
+    height: 750px; /* Increased from 650px to perfectly fit the registration form */
     background: #fff;
     border-radius: 30px;
     box-shadow: 0 0 30px rgba(0,0,0,.2);

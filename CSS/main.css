@@ -115,27 +115,27 @@ body::before {
 }
 
 .logo-text {
-    display: flex;
-    flex-direction: column; /* Stack Cubiertos and Food Hub vertically */
-    justify-content: center;
+  display: flex;
+  flex-direction: column; /* Stack Cubiertos and Food Hub vertically */
+  justify-content: center;
 }
 
 .logo-text {
-    display: flex;
-    flex-direction: column; /* Stack Cubiertos and Food Hub vertically */
-    justify-content: center;
+  display: flex;
+  flex-direction: column; /* Stack Cubiertos and Food Hub vertically */
+  justify-content: center;
 }
 
 .logo-text h2 {
   color: #283618;
-  font-family: 'Caveat', cursive;
+  font-family: "Caveat", cursive;
   font-size: 2.4rem;
   font-weight: 700;
-  line-height:  1.1;
+  line-height: 1.1;
 }
 
 .logo-text span {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 0.7rem;
   letter-spacing: 4px;
   color: #bc6c25;
@@ -558,16 +558,16 @@ body::before {
   top: 50%; /* Centers the box vertically */
   left: 50%;
   transform: translate(-50%, -50%); /* Centers the box perfectly */
-  
+
   width: 85%;
   max-width: 550px; /* Prevents the box from getting too wide on big screens */
-  
+
   background: rgba(40, 54, 24, 0.75); /* Translucent dark green background */
   padding: 40px;
   border-radius: 30px;
   text-align: center;
-  
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   z-index: 10;
 }
 
@@ -585,11 +585,11 @@ body::before {
   font-size: 2.5rem;
   line-height: 1.2;
   margin: 15px 0;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .menu-promo-overlay p {
-  color: rgba(255,255,255,0.9);
+  color: rgba(255, 255, 255, 0.9);
   line-height: 1.6;
   margin-bottom: 25px;
 }
@@ -611,23 +611,39 @@ body::before {
   transform: translateY(-3px);
 }
 
+/* =========================
+   MENU PROMPT
+========================= */
+/* =========================
+   MENU PROMPT
+========================= */
+.menu-prompt {
+  display: flex;
+  flex-direction: column; /* Forces the button to sit directly below the text */
+  align-items: center;    /* Centers everything horizontally */
+  justify-content: center;
+  text-align: center;     /* Keeps the text itself centered */
+  gap: 20px;              /* Vertical space between the text and button */
+  margin-top: 50px;
+}
+
+.menu-prompt h2 {
+  font-size: 1.8rem;
+  color: #283618;
+  font-weight: 700;
+  margin: 0; 
+}
 /* menu button */
 .menu-btn {
   display: inline-block;
-  margin-top: 25px;
-
-  padding: 14px 34px;
+  padding: 12px 34px;
   border-radius: 40px;
-
   text-decoration: none;
   font-size: 1rem;
   font-weight: 700;
-
-  background: #fff;
+  background: transparent;
   color: #bc6c25;
-
   border: 2px solid #bc6c25;
-
   transition: 0.3s ease;
 }
 
@@ -795,9 +811,10 @@ body::before {
 
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start; /* Pushes content to the left instead of center */
+  padding: 60px 8%; /* Gives the text breathing room on the sides */
 
-  min-height: 600px;
+  min-height: 500px;
 }
 
 .hero::before {
@@ -812,9 +829,9 @@ body::before {
 }
 
 .hero-content {
-  text-align: center;
+  text-align: left; /* Aligns text cleanly to the left */
   z-index: 2;
-  max-width: 700px;
+  max-width: 550px; /* Prevents text from overlapping the image */
 }
 
 .hero-content h1 {
@@ -832,6 +849,7 @@ body::before {
   color: rgba(255, 255, 255, 0.8);
   line-height: 1.8;
   margin-bottom: 30px;
+  font-size: 1.1rem;
 }
 
 .book {
@@ -857,11 +875,12 @@ body::before {
 .hero-image {
   position: absolute;
   bottom: 0;
-  right: 5%;
+  right: 5%; /* Anchors the image perfectly to the bottom right */
 }
 
 .hero-image img {
-  width: 500px;
+  width: 550px; /* Makes the chefs slightly larger for a better ratio */
+  display: block;
 }
 
 /* =========================
@@ -1265,8 +1284,9 @@ footer {
 
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 20px;
+  /* Forces exactly 3 equal columns so your 6 images create a perfect 3x2 rectangle */
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 25px;
 }
 
 .gallery-grid img {
@@ -1301,12 +1321,18 @@ footer {
   font-size: 1.5rem;
 }
 
+
+
 /* =========================
    RESPONSIVE
 ========================= */
 @media (max-width: 992px) {
   .mainpage-context h2 {
     font-size: 3.6rem;
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr); /* Switches to 2 columns on tablets */
   }
 
   .hero-content h1 {
@@ -1368,8 +1394,14 @@ footer {
     font-size: 2.8rem;
   }
 
-  .page2 {
-    font-size: 2rem;
+  .menu-prompt {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .menu-prompt h2 {
+    font-size: 1.5rem;
+    line-height: 1.4;
   }
 
   .review-content {
@@ -1385,6 +1417,11 @@ footer {
   .hero {
     min-height: auto;
     padding: 70px 25px;
+    flex-direction: column; /* Stacks the text and image on top of each other */
+  }
+
+  .hero-content {
+    text-align: center; /* Centers the text again on mobile */
   }
 
   .hero-content h1 {
