@@ -243,16 +243,16 @@ body{
 }
 
 /* MAIN */
-.store-container{
-  width:92%;
-  margin:auto;
+.store-container {
+  width: 92%;
+  
+  /* NEW: Added 100px to the bottom to push the footer down */
+  margin: 0 auto 100px auto; 
 
-  display:grid;
-  grid-template-columns:2fr 1fr;
-
-  gap:35px;
-
-  align-items:start;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 35px;
+  align-items: start;
 }
 
 .store-grid{
