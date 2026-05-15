@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Login Page</title>
+    <title>Login — Cubiertos</title>
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="../CSS/login.css" />
 </head>
@@ -12,81 +12,72 @@
 
 <div class="container" id="mainContainer">
 
-    <!-- ===== LOGIN ===== -->
+    <!-- ===========================
+         LOGIN PANEL
+    =========================== -->
     <div class="form-box login">
-
         <form action="../PHP/register.php" method="POST">
 
-            <h1>LOGIN</h1>
+            <h1>Welcome Back</h1>
+            <p class="form-subtitle">Sign in to continue to Cubiertos</p>
 
-            <!-- Error / Success banner (filled by JS from URL params) -->
-            <div id="loginMsg" style="
-                display:none;
-                padding:9px 14px;
-                border-radius:8px;
-                margin-bottom:14px;
-                font-size:13.5px;
-                font-weight:600;
-                text-align:center;
-            "></div>
+            <!-- Error / Success banner -->
+            <div id="loginMsg" class="msg-banner"></div>
 
             <div class="input-box">
-                <input type="email" name="email" placeholder="Email" required />
+                <input type="email" name="email" placeholder="Email address" required />
                 <i class="bx bxs-envelope"></i>
             </div>
 
             <div class="input-box">
-                <input type="password" name="password" id="loginPassword" placeholder="Password" required />
-                <i class="bx bxs-lock-alt" style="cursor:pointer"
-                   onclick="togglePassword('loginPassword', this)"></i>
+                <input type="password" name="password" id="loginPassword"
+                       placeholder="Password" required />
+                <i class="bx bxs-lock-alt" onclick="togglePassword('loginPassword', this)"></i>
             </div>
-
-            <button type="submit" name="signIn" class="btn">LOGIN</button>
 
             <div class="remember-forgot">
-                <a href="../PHP/forgot-password.php">Forgot Password?</a>
+                <label>
+                    <input type="checkbox" name="remember">
+                    Remember me
+                </label>
+                <a href="../PHP/forgot-password.php">Forgot password?</a>
             </div>
+
+            <button type="submit" name="signIn" class="btn">Sign In</button>
 
         </form>
-
     </div>
 
-    <!-- ===== REGISTER ===== -->
+    <!-- ===========================
+         REGISTER PANEL
+    =========================== -->
     <div class="form-box register">
-
         <form action="../PHP/register.php" method="POST">
 
-            <h1>Registration</h1>
+            <h1>Create Account</h1>
+            <p class="form-subtitle">Join us and start booking today</p>
 
             <!-- Register-side error banner -->
-            <div id="registerMsg" style="
-                display:none;
-                padding:9px 14px;
-                border-radius:8px;
-                margin-bottom:14px;
-                font-size:13.5px;
-                font-weight:600;
-                text-align:center;
-            "></div>
+            <div id="registerMsg" class="msg-banner"></div>
 
             <div class="input-box">
-                <input type="text" name="firstName" placeholder="First Name" required />
+                <input type="text" name="firstName" placeholder="First name" required />
                 <i class="bx bxs-user"></i>
             </div>
 
             <div class="input-box">
-                <input type="text" name="lastName" placeholder="Last Name" required />
+                <input type="text" name="lastName" placeholder="Last name" required />
                 <i class="bx bxs-user"></i>
             </div>
 
             <div class="input-box">
-                <input type="email" name="email" placeholder="Email" required />
+                <input type="email" name="email" placeholder="Email address" required />
                 <i class="bx bxs-envelope"></i>
             </div>
 
             <div class="input-box">
                 <select name="gender" required>
-                    <option value="" disabled selected>Select Gender</option>
+                    <option value="" disabled selected>Select gender</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                     <option value="Other">Other</option>
@@ -96,24 +87,23 @@
             </div>
 
             <div class="input-box">
-                <input type="password" name="password" id="regPassword" placeholder="Password" required />
-                <i class="bx bxs-lock-alt" style="cursor:pointer"
-                   onclick="togglePassword('regPassword', this)"></i>
+                <input type="password" name="password" id="regPassword"
+                       placeholder="Password" required />
+                <i class="bx bxs-lock-alt" onclick="togglePassword('regPassword', this)"></i>
             </div>
 
             <div class="input-box">
                 <input type="password" name="confirmPassword" id="regConfirmPassword"
-                       placeholder="Confirm Password" required />
-                <i class="bx bxs-lock-alt" style="cursor:pointer"
-                   onclick="togglePassword('regConfirmPassword', this)"></i>
+                       placeholder="Confirm password" required />
+                <i class="bx bxs-lock-alt" onclick="togglePassword('regConfirmPassword', this)"></i>
             </div>
 
-            <div id="passwordMatchMsg" style="margin-top:8px;font-size:14px;font-weight:500;"></div>
+            <div id="passwordMatchMsg"></div>
 
             <!-- Password Strength -->
             <div class="password-strength">
                 <div class="strength-bar"><div id="strengthFill"></div></div>
-                <span id="strengthText">Password Strength</span>
+                <span id="strengthText">Password strength</span>
                 <ul class="password-rules">
                     <li id="ruleLength">✔ At least 8 characters</li>
                     <li id="ruleUpper">✔ One uppercase letter</li>
@@ -122,18 +112,20 @@
                 </ul>
             </div>
 
-            <button type="submit" name="signUp" class="btn">Register</button>
+            <button type="submit" name="signUp" class="btn">Create Account</button>
 
         </form>
-
     </div>
 
-    <!-- ===== TOGGLE PANEL ===== -->
+    <!-- ===========================
+         SLIDING TOGGLE PANELS
+    =========================== -->
     <div class="toggle-box">
 
+        <!-- LEFT — shown when login is active -->
         <div class="toggle-panel toggle-left">
-            <h1>Hello, Welcome</h1>
-            <p>Don't have an account?</p>
+            <h1>New here?</h1>
+            <p>Create an account and discover<br>exclusive dining experiences.</p>
             <button type="button" class="btn register-btn">Register</button>
             <button type="button" class="btn back-home-btn"
                     onclick="window.location.href='../HTML/main.html'">
@@ -141,10 +133,11 @@
             </button>
         </div>
 
+        <!-- RIGHT — shown when register is active -->
         <div class="toggle-panel toggle-right">
-            <h1>Welcome Back!</h1>
-            <p>Already have an account?</p>
-            <button type="button" class="btn login-btn">Login</button>
+            <h1>One of us?</h1>
+            <p>Already have an account?<br>Sign in and pick up where you left off.</p>
+            <button type="button" class="btn login-btn">Sign In</button>
         </div>
 
     </div>
@@ -152,126 +145,107 @@
 </div><!-- /.container -->
 
 <script>
-// ================= SHOW URL MESSAGES =================
+// ===== SHOW URL MESSAGES =====
 (function () {
-    const params = new URLSearchParams(window.location.search);
+    const params  = new URLSearchParams(window.location.search);
     const error   = params.get('error');
-    const success  = params.get('success');
-    const panel    = params.get('panel'); // 'register' → open register side
+    const success = params.get('success');
+    const panel   = params.get('panel');
 
-    // If register panel error, switch to register side first
     if (panel === 'register') {
         document.getElementById('mainContainer').classList.add('active');
     }
 
-    function showMsg(id, text, isError) {
-        const box = document.getElementById(id);
-        if (!box || !text) return;
-        box.style.display = 'block';
-        box.textContent   = text;
-        box.style.background = isError
-            ? 'rgba(220,53,69,0.85)'
-            : 'rgba(40,167,69,0.85)';
-        box.style.color = '#fff';
+    function showBanner(id, text, type) {
+        const el = document.getElementById(id);
+        if (!el || !text) return;
+        el.textContent  = text;
+        el.className    = 'msg-banner ' + type;
+        el.style.display = 'block';
     }
 
-    if (error) {
-        // Show on whichever panel is active
-        const targetId = (panel === 'register') ? 'registerMsg' : 'loginMsg';
-        showMsg(targetId, decodeURIComponent(error.replace(/\+/g, ' ')), true);
-    }
+    const cleanError   = error   ? decodeURIComponent(error.replace(/\+/g, ' '))   : '';
+    const cleanSuccess = success ? decodeURIComponent(success.replace(/\+/g, ' ')) : '';
 
-    if (success) {
-        showMsg('loginMsg', decodeURIComponent(success.replace(/\+/g, ' ')), false);
-    }
+    if (cleanError)   showBanner(panel === 'register' ? 'registerMsg' : 'loginMsg', cleanError, 'error');
+    if (cleanSuccess) showBanner('loginMsg', cleanSuccess, 'success');
 
-    // Clean URL so refresh doesn't re-show the message
-    if (error || success) {
-        history.replaceState(null, '', window.location.pathname);
-    }
+    if (error || success) history.replaceState(null, '', window.location.pathname);
 })();
 
-// ================= PASSWORD TOGGLE =================
+// ===== PASSWORD TOGGLE =====
 function togglePassword(inputId, icon) {
     const inp    = document.getElementById(inputId);
-    const hidden = inp.type === "password";
-    inp.type     = hidden ? "text" : "password";
-    icon.className = hidden ? "bx bxs-lock-open-alt" : "bx bxs-lock-alt";
+    const hidden = inp.type === 'password';
+    inp.type     = hidden ? 'text' : 'password';
+    icon.className = hidden ? 'bx bxs-lock-open-alt' : 'bx bxs-lock-alt';
 }
 
-// ================= PANEL TOGGLE =================
+// ===== PANEL TOGGLE =====
 const container   = document.getElementById('mainContainer');
-const registerBtn = document.querySelector(".register-btn");
-const loginBtn    = document.querySelector(".login-btn");
+const registerBtn = document.querySelector('.register-btn');
+const loginBtn    = document.querySelector('.login-btn');
 
-if (registerBtn) registerBtn.addEventListener("click", () => container.classList.add("active"));
-if (loginBtn)    loginBtn.addEventListener("click",    () => container.classList.remove("active"));
+if (registerBtn) registerBtn.addEventListener('click', () => container.classList.add('active'));
+if (loginBtn)    loginBtn.addEventListener('click',    () => container.classList.remove('active'));
 
-// ================= PASSWORD STRENGTH =================
-const passwordInput = document.getElementById("regPassword");
-const confirmInput  = document.getElementById("regConfirmPassword");
-const strengthFill  = document.getElementById("strengthFill");
-const strengthText  = document.getElementById("strengthText");
-const matchMsg      = document.getElementById("passwordMatchMsg");
-const ruleLength    = document.getElementById("ruleLength");
-const ruleUpper     = document.getElementById("ruleUpper");
-const ruleNumber    = document.getElementById("ruleNumber");
-const ruleSpecial   = document.getElementById("ruleSpecial");
+// ===== PASSWORD STRENGTH =====
+const passwordInput = document.getElementById('regPassword');
+const confirmInput  = document.getElementById('regConfirmPassword');
+const strengthFill  = document.getElementById('strengthFill');
+const strengthText  = document.getElementById('strengthText');
+const matchMsg      = document.getElementById('passwordMatchMsg');
+const ruleLength    = document.getElementById('ruleLength');
+const ruleUpper     = document.getElementById('ruleUpper');
+const ruleNumber    = document.getElementById('ruleNumber');
+const ruleSpecial   = document.getElementById('ruleSpecial');
+
+const colors = { weak: '#e74c3c', medium: '#f39c12', strong: '#27ae60' };
 
 if (passwordInput) {
-    passwordInput.addEventListener("input", () => {
+    passwordInput.addEventListener('input', () => {
         const val = passwordInput.value;
-        let strength = 0;
 
         const hasLength  = val.length >= 8;
         const hasUpper   = /[A-Z]/.test(val);
         const hasNumber  = /[0-9]/.test(val);
         const hasSpecial = /[^A-Za-z0-9]/.test(val);
+        const strength   = [hasLength, hasUpper, hasNumber, hasSpecial].filter(Boolean).length;
 
-        if (hasLength)  strength++;
-        if (hasUpper)   strength++;
-        if (hasNumber)  strength++;
-        if (hasSpecial) strength++;
-
-        ruleLength.style.color  = hasLength  ? "green" : "red";
-        ruleUpper.style.color   = hasUpper   ? "green" : "red";
-        ruleNumber.style.color  = hasNumber  ? "green" : "red";
-        ruleSpecial.style.color = hasSpecial ? "green" : "red";
+        ruleLength.style.color  = hasLength  ? colors.strong : '#a08a78';
+        ruleUpper.style.color   = hasUpper   ? colors.strong : '#a08a78';
+        ruleNumber.style.color  = hasNumber  ? colors.strong : '#a08a78';
+        ruleSpecial.style.color = hasSpecial ? colors.strong : '#a08a78';
 
         if (strength <= 1) {
-            strengthFill.style.width      = "25%";
-            strengthFill.style.background = "red";
-            strengthText.textContent      = "Weak Password";
-            strengthText.style.color      = "red";
+            strengthFill.style.width      = '25%';
+            strengthFill.style.background = colors.weak;
+            strengthText.textContent      = 'Weak password';
+            strengthText.style.color      = colors.weak;
         } else if (strength <= 3) {
-            strengthFill.style.width      = "65%";
-            strengthFill.style.background = "orange";
-            strengthText.textContent      = "Medium Password";
-            strengthText.style.color      = "orange";
+            strengthFill.style.width      = '65%';
+            strengthFill.style.background = colors.medium;
+            strengthText.textContent      = 'Getting stronger...';
+            strengthText.style.color      = colors.medium;
         } else {
-            strengthFill.style.width      = "100%";
-            strengthFill.style.background = "green";
-            strengthText.textContent      = "Strong Password";
-            strengthText.style.color      = "green";
+            strengthFill.style.width      = '100%';
+            strengthFill.style.background = colors.strong;
+            strengthText.textContent      = 'Strong password ✓';
+            strengthText.style.color      = colors.strong;
         }
 
-        // Re-check match when password changes
         if (confirmInput.value) checkMatch();
     });
 }
 
 function checkMatch() {
     if (!confirmInput.value) { matchMsg.textContent = ''; return; }
-    if (confirmInput.value === passwordInput.value) {
-        matchMsg.textContent = "✔ Passwords Match";
-        matchMsg.style.color = "green";
-    } else {
-        matchMsg.textContent = "✖ Passwords Do Not Match";
-        matchMsg.style.color = "red";
-    }
+    const match = confirmInput.value === passwordInput.value;
+    matchMsg.textContent = match ? '✔ Passwords match' : '✖ Passwords do not match';
+    matchMsg.style.color = match ? '#27ae60' : '#e74c3c';
 }
 
-if (confirmInput) confirmInput.addEventListener("input", checkMatch);
+if (confirmInput) confirmInput.addEventListener('input', checkMatch);
 </script>
 
 </body>

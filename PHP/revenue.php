@@ -263,52 +263,57 @@ table td{
 
 <!-- SIDEBAR -->
 
-<div class="sidebar">
+<aside class="sidebar">
 
-    <div class="sidebar-logo">
-        <img src="../IMAGES/logo.jpg" alt="">
-        <h2>Cubiertos</h2>
-    </div>
+  <div class="sidebar-logo">
+    <img src="../IMAGES/logo.jpg" alt="Cubiertos logo">
+    <h2>Cubiertos</h2>
+  </div>
 
-    <ul class="sidebar-menu">
+  <ul class="sidebar-menu">
 
-        <li> 
-            <a href="admin.php">
-                <span></span>
-                Dashboard
-            </a>
-        </li>
+    <li>
+      <a href="admin.php">
+        <span class="nav-icon">⊞</span>
+        <span class="nav-label">Dashboard</span>
+      </a>
+    </li>
 
-        <li class="active"> 
-            <a href="Revenue.php"> <span></span>
-                Revenue
-            </a>
-        </li>
+    <li class="active">
+      <a href="revenue.php">
+        <span class="nav-icon">₱</span>
+        <span class="nav-label">Revenue</span>
+      </a>
+    </li>
 
-        <li>
-            <a href="calendar.php">
-                <span></span>
-                Calendar
-            </a>
-        </li>
+    <li>
+      <a href="calendar.php">
+        <span class="nav-icon">◫</span>
+        <span class="nav-label">Calendar</span>
+      </a>
+    </li>
 
-        <li>
-            <a href="customer.php">
-                <span></span>
-                Customers
-            </a>
-        </li>
+    <li>
+      <a href="customer.php">
+        <span class="nav-icon">◎</span>
+        <span class="nav-label">Customers</span>
+      </a>
+    </li>
 
-        <li>
-            <a href="report.php">
-                <span></span>
-                Reports
-            </a>
-        </li>
+    <li>
+      <a href="report.php">
+        <span class="nav-icon">▤</span>
+        <span class="nav-label">Reports</span>
+      </a>
+    </li>
 
-    </ul>
+  </ul>
 
-</div>
+  <div class="sidebar-footer">
+    <p>Cubiertos Food Hub &copy; 2025</p>
+  </div>
+
+</aside>
 
 <!-- HEADER -->
 

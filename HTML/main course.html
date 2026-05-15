@@ -1,70 +1,260 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Main Course - Cubiertos</title>
-  <link rel="stylesheet" href="../CSS/main course.css">
-<link rel="icon" type="image/jpg" href="/IMAGES/logo.jpg">
-</head>
-<body>
-  <section class="menu-section">
-    <div class="menu-header">
-      <img src="../IMAGES/main course.jpg" alt="Main Course Header" class="header-img">
-      <h1>Main Course</h1>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Main Course — Cubiertos Food Hub</title>
+    <link rel="icon" type="image/jpg" href="../IMAGES/logo.jpg" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+      :root {
+        --olive: #606c38; --olive-deep: #283618; --amber: #dda15e;
+        --amber-dark: #bc6c25; --cream: #fefae0; --dark: #1a1a14;
+        --text: #2d2d20; --muted: #7a7a62; --surface: rgba(255, 255, 255, 0.88);
+      }
+      html { scroll-behavior: smooth; }
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: #f8f5ee;
+        color: var(--text);
+        overflow-x: hidden;
+      }
+
+      /* ── GLASS HEADER ── */
+      .glass-header {
+        position: fixed; top: 20px; left: 50%; transform: translateX(-50%); width: 92%; z-index: 1000;
+        background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+        border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 25px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), inset 0 1px 1px rgba(255, 255, 255, 0.2); transition: 0.4s ease;
+      }
+      .glass-header.scrolled { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12); }
+      .nav-container { display: flex; align-items: center; justify-content: space-between; padding: 14px 35px; }
+      .logo { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+      .logo img { width: 55px; height: auto; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); }
+      .logo-text { display: flex; flex-direction: column; justify-content: center; }
+      .logo-text h2 { color: #283618; font-family: "Caveat", cursive; font-size: 2.4rem; font-weight: 700; line-height: 1.1; margin: 0; }
+      .logo-text span { font-family: "Poppins", sans-serif; font-size: 0.7rem; letter-spacing: 4px; color: #bc6c25; font-weight: 600; display: block; margin-top: -5px; text-transform: uppercase; }
+      .navbar { display: flex; align-items: center; gap: 10px; }
+      .navbar a { text-decoration: none; color: #283618; font-size: 0.95rem; font-weight: 600; padding: 12px 18px; border-radius: 14px; transition: 0.3s ease; }
+      .navbar a:hover { background: rgba(255, 255, 255, 0.45); color: #bc6c25; transform: translateY(-2px); }
+      .login-btn { text-decoration: none; background: linear-gradient(135deg, #dda15e, #bc6c25); color: white; padding: 12px 24px; border-radius: 14px; font-weight: 700; font-size: 0.95rem; box-shadow: 0 8px 20px rgba(221, 161, 94, 0.35); transition: 0.3s ease; }
+      .menu-toggle { display: none; font-size: 1.8rem; color: #283618; cursor: pointer; }
+
+      /* ── HERO ── */
+      .hero {
+        position: relative; height: 60vh; min-height: 450px; overflow: hidden; display: flex; align-items: flex-end;
+      }
+      .hero-bg {
+        position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; animation: slowZoom 20s ease-in-out infinite alternate;
+      }
+      @keyframes slowZoom { from { transform: scale(1); } to { transform: scale(1.06); } }
+      .hero-overlay {
+        position: absolute; inset: 0;
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0.18) 40%, rgba(10, 10, 5, 0.78) 80%, rgba(10, 10, 5, 0.92) 100%);
+      }
+      .hero-content { position: relative; z-index: 2; padding: 0 80px 60px; max-width: 780px; }
+      .hero-eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--amber); margin-bottom: 15px; }
+      .hero-eyebrow::before { content: ""; display: block; width: 36px; height: 1px; background: var(--amber); }
+      .hero-content h1 { font-family: "Poppins", serif; font-size: clamp(3rem, 6vw, 4.5rem); font-weight: 700; line-height: 1.05; color: #fff; margin-bottom: 15px; }
+      .hero-content h1 em { font-style: italic; color: var(--amber); }
+      .hero-content p { font-size: 1.05rem; color: rgba(255, 255, 255, 0.8); font-weight: 300; line-height: 1.7; max-width: 440px; }
+      .back-pill {
+        display: inline-flex; align-items: center; gap: 8px; margin-top: 25px; background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.22);
+        backdrop-filter: blur(8px); color: rgba(255, 255, 255, 0.9); text-decoration: none; font-size: 0.85rem; font-weight: 500; padding: 10px 22px; border-radius: 40px; transition: 0.3s;
+      }
+
+      /* ── ITEMS SECTION ── */
+      .items-section { padding: 80px 80px 120px; max-width: 1400px; margin: 0 auto; }
+      .section-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 50px; }
+      .section-label { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--olive); margin-bottom: 10px; }
+      .section-title { font-family: "Poppins", serif; font-size: clamp(2rem, 3.5vw, 3.2rem); font-weight: 400; line-height: 1.1; color: var(--dark); margin-bottom: 30px; }
+      .section-title em { font-style: italic; color: var(--olive); }
+      
+      /* ── GRID ── */
+      .items-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; margin-bottom: 60px; }
+
+      /* ── FOOD CARD ── */
+      .food-card {
+        background: var(--surface); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.6); border-radius: 28px;
+        overflow: hidden; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08); transition: 0.3s ease; display: flex; flex-direction: column;
+      }
+      .food-card:hover { transform: translateY(-8px); box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12); }
+      .card-img-wrap { position: relative; overflow: hidden; height: 250px; flex-shrink: 0; }
+      .card-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s ease; }
+      .food-card:hover .card-img-wrap img { transform: scale(1.08); }
+
+      .card-body { padding: 25px; display: flex; flex-direction: column; flex: 1; }
+      .card-name { font-size: 1.4rem; font-weight: 700; color: var(--olive-deep); margin-bottom: 10px; }
+      .card-desc { font-size: 0.95rem; color: var(--muted); line-height: 1.6; font-weight: 400; flex: 1; margin-bottom: 25px; }
+      
+      /* ── FOOTER ── */
+      footer { background: var(--dark); padding: 56px 80px 36px; color: rgba(255, 255, 255, 0.55); }
+      .footer-top { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 40px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); margin-bottom: 32px; }
+      .footer-brand { display: flex; flex-direction: column; gap: 14px; }
+      .footer-brand img { width: 100px; filter: brightness(0) invert(1) opacity(0.8); }
+      .footer-links { display: flex; flex-direction: column; gap: 10px; }
+      .footer-links a { text-decoration: none; color: rgba(255, 255, 255, 0.55); font-size: 0.875rem; transition: color 0.2s; }
+      .footer-bottom { display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem; }
+      .footer-socials { display: flex; gap: 16px; }
+
+      /* ── SOCIALS (Floating) ── */
+      .socials { position: fixed; left: 24px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 12px; z-index: 999; }
+      .socials a { display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: 50%; background: rgba(255, 255, 255, 0.9); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); transition: 0.3s; }
+      .socials img { width: 24px; height: 24px; object-fit: contain; }
+
+      @media (max-width: 900px) {
+        .navbar { display: none; } .menu-toggle { display: block; }
+        .items-section { padding: 60px 30px 80px; } .hero-content { padding: 0 30px 40px; }
+        footer { padding: 40px 30px 24px; } .footer-top, .footer-bottom { flex-direction: column; gap: 20px; text-align: center; } .socials { display: none; }
+      }
+    </style>
+  </head>
+  <body>
+
+    <header class="glass-header">
+      <div class="nav-container">
+        <a href="../HTML/main.html" class="logo">
+          <img src="../IMAGES/logo2.jpg" alt="Cubiertos Logo">
+          <div class="logo-text">
+            <h2>Cubiertos</h2>
+            <span>FOOD HUB</span>
+          </div>
+        </a>
+        <nav class="navbar">
+          <a href="../HTML/main.html">Home</a>
+          <a href="../HTML/about.html">About</a>
+          <a href="../HTML/Store.html">Stores</a>
+          <a href="../HTML/contacts.html">Contacts</a>
+        </nav>
+        <a href="../HTML/login.html" class="login-btn">Log in</a>
+        <div class="menu-toggle" id="menuToggle">☰</div>
+      </div>
+    </header>
+
+    <div class="socials">
+      <a href="https://www.facebook.com/profile.php?id=61555258696901" target="_blank"><img src="../IMAGES/Facebook.png" alt="Facebook" /></a>
+      <a href="https://www.instagram.com/cubiertos2024/" target="_blank"><img src="../IMAGES/Instagram.png" alt="Instagram" /></a>
+      <a href="https://mail.google.com/mail/u/0/#inbox?compose=new" target="_blank"><img src="../IMAGES/Mail.png" alt="Mail" /></a>
     </div>
 
-    <div class="menu-container">
-      <button class="back-btn" onclick="window.location.href='menu.html'">⮌ GO BACK</button>
+    <section class="hero">
+      <img src="../IMAGES/main course.jpg" alt="Main Course" class="hero-bg" />
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <div class="hero-eyebrow">Cubiertos Menu</div>
+        <h1>Hearty &amp;<br /><em>Satisfying Mains</em></h1>
+        <p>Premium Filipino favorites and signature dishes crafted to satisfy your biggest cravings.</p>
+        <a href="menu.html" class="back-pill">&larr; Back to Menu</a>
+      </div>
+    </section>
+
+    <section class="items-section">
+      <div class="section-header">
+        <div>
+          <p class="section-label">MAIN COURSES</p>
+          <h2 class="section-title">Choose your<br /><em>Main Course</em></h2>
+        </div>
+      </div>
 
       <h2 class="section-title">CHICKEN</h2>
-      <div class="menu-items">
-        <div class="card">
-          <img src="../IMAGES/fried chicken.jpg" alt="Crispy Fried Chicken">
-          <h3>Crispy Fried Chicken</h3>
-          <p>Crunchy battered fried chicken served with house gravy.</p>
-          <span class="price">₱255.00</span>
+      <div class="items-grid">
+        <div class="food-card">
+          <div class="card-img-wrap">
+            <img src="../IMAGES/fried chicken.jpg" alt="Crispy Fried Chicken" />
+          </div>
+          <div class="card-body">
+            <h3 class="card-name">Crispy Fried Chicken</h3>
+            <p class="card-desc">Crunchy battered fried chicken served with house gravy.</p>
+          </div>
         </div>
 
-        <div class="card">
-          <img src="../IMAGES/chicken curry.jpg" alt="Crispy Chicken Curry">
-          <h3>Crispy Chicken Curry</h3>
-          <p>Golden fried chicken fillet simmered in creamy coconut curry sauce.</p>
-          <span class="price">₱275.00</span>
+        <div class="food-card">
+          <div class="card-img-wrap">
+            <img src="../IMAGES/chicken curry.jpg" alt="Crispy Chicken Curry" />
+          </div>
+          <div class="card-body">
+            <h3 class="card-name">Crispy Chicken Curry</h3>
+            <p class="card-desc">Golden fried chicken fillet simmered in creamy coconut curry sauce.</p>
+          </div>
         </div>
       </div>
 
       <h2 class="section-title">PORK</h2>
-      <div class="menu-items">
-        <div class="card">
-          <img src="../IMAGES/kare kare.jpg" alt="Kare-Kare">
-          <h3>Kare-Kare</h3>
-          <p>Pork belly with vegetables in a rich peanut sauce. Served with bagoong.</p>
-          <span class="price">₱310.00</span>
+      <div class="items-grid">
+        <div class="food-card">
+          <div class="card-img-wrap">
+            <img src="../IMAGES/kare kare.jpg" alt="Kare-Kare" />
+          </div>
+          <div class="card-body">
+            <h3 class="card-name">Kare-Kare</h3>
+            <p class="card-desc">Pork belly with vegetables in a rich peanut sauce. Served with bagoong.</p>
+          </div>
         </div>
 
-        <div class="card">
-          <img src="../IMAGES/SISIG.jpg" alt="Sizzling Crispy Sisig">
-          <h3>Sizzling Crispy Sisig</h3>
-          <p>Crispy chopped pork maskara served sizzling with egg, chilies, and calamansi.</p>
-          <span class="price">₱275.00</span>
+        <div class="food-card">
+          <div class="card-img-wrap">
+            <img src="../IMAGES/SISIG.jpg" alt="Sizzling Crispy Sisig" />
+          </div>
+          <div class="card-body">
+            <h3 class="card-name">Sizzling Crispy Sisig</h3>
+            <p class="card-desc">Crispy chopped pork maskara served sizzling with egg, chilies, and calamansi.</p>
+          </div>
         </div>
 
-        <div class="card">
-          <img src="../IMAGES/binangoonang bagnet.jpg" alt="Binagoongang Bagnet">
-          <h3>Binagoongang Bagnet</h3>
-          <p>Crispy pork belly simmered in savory shrimp paste sauce.</p>
-          <span class="price">₱285.00</span>
+        <div class="food-card">
+          <div class="card-img-wrap">
+            <img src="../IMAGES/binangoonang bagnet.jpg" alt="Binagoongang Bagnet" />
+          </div>
+          <div class="card-body">
+            <h3 class="card-name">Binagoongang Bagnet</h3>
+            <p class="card-desc">Crispy pork belly simmered in savory shrimp paste sauce.</p>
+          </div>
         </div>
 
-        <div class="card">
-          <img src="../IMAGES/lechon kawali.jpg" alt="Lechon Kawali">
-          <h3>Lechon Kawali</h3>
-          <p>Deep-fried pork belly served with liver sauce and a fresh salad.</p>
-          <span class="price">₱285.00</span>
+        <div class="food-card">
+          <div class="card-img-wrap">
+            <img src="../IMAGES/lechon kawali.jpg" alt="Lechon Kawali" />
+          </div>
+          <div class="card-body">
+            <h3 class="card-name">Lechon Kawali</h3>
+            <p class="card-desc">Deep-fried pork belly served with liver sauce and a fresh salad.</p>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
-</body>
+    </section>
+
+    <footer>
+      <div class="footer-top">
+        <div class="footer-brand">
+          <img src="../IMAGES/logo.jpg" alt="Cubiertos Food Hub" />
+          <p class="footer-tagline">"Savor the flavors where every bite tells a story."</p>
+        </div>
+        <div class="footer-links">
+          <a href="../HTML/main.html">Home</a>
+          <a href="../HTML/about.html">About</a>
+          <a href="../HTML/Store.html">Our Stores</a>
+          <a href="menu.html">Menu</a>
+          <a href="../HTML/contacts.html">Contacts</a>
+        </div>
+        <div class="footer-contact">
+          <strong>Get in touch</strong>
+          Food &amp; Drink · Virac, Philippines 4800<br />Contact: 0981 027 0704
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2025 Cubiertos.food.hub — All rights reserved.</span>
+      </div>
+    </footer>
+
+    <script>
+      window.addEventListener("scroll", function () {
+        const header = document.querySelector(".glass-header");
+        if(header) header.classList.toggle("scrolled", window.scrollY > 50);
+      });
+    </script>
+  </body>
 </html>

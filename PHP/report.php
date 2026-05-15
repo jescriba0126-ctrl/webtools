@@ -21,18 +21,57 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
 </head>
 
 <body>
-<div class="sidebar">
-    <div class="sidebar-logo">
-        <img src="../IMAGES/logo.jpg" alt="">
-        <h2>Cubiertos</h2>
-    </div>
-    <ul class="sidebar-menu">
-        <li><a href="admin.php"><span></span>Dashboard</a></li>
-        <li><a href="revenue.php"><span></span>Revenue</a></li>
-        <li><a href="calendar.php"><span></span>Calendar</a></li>
-        <li><a href="customer.php"><span></span>Customers</a></li>
-        <li class="active"><a href="report.php"><span></span>Reports</a></li> </ul>
-</div>
+<aside class="sidebar">
+
+  <div class="sidebar-logo">
+    <img src="../IMAGES/logo.jpg" alt="Cubiertos logo">
+    <h2>Cubiertos</h2>
+  </div>
+
+  <ul class="sidebar-menu">
+
+    <li>
+      <a href="admin.php">
+        <span class="nav-icon">⊞</span>
+        <span class="nav-label">Dashboard</span>
+      </a>
+    </li>
+
+    <li>
+      <a href="revenue.php">
+        <span class="nav-icon">₱</span>
+        <span class="nav-label">Revenue</span>
+      </a>
+    </li>
+
+    <li>
+      <a href="calendar.php">
+        <span class="nav-icon">◫</span>
+        <span class="nav-label">Calendar</span>
+      </a>
+    </li>
+
+    <li>
+      <a href="customer.php">
+        <span class="nav-icon">◎</span>
+        <span class="nav-label">Customers</span>
+      </a>
+    </li>
+
+    <li class="active">
+      <a href="report.php">
+        <span class="nav-icon">▤</span>
+        <span class="nav-label">Reports</span>
+      </a>
+    </li>
+
+  </ul>
+
+  <div class="sidebar-footer">
+    <p>Cubiertos Food Hub &copy; 2025</p>
+  </div>
+
+</aside>
 
 <header id="adminHeader">
     <div class="logo">
