@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Salad — Cubiertos Food Hub</title>
+    <title>Salads — Cubiertos Food Hub</title>
     <link rel="icon" type="image/jpg" href="../IMAGES/logo.jpg" />
     <link
       href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Poppins:wght@300;400;500;600;700&display=swap"
@@ -19,7 +19,7 @@
       html { scroll-behavior: smooth; }
       body {
         font-family: "Poppins", sans-serif;
-        background: var(--bg);
+        background-color: #f8f5ee;
         color: var(--text);
         overflow-x: hidden;
       }
@@ -100,14 +100,6 @@
       .card-body { padding: 25px; display: flex; flex-direction: column; flex: 1; }
       .card-name { font-size: 1.4rem; font-weight: 700; color: var(--olive-deep); margin-bottom: 10px; }
       .card-desc { font-size: 0.95rem; color: var(--muted); line-height: 1.6; font-weight: 400; flex: 1; margin-bottom: 25px; }
-      
-      /* Merged Card Footer & Pricing Styles */
-      .card-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-      .card-price { font-family: "Poppins", serif; font-size: 1.45rem; font-weight: 600; color: var(--amber-dark); }
-      .card-price span { font-family: "Poppins", sans-serif; font-size: 0.75rem; font-weight: 500; color: var(--muted); margin-right: 2px; vertical-align: middle; }
-      .order-btn { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, var(--olive), #4f5d2f); color: #fff; font-family: "Poppins", sans-serif; font-size: 0.85rem; font-weight: 500; padding: 11px 22px; border-radius: 40px; text-decoration: none; box-shadow: 0 6px 18px rgba(96, 108, 56, 0.28); border: none; cursor: pointer; transition: 0.3s ease; }
-      .order-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(96, 108, 56, 0.35); }
-      .order-btn svg { width: 14px; height: 14px; stroke: #fff; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
 
       /* ── FOOTER ── */
       footer { background: var(--dark); padding: 56px 80px 36px; color: rgba(255, 255, 255, 0.55); }
@@ -169,7 +161,7 @@
     </div>
 
     <section class="hero">
-      <img src="../IMAGES/salad.jpg" alt="Salad" class="hero-bg" />
+      <img src="../IMAGES/gardensalad.png" alt="Salads" class="hero-bg" />
       <div class="hero-overlay"></div>
       <div class="hero-content">
         <div class="hero-eyebrow">Cubiertos Menu</div>
@@ -179,76 +171,62 @@
       </div>
     </section>
 
-    <!-- MENU -->
-    <section class="menu-section">
-      <div class="section-intro">
+    <section class="items-section">
+      <div class="section-header">
         <div>
-          <p class="section-label">Category</p>
-          <h2 class="section-title">Fresh <em>Salads</em></h2>
+          <p class="section-label">Fresh &amp; Crisp</p>
+          <h2 class="section-title">Choose your<br /><em>salad</em></h2>
         </div>
-        <div class="section-count">
-          <strong>4</strong>
-          items available
-        </div>
+        <p class="item-count"><strong>3</strong> items available</p>
       </div>
 
       <div class="items-grid">
         
         <div class="food-card">
           <div class="card-img-wrap">
-            <img src="../IMAGES/thai.png" alt="Thai Mango Salad" />
-            <span class="card-badge">Bestseller</span>
+            <img src="../IMAGES/salad.jpg" alt="Classic Garden Salad" />
+            <span class="card-badge">Fresh Pick</span>
           </div>
           <div class="card-body">
-            <h3>Thai Mango Salad</h3>
-            <p>
-              Refreshing salad made with shredded green mango, herbs, and a
-              tangy sweet-spicy dressing.
+            <h3 class="card-name">Classic Garden Salad</h3>
+            <p class="card-desc">
+              A refreshing mix of romaine lettuce, cherry tomatoes, cucumbers,
+              and red onion tossed in our signature vinaigrette.
             </p>
-            <div class="card-footer">
-              <span class="price">₱185.00</span>
-            </div>
           </div>
         </div>
 
-        <div class="item-card">
+        <div class="food-card">
           <div class="card-img-wrap">
-            <img src="../IMAGES/gardensalad.png" alt="Cubiertos Garden Salad" />
-            <span class="card-badge">Signature</span>
+            <img src="../IMAGES/salad.jpg" alt="Caesar Salad" />
+            <span class="card-badge">Best Seller</span>
           </div>
           <div class="card-body">
-            <h3>Cubiertos Garden Salad</h3>
-            <p>
-              Fresh lettuce, tomatoes, cucumber, and croutons served with our
-              signature creamy dressing.
+            <h3 class="card-name">Caesar Salad</h3>
+            <p class="card-desc">
+              Crisp romaine lettuce with house-made Caesar dressing, parmesan
+              shavings, and golden croutons.
             </p>
-            <div class="card-footer">
-              <span class="price">₱185.00</span>
-            </div>
           </div>
         </div>
 
-        <div class="item-card">
+        <div class="food-card">
           <div class="card-img-wrap">
             <img src="../IMAGES/grilled chicken salad.jpg" alt="Grilled Chicken Salad" />
             <span class="card-badge">Chef's Pick</span>
           </div>
           <div class="card-body">
-            <h3>Kani Mango Roll</h3>
-            <p>
-              Japanese-inspired roll made with crab stick, mango, and veggies —
-              light and delicious.
+            <h3 class="card-name">Grilled Chicken Salad</h3>
+            <p class="card-desc">
+              Tender grilled chicken breast over mixed greens with bell peppers,
+              corn, and honey-mustard dressing.
             </p>
-            <div class="card-footer">
-              <span class="price">₱185.00</span>
-            </div>
           </div>
         </div>
 
       </div>
     </section>
 
-    <!-- FOOTER -->
     <footer>
       <div class="footer-top">
         <div class="footer-brand">
@@ -259,13 +237,13 @@
           <a href="../HTML/main.html">Home</a>
           <a href="../HTML/about.html">About</a>
           <a href="../HTML/Store.html">Our Stores</a>
+          <a href="menu.html">Menu</a>
           <a href="../HTML/contacts.html">Contacts</a>
           <a href="../HTML/login.html">Log in</a>
         </div>
         <div class="footer-contact">
           <strong>Get in touch</strong>
-          Food &amp; Drink · Virac, Philippines 4800<br />
-          Contact: 0981 027 0704
+          Food &amp; Drink · Virac, Philippines 4800<br />Contact: 0981 027 0704
         </div>
       </div>
       <div class="footer-bottom">
