@@ -202,7 +202,7 @@ include("connect.php");
         <p>
           <i>Email Address</i><br>
           <input type="email" name="email" placeholder="Enter your email"
-                 value="<?= $prefill_email ?>" required>
+                  required>
         </p>
 
         <!-- PHONE -->

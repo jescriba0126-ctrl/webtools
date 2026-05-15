@@ -40,14 +40,13 @@ function loadOrders() {
 
   const filterValue = document.getElementById("filterStatus")?.value || "all";
 
-  orders.forEach((order, index) => {
-    // SEARCH
+  let displayIndex = 0;
+
+  orders.forEach((order) => {
+    // SEARCH — skip if name doesn't match
     if (order.name && !order.name.toLowerCase().includes(searchValue)) return;
 
-    // FILTER
-    if (filterValue !== "all" && order.status !== filterValue) return;
-
-    // COUNTS
+    // ── COUNT STATS (always, before any display filter) ──────────
     if (order.status === "Pending") pending++;
     if (order.status === "Approved") approved++;
     if (order.status === "Completed") {
@@ -68,67 +67,91 @@ function loadOrders() {
       }
     }
 
-    // TABLE ROW
+    // ── DISPLAY FILTER (applied after stats are counted) ──────────
+
+    // If a specific status is selected, only show that status
+    if (filterValue !== "all" && order.status !== filterValue) return;
+
+    // Hide completed from main table UNLESS user explicitly selects "Completed"
+    if (order.status === "Completed" && filterValue !== "Completed") return;
+
+    // ── BUILD TABLE ROW ───────────────────────────────────────────
+    displayIndex++;
+
     const row = document.createElement("tr");
 
     row.innerHTML = `
-            <td>${index + 1}</td>
+      <td>${displayIndex}</td>
 
-            <td>${order.name || "—"}</td>
+      <td>${order.name || "—"}</td>
 
-            <td>${order.phone || "—"}<br>${order.email || ""}</td>
+      <td>${order.phone || "—"}<br>${order.email || ""}</td>
 
-            <td>${order.occasion || "—"}</td>
+      <td>${order.occasion || "—"}</td>
 
-            <td>${order.guests || 0}</td>
+      <td>${order.guests || 0} pax</td>
 
-            <td>₱${Number(order.amount || 0).toLocaleString()}</td>
+      <td>₱${Number(order.amount || 0).toLocaleString()}</td>
 
-            <td>${order.payment_method || "—"}</td>
+      <td>${order.payment_method || "—"}</td>
 
-            <td>
-                <span class="status ${order.status.toLowerCase()}">
-                    ${order.status}
-                </span>
-            </td>
+      <td>
+        <span class="status ${order.status.toLowerCase()}">
+          ${order.status}
+        </span>
+      </td>
 
-            <td>
+      <td>
+        <button
+          class="btn approve"
+          onclick="approveOrder(${order.id})"
+        >
+          Approve Booking
+        </button>
 
-                <button
-                    class="btn approve"
-                    onclick="approveOrder(${order.id})"
-                >
-                    Approve Booking
-                </button>
+        <button
+          class="btn completed"
+          onclick="completeOrder(${order.id})"
+        >
+          Complete Booking
+        </button>
 
-                <button
-                    class="btn completed"
-                    onclick="completeOrder(${order.id})"
-                >
-                    Complete Booking
-                </button>
+        <button
+          class="btn cancel"
+          onclick="cancelOrder(${order.id})"
+        >
+          Cancel Booking
+        </button>
+      </td>
+    `;
 
-                <button
-                    class="btn cancel"
-                    onclick="cancelOrder(${order.id})"
-                >
-                    Cancel Booking
-                </button>
-
-            </td>
-        `;
-
-    ordersTable.appendChild(row); /////////////////////////////////////////////////////////////////////
+    ordersTable.appendChild(row);
   });
 
-  // ================= DASHBOARD =================
+  // ── Show empty message if no rows rendered ────────────────────
+  if (displayIndex === 0) {
+    const emptyRow = document.createElement("tr");
+    emptyRow.innerHTML = `
+      <td colspan="9" style="text-align:center; padding: 24px; color: #999;">
+        ${
+          filterValue === "Completed"
+            ? "No completed bookings found."
+            : "No active bookings found."
+        }
+      </td>
+    `;
+    ordersTable.appendChild(emptyRow);
+  }
+
+  // ================= DASHBOARD STATS =================
 
   document.getElementById("ov_totalBookings").textContent = orders.length;
   document.getElementById("ov_pendingBookings").textContent = pending;
   document.getElementById("ov_approvedBookings").textContent = approved;
   document.getElementById("ov_completedBookings").textContent = completed;
   document.getElementById("ov_cancelledBookings").textContent = cancelled;
-  document.getElementById("ov_totalRevenue").textContent = totalRevenue;
+  document.getElementById("ov_totalRevenue").textContent =
+    totalRevenue.toLocaleString();
 
   document.getElementById("ov_pendingFlow").textContent = pending;
   document.getElementById("ov_approvedFlow").textContent = approved;
@@ -151,7 +174,7 @@ function loadOrders() {
   fillEl.style.width = percentage + "%";
 }
 
-// ================= UPDATE STATUSs =================
+// ================= UPDATE STATUS =================
 async function updateStatus(id, status) {
   try {
     await fetch("admin_bookings.php?action=update_status", {
@@ -291,25 +314,21 @@ window.addEventListener("load", function () {
   const loader = document.getElementById("startup-loader");
 
   if (loader) {
-    // Check if they have NOT seen the loader yet this session
     if (!sessionStorage.getItem("hasSeenLoader")) {
-      // 1. Show the loader
-      loader.style.display = "flex"; // Or "block" depending on your CSS
+      loader.style.display = "flex";
 
-      // 2. Mark that they have seen it
       sessionStorage.setItem("hasSeenLoader", "true");
 
-      // 3. Hide it after 2 seconds
       setTimeout(function () {
         loader.style.display = "none";
       }, 2000);
     } else {
-      // If they already saw it, ensure it stays completely hidden
       loader.style.display = "none";
     }
   }
 });
 
+// ================= SPECIAL NOTES =================
 async function loadSpecialNotes() {
   const container = document.getElementById("notesContainer");
 
@@ -323,12 +342,7 @@ async function loadSpecialNotes() {
     container.innerHTML = "";
 
     if (notes.length === 0) {
-      container.innerHTML = `
-                <p class="empty-note">
-                    No special notes found.
-                </p>
-            `;
-
+      container.innerHTML = `<p class="empty-note">No special notes found.</p>`;
       return;
     }
 
@@ -339,62 +353,30 @@ async function loadSpecialNotes() {
 
       const message = (note.special_notes || "").toLowerCase();
 
-      if (!customer.includes(search) && !message.includes(search)) {
-        return;
-      }
+      if (!customer.includes(search) && !message.includes(search)) return;
 
       hasResult = true;
 
       container.innerHTML += `
-
-            <div class="note-box">
-
-                <div class="note-top">
-
-                    <h3>${note.name}</h3>
-
-                    <span>
-                        ${new Date(note.booking_datetime).toLocaleString()}
-                    </span>
-
-                </div>
-
-                <div class="note-body">
-
-                    <p>
-                        <strong>Occasion:</strong>
-                        ${note.occasion || "—"}
-                    </p>
-
-                    <p>
-                        <strong>Guests:</strong>
-                        ${note.guests || 0}
-                    </p>
-
-                    <p>
-                        <strong>Status:</strong>
-                        ${note.status || "Pending"}
-                    </p>
-
-                    <div class="special-message">
-
-                        ${note.special_notes || "No special note"}
-
-                    </div>
-
-                </div>
-
+        <div class="note-box">
+          <div class="note-top">
+            <h3>${note.name}</h3>
+            <span>${new Date(note.booking_datetime).toLocaleString()}</span>
+          </div>
+          <div class="note-body">
+            <p><strong>Occasion:</strong> ${note.occasion || "—"}</p>
+            <p><strong>Guests:</strong> ${note.guests || 0}</p>
+            <p><strong>Status:</strong> ${note.status || "Pending"}</p>
+            <div class="special-message">
+              ${note.special_notes || "No special note"}
             </div>
-
-            `;
+          </div>
+        </div>
+      `;
     });
 
     if (!hasResult) {
-      container.innerHTML = `
-                <p class="empty-note">
-                    No matching notes found.
-                </p>
-            `;
+      container.innerHTML = `<p class="empty-note">No matching notes found.</p>`;
     }
   } catch (error) {
     console.log(error);

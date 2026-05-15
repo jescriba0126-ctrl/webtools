@@ -172,12 +172,17 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
             <option value="all">All Status</option>
             <option value="Pending">Pending</option>
             <option value="Approved">Approved</option>
-            <option value="Completed">Completed</option>
+            <option value="Completed">Completed (History)</option>
             <option value="Cancelled">Cancelled</option>
           </select>
         </div>
 
       </div>
+
+      <!-- Notice shown when viewing active bookings -->
+      <p class="completed-notice" id="completedNotice">
+        ✅ Completed bookings are hidden from this view. To see them, select <strong>Completed (History)</strong> from the filter.
+      </p>
 
       <table id="ordersTable">
         <thead>
@@ -227,7 +232,37 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
 </div>
 
 
+<style>
+  /* Notice bar for completed bookings being hidden */
+  .completed-notice {
+    display: block;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    color: #166534;
+    font-size: 13px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+  }
+
+  .completed-notice.hidden {
+    display: none;
+  }
+</style>
+
 <script src="../JS/admin.js"></script>
+
+<!-- Show/hide the notice based on filter selection -->
+<script>
+  document.getElementById("filterStatus").addEventListener("change", function () {
+    const notice = document.getElementById("completedNotice");
+    if (this.value === "Completed") {
+      notice.classList.add("hidden");
+    } else {
+      notice.classList.remove("hidden");
+    }
+  });
+</script>
 
 </body>
 </html>
