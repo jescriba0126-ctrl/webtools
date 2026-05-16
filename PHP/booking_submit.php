@@ -113,7 +113,6 @@ if ($payment === 'GCash') {
 }
 
 // ── generate unique ticket number (collision-safe) ───────────
-// Uses random_bytes for stronger uniqueness, retries on collision
 $ticket = null;
 for ($i = 0; $i < 5; $i++) {
     $candidate = 'T' . strtoupper(substr(bin2hex(random_bytes(5)), 0, 8));
@@ -131,17 +130,12 @@ if (!$ticket) {
 
 // ── Handle proof of payment upload ───────────────────────────
 //
-//  FOLDER STRUCTURE:
-//    /your-project/
-//      PHP/
-//        booking_submit.php   <- __DIR__
-//        payment_admin.php
-//        uploads/
-//          proofs/            <- images saved here
+//  FIX: proof_path is now stored as a root-relative URL that includes
+//  the project subfolder "webtools-main", so it resolves correctly
+//  from any page on localhost:
 //
-//  proof_path stored in DB as a root-relative web URL:
-//    /PHP/uploads/proofs/proof_TICKET_TIME.jpg
-//  This works as <img src="/PHP/uploads/proofs/..."> from ANY page.
+//    Stored in DB:  /webtools-main/PHP/uploads/proofs/proof_TICKET_TIME.jpg
+//    Used as:       <img src="/webtools-main/PHP/uploads/proofs/proof_TICKET_TIME.jpg">
 //
 $proof_path = null;
 
@@ -165,7 +159,7 @@ if ($payment === 'GCash') {
         exit;
     }
 
-    // Physical disk path — inside the PHP/ folder alongside this script
+    // Physical disk path — saves inside PHP/uploads/proofs/
     $upload_dir = __DIR__ . '/uploads/proofs/';
     if (!is_dir($upload_dir)) {
         mkdir($upload_dir, 0755, true);
@@ -180,8 +174,8 @@ if ($payment === 'GCash') {
         exit;
     }
 
-    // Root-relative web URL — works as <img src="..."> from any page on the site
-    $proof_path = '/PHP/uploads/proofs/' . $filename;
+    // ✅ FIX: include /webtools-main/ so the URL works from any page
+    $proof_path = '/webtools-main/PHP/uploads/proofs/' . $filename;
 }
 
 // ── Time slot conflict check (2-hour buffer) ──────────────────

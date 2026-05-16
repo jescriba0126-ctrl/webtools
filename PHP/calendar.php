@@ -30,6 +30,11 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
     <li><a href="Revenue.php"><span class="nav-icon">₱</span><span class="nav-label">Revenue</span></a></li>
     <li class="active"><a href="calendar.php"><span class="nav-icon">◫</span><span class="nav-label">Calendar</span></a></li>
     <li><a href="customer.php"><span class="nav-icon">◎</span><span class="nav-label">Customers</span></a></li>
+    <li>
+  <a href="payment_admin.php">
+    <span class="nav-icon">📲</span>
+    <span class="nav-label">Payments</span></a>
+  </li>
     <li><a href="report.php"><span class="nav-icon">▤</span><span class="nav-label">Reports</span></a></li>
   </ul>
   <div class="sidebar-footer">

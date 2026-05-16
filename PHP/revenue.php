@@ -301,6 +301,12 @@ table td{
     </li>
 
     <li>
+  <a href="payment_admin.php">
+    <span class="nav-icon">📲</span>
+    <span class="nav-label">Payments</span></a>
+  </li>
+
+    <li>
       <a href="report.php">
         <span class="nav-icon">▤</span>
         <span class="nav-label">Reports</span>

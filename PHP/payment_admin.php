@@ -28,6 +28,18 @@ try {
     // Non-fatal — columns may already exist
 }
 
+// ── FIX OLD RECORDS: patch any proof_path that is missing /webtools-main/ ──
+// This runs once and is safe to keep — it only updates rows that need it.
+try {
+    $pdo->exec("
+        UPDATE bookings
+        SET proof_path = REPLACE(proof_path, '/PHP/uploads/proofs/', '/webtools-main/PHP/uploads/proofs/')
+        WHERE proof_path LIKE '/PHP/uploads/proofs/%'
+    ");
+} catch (PDOException $e) {
+    // Non-fatal
+}
+
 // =====================================================
 //  AJAX ACTIONS — return JSON and exit
 // =====================================================
@@ -303,6 +315,18 @@ if ($action === 'confirm' && $_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 .proof-close-btn:hover { background: var(--brand); color: #fff; }
 
+/* ── Modal: broken image fallback ── */
+.proof-modal-error {
+  display: none;
+  padding: 24px;
+  text-align: center;
+  color: var(--text-3);
+  font-size: 0.9rem;
+  background: var(--surface-2);
+  border-radius: var(--r-md);
+  border: 1px dashed var(--border);
+}
+
 .pay-toast {
   position: fixed; bottom: 28px; right: 28px;
   background: var(--forest); color: #fff;
@@ -389,19 +413,24 @@ if ($action === 'confirm' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     </select>
   </div>
 
-  <!-- Static empty message — never removed from DOM -->
   <p class="pay-empty" id="payEmpty" style="display:none;">No payments found.</p>
-
   <div id="paymentGrid" class="payment-grid"></div>
 
 </main>
 
+<!-- Proof Modal -->
 <div id="proofModal" class="proof-modal" style="display:none;">
   <div class="proof-modal-backdrop" onclick="closeModal()"></div>
   <div class="proof-modal-box">
     <button class="proof-close-btn" onclick="closeModal()">✕</button>
     <h3 id="modalTitle">Payment Screenshot</h3>
-    <img id="modalImg" src="" alt="Payment Proof">
+    <!-- ✅ FIX: onerror shows a fallback message instead of a broken image icon -->
+    <img id="modalImg" src="" alt="Payment Proof"
+         onerror="this.style.display='none'; document.getElementById('modalError').style.display='block';">
+    <div id="modalError" class="proof-modal-error">
+      ⚠️ Image could not be loaded.<br>
+      <small>The file may have been deleted or the path is incorrect.</small>
+    </div>
   </div>
 </div>
 
@@ -422,8 +451,6 @@ function esc(str) {
 }
 
 // ── FETCH from server ─────────────────────────────────
-// Does NOT call renderCards() directly — only updates data + stats,
-// then re-applies the current filter so search/dropdown state is preserved.
 async function fetchPayments() {
   try {
     const res  = await fetch("payment_admin.php?action=list");
@@ -431,10 +458,10 @@ async function fetchPayments() {
     if (data.success) {
       allPayments = data.payments;
       renderStats();
-      renderCards(); // safe — reads live values from inputs
+      renderCards();
     }
   } catch (err) {
-    // Silent fail on background refresh — don't disrupt the UI
+    // Silent fail on background refresh
   }
 }
 
@@ -452,19 +479,14 @@ function renderStats() {
 }
 
 // ── RENDER CARDS ──────────────────────────────────────
-// Reads search + filter live from the DOM so it always reflects
-// what the user has currently typed/selected.
 function renderCards() {
   const grid      = document.getElementById("paymentGrid");
   const emptyMsg  = document.getElementById("payEmpty");
   const searchVal = document.getElementById("paySearch").value.toLowerCase().trim();
   const filterVal = document.getElementById("payFilter").value;
 
-  // Filter the master list
   const filtered = allPayments.filter(p => {
-    // Status filter
     if (filterVal !== "all" && p.payment_status !== filterVal) return false;
-    // Search filter
     if (searchVal) {
       const name = (p.name            || "").toLowerCase();
       const ref  = (p.gcash_reference || "").toLowerCase();
@@ -474,7 +496,6 @@ function renderCards() {
     return true;
   });
 
-  // Clear only the cards grid, NOT the emptyMsg (it lives outside the grid)
   grid.innerHTML = "";
 
   if (filtered.length === 0) {
@@ -504,7 +525,7 @@ function buildCard(p) {
     });
   };
 
-  // Proof image — use encoded src to avoid XSS in onclick
+  // ✅ FIX: proof thumbnail with proper onerror fallback
   let proofHTML;
   if (p.proof_path) {
     const safeSrc  = esc(p.proof_path);
@@ -518,7 +539,7 @@ function buildCard(p) {
              data-src="${safeSrc}"
              data-name="${safeName}"
              onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-        <div class="pay-no-proof" style="display:none;">Image not found on server</div>
+        <div class="pay-no-proof" style="display:none;">⚠️ Image not found on server</div>
       </div>`;
   } else {
     proofHTML = `
@@ -611,26 +632,21 @@ function buildCard(p) {
   return card;
 }
 
-// ── EVENT DELEGATION — confirm + view proof buttons ───
-// Using delegation on the grid means we never lose listeners
-// when cards are re-rendered by the auto-refresh.
+// ── EVENT DELEGATION ──────────────────────────────────
 document.getElementById("paymentGrid").addEventListener("click", function(e) {
   const btn = e.target.closest("button");
   if (!btn) return;
 
-  // Confirm payment
   if (btn.classList.contains("confirm") && btn.dataset.id) {
     confirmPayment(parseInt(btn.dataset.id, 10));
     return;
   }
 
-  // View proof
   if (btn.classList.contains("view-proof") && btn.dataset.src) {
     openModal(btn.dataset.src, btn.dataset.name);
     return;
   }
 
-  // Click on proof thumbnail
   const thumb = e.target.closest(".pay-proof-thumb");
   if (thumb && thumb.dataset.src) {
     openModal(thumb.dataset.src, thumb.dataset.name);
@@ -660,9 +676,16 @@ async function confirmPayment(id) {
 
 // ── MODAL ─────────────────────────────────────────────
 function openModal(src, name) {
-  document.getElementById("modalImg").src           = src;
-  document.getElementById("modalTitle").textContent = (name || "Customer") + " — Payment Proof";
-  document.getElementById("proofModal").style.display = "flex";
+  const img   = document.getElementById("modalImg");
+  const error = document.getElementById("modalError");
+
+  // Reset state each time modal opens
+  img.style.display   = "block";
+  error.style.display = "none";
+  img.src             = src;
+
+  document.getElementById("modalTitle").textContent    = (name || "Customer") + " — Payment Proof";
+  document.getElementById("proofModal").style.display  = "flex";
 }
 
 function closeModal() {
@@ -673,7 +696,7 @@ function closeModal() {
 window.closeModal = closeModal;
 document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
 
-// ── SEARCH + FILTER — live, no debounce needed ────────
+// ── SEARCH + FILTER ───────────────────────────────────
 document.getElementById("paySearch").addEventListener("input",  renderCards);
 document.getElementById("payFilter").addEventListener("change", renderCards);
 
@@ -688,9 +711,6 @@ function showToast(msg, type = "success") {
 
 // ── INIT ──────────────────────────────────────────────
 fetchPayments();
-
-// Auto-refresh every 60s (increased from 30s to reduce flicker).
-// Does NOT reset search/filter — renderCards() reads inputs live.
 autoRefreshId = setInterval(fetchPayments, 60000);
 
 </script>
