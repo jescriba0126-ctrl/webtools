@@ -1,8 +1,8 @@
 <?php
 // admin_bookings.php
 // AJAX endpoint — returns bookings as JSON for the admin dashboard.
-// Handles: list, update_status, delete, set_capacity.
-// Uses mysqli ($conn) to match connect.php in this project.
+// Database: login | Table: bookings
+// Handles: list, update_status, delete, set_capacity
 
 session_start();
 header('Content-Type: application/json');
@@ -14,20 +14,20 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     exit;
 }
 
-include 'connect.php'; // provides $conn (mysqli)
+include 'connect.php'; // provides $conn (mysqli) connected to `login` DB
 
 $action = $_GET['action'] ?? 'list';
 
 // ── LIST bookings ─────────────────────────────────────────────
 if ($action === 'list') {
 
-    // Build WHERE clause
+    // Build WHERE clause for optional filters
     $conditions = [];
     $types      = '';
     $binds      = [];
 
     $status = $_GET['status'] ?? 'all';
-    if ($status !== 'all' && in_array($status, ['Pending','Approved','Completed','Cancelled'])) {
+    if ($status !== 'all' && in_array($status, ['Pending', 'Approved', 'Completed', 'Cancelled'])) {
         $conditions[] = "status = ?";
         $types       .= 's';
         $binds[]      = $status;
@@ -44,11 +44,33 @@ if ($action === 'list') {
 
     $where = count($conditions) ? 'WHERE ' . implode(' AND ', $conditions) : '';
 
-    $sql  = "SELECT id, ticket, name, email, phone, occasion, guests,
-                    package, amount, payment_method, booking_datetime,
-                    special_notes, status, created_at
-             FROM bookings $where
-             ORDER BY created_at DESC";
+    // Select all columns that match your bookings table schema exactly
+    $sql = "SELECT
+                id,
+                ticket,
+                ticket_number,
+                user_id,
+                name,
+                email,
+                phone,
+                occasion,
+                guests,
+                package,
+                amount,
+                payment_method,
+                payment_status,
+                booking_datetime,
+                special_notes,
+                gcash_name,
+                gcash_number,
+                gcash_reference,
+                proof_path,
+                status,
+                created_at,
+                updated_at
+            FROM bookings
+            $where
+            ORDER BY booking_datetime ASC";
 
     $stmt = $conn->prepare($sql);
     if ($types) {
@@ -59,53 +81,66 @@ if ($action === 'list') {
     $bookings = $result->fetch_all(MYSQLI_ASSOC);
     $stmt->close();
 
-    // Overview stats
+    // ── Overview stats (always from full table, ignoring filters) ──
     $statsRes = $conn->query("
         SELECT
-          COUNT(*)                                                         AS total,
-          SUM(status = 'Pending')                                          AS pending,
-          SUM(status = 'Approved')                                         AS approved,
-          SUM(status = 'Completed')                                        AS completed,
-          SUM(status = 'Cancelled')                                        AS cancelled,
-          COALESCE(SUM(CASE WHEN status IN ('Approved','Completed')
-                            THEN amount ELSE 0 END), 0)                   AS revenue
+            COUNT(*)                                                AS total,
+            SUM(status = 'Pending')                                 AS pending,
+            SUM(status = 'Approved')                                AS approved,
+            SUM(status = 'Completed')                               AS completed,
+            SUM(status = 'Cancelled')                               AS cancelled,
+            COALESCE(SUM(CASE WHEN status = 'Completed'
+                              THEN amount ELSE 0 END), 0)           AS revenue
         FROM bookings
     ");
     $stats = $statsRes->fetch_assoc();
 
-    // Today's bookings for capacity bar
+    // ── Today's bookings for capacity bar ──────────────────────────
     $todayRes = $conn->query("
-        SELECT COUNT(*) AS today_count,
-               COALESCE(SUM(guests), 0) AS today_guests
+        SELECT
+            COUNT(*) AS today_count,
+            COALESCE(SUM(guests), 0) AS today_guests
         FROM bookings
         WHERE DATE(booking_datetime) = CURDATE()
-          AND status != 'Cancelled'
+          AND status NOT IN ('Cancelled', 'Completed')
     ");
     $today = $todayRes->fetch_assoc();
 
-    // Daily capacity from settings
+    // ── Upcoming events (next 7 days, Pending or Approved) ─────────
+    $upcomingRes = $conn->query("
+        SELECT
+            id, name, occasion, guests, amount, payment_method,
+            booking_datetime, status, special_notes, phone, email
+        FROM bookings
+        WHERE status IN ('Pending', 'Approved')
+          AND booking_datetime BETWEEN
+                DATE_SUB(NOW(), INTERVAL 3 DAY)
+            AND DATE_ADD(NOW(), INTERVAL 7 DAY)
+        ORDER BY booking_datetime ASC
+    ");
+    $upcomingEvents = $upcomingRes->fetch_all(MYSQLI_ASSOC);
+
+    // ── Daily capacity from settings table ─────────────────────────
     $capRes   = $conn->query("SELECT setting_value FROM settings WHERE setting_key = 'daily_capacity'");
     $capRow   = $capRes ? $capRes->fetch_assoc() : null;
     $capacity = (int)($capRow['setting_value'] ?? 100);
 
     echo json_encode([
-        'success'  => true,
-        'bookings' => $bookings,
-        'stats'    => $stats,
-        'today'    => $today,
-        'capacity' => $capacity,
+        'success'        => true,
+        'bookings'       => $bookings,
+        'upcomingEvents' => $upcomingEvents,
+        'stats'          => $stats,
+        'today'          => $today,
+        'capacity'       => $capacity,
     ]);
     exit;
 }
 
 // ── UPDATE STATUS ─────────────────────────────────────────────
-// Called from the admin dashboard when the admin changes a booking status.
-// Because profile.php reads directly from the bookings table, the user's
-// profile page will reflect the new status on their next page load.
 if ($action === 'update_status' && $_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $id        = (int)($_POST['id']     ?? 0);
-    $newStatus = trim($_POST['status']  ?? '');
+    $id        = (int)($_POST['id']    ?? 0);
+    $newStatus = trim($_POST['status'] ?? '');
     $allowed   = ['Pending', 'Approved', 'Completed', 'Cancelled'];
 
     if (!$id || !in_array($newStatus, $allowed)) {
@@ -160,7 +195,7 @@ if ($action === 'set_capacity' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // INSERT … ON DUPLICATE KEY UPDATE (requires unique key on setting_key)
+    // Uses the settings table (setting_key = 'daily_capacity' already exists in your DB)
     $stmt = $conn->prepare("
         INSERT INTO settings (setting_key, setting_value)
         VALUES ('daily_capacity', ?)

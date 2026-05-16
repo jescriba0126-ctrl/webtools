@@ -56,11 +56,12 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
       </a>
     </li>
 
- <li>
-  <a href="payment_admin.php">
-    <span class="nav-icon">📲</span>
-    <span class="nav-label">Payments</span></a>
-  </li>
+    <li>
+      <a href="payment_admin.php">
+        <span class="nav-icon">📲</span>
+        <span class="nav-label">Payments</span>
+      </a>
+    </li>
 
     <li>
       <a href="report.php">
@@ -86,12 +87,34 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
   </div>
 
   <nav>
+    <!-- NOTIFICATION BELL -->
+    <div class="notif-bell-wrap" id="notifBell" onclick="toggleNotifPanel()">
+      <button class="notif-bell-btn" title="Notifications">
+        🔔
+      </button>
+      <span class="notif-badge" id="notifBadge" style="display:none;">0</span>
+
+      <!-- Notification Dropdown -->
+      <div class="notif-dropdown" id="notifDropdown">
+        <div class="notif-dropdown-header">
+          <span>🔔 Notifications</span>
+          <button class="notif-clear-all" onclick="clearAllNotifications()">Clear all</button>
+        </div>
+        <div class="notif-list" id="notifList">
+          <div class="notif-placeholder">No new notifications</div>
+        </div>
+      </div>
+    </div>
+
     <a href="main.html">Home</a>
     <a href="logout.php" class="btn logout">Logout</a>
   </nav>
 
 </header>
 
+
+<!-- ── MAIN LAYOUT WRAPPER ──────────────────── -->
+<div class="main-layout-wrapper">
 
 <!-- ── MAIN ────────────────────────────────── -->
 <main class="dashboard-container">
@@ -185,7 +208,6 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
 
       </div>
 
-      <!-- Notice shown when viewing active bookings -->
       <p class="completed-notice" id="completedNotice">
         ✅ Completed bookings are hidden from this view. To see them, select <strong>Completed (History)</strong> from the filter.
       </p>
@@ -228,6 +250,32 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
 </main>
 
 
+<!-- ── UPCOMING EVENTS PANEL (RIGHT SIDE) ───── -->
+<aside class="events-panel" id="eventsPanel">
+
+  <div class="events-panel-header">
+    <div class="events-panel-title">
+      <span class="ep-icon">📅</span>
+      <h3>Upcoming Events</h3>
+      <span class="events-count-badge" id="upcomingBadge" style="display:none;">0</span>
+    </div>
+    <button class="ep-collapse-btn" onclick="toggleEventsPanel()" title="Collapse panel">‹</button>
+  </div>
+
+  <div class="events-panel-sub">Next 7 days · auto-refreshes every 60s</div>
+
+  <div class="events-panel-body" id="upcomingEventsContainer">
+    <div class="events-empty">
+      <div class="events-empty-icon">📅</div>
+      <p>Loading events…</p>
+    </div>
+  </div>
+
+</aside>
+
+</div><!-- end .main-layout-wrapper -->
+
+
 <!-- STARTUP LOADER -->
 <div id="startup-loader">
   <div class="loader-content">
@@ -238,27 +286,8 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
 </div>
 
 
-<style>
-  /* Notice bar for completed bookings being hidden */
-  .completed-notice {
-    display: block;
-    background: #f0fdf4;
-    border: 1px solid #bbf7d0;
-    color: #166534;
-    font-size: 13px;
-    padding: 10px 16px;
-    border-radius: 8px;
-    margin-bottom: 12px;
-  }
-
-  .completed-notice.hidden {
-    display: none;
-  }
-</style>
-
 <script src="../JS/admin.js"></script>
 
-<!-- Show/hide the notice based on filter selection -->
 <script>
   document.getElementById("filterStatus").addEventListener("change", function () {
     const notice = document.getElementById("completedNotice");
