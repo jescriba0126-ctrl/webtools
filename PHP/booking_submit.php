@@ -6,7 +6,7 @@
 session_start();
 header('Content-Type: application/json');
 
-include("connect.php");  // gives us $pdo
+include("connect.php");
 
 // ── helpers ──────────────────────────────────────────────────
 function clean(string $v): string {
@@ -22,10 +22,18 @@ function getAmount(string $pkg): float {
     };
 }
 
-// ── Booking hours (24h) ───────────────────────────────────────
-define('BOOKING_OPEN',   8);  // 8:00 AM
-define('BOOKING_CLOSE', 22);  // 10:00 PM
-define('BUFFER_HOURS',   2);  // 2-hour buffer between bookings
+// ── Slot map ─────────────────────────────────────────────────
+$slotMap = [
+    'morning'   => '08:00:00',
+    'afternoon' => '14:00:00',
+    'evening'   => '19:00:00',
+];
+
+$slotLabels = [
+    'morning'   => 'Morning (8:00 AM)',
+    'afternoon' => 'Afternoon (2:00 PM)',
+    'evening'   => 'Evening (7:00 PM)',
+];
 
 // ── validate method ──────────────────────────────────────────
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -42,13 +50,14 @@ $occasion = clean($_POST['occasion'] ?? '');
 $guests   = (int) ($_POST['guests']  ?? 0);
 $package  = clean($_POST['package']  ?? '');
 $payment  = clean($_POST['payment']  ?? '');
-$datetime = clean($_POST['datetime'] ?? '');    // "2025-12-25T19:00"
+$date     = clean($_POST['date']     ?? '');   // "2026-05-28"
+$slot     = clean($_POST['slot']     ?? '');   // "morning" | "afternoon" | "evening"
 $notes    = clean($_POST['message']  ?? '');
 
 $allowed_occasions = ['dine-in','birthday','wedding','corporate','other'];
 $allowed_payments  = ['GCash','Maya','Online Banking','Credit / Debit Card','Cash'];
 
-if (!$name || !$email || !$phone || !$occasion || !$guests || !$payment || !$datetime) {
+if (!$name || !$email || !$phone || !$occasion || !$guests || !$payment || !$date || !$slot) {
     echo json_encode(['success' => false, 'message' => 'Please fill in all required fields.']);
     exit;
 }
@@ -73,37 +82,33 @@ if ($guests < 1 || $guests > 500) {
     exit;
 }
 
-// ── Convert "2025-12-25T19:00" -> "2025-12-25 19:00:00" ──────
-$bookingDT = date('Y-m-d H:i:s', strtotime($datetime));
-if (!$bookingDT || $bookingDT === '1970-01-01 00:00:00') {
-    echo json_encode(['success' => false, 'message' => 'Invalid date/time.']);
+if (!array_key_exists($slot, $slotMap)) {
+    echo json_encode(['success' => false, 'message' => 'Invalid slot selected.']);
     exit;
 }
 
-// ── Block past dates & times ──────────────────────────────────
+// ── Build booking datetime from date + slot ───────────────────
+$bookingDT = $date . ' ' . $slotMap[$slot];
+
+if (!strtotime($bookingDT)) {
+    echo json_encode(['success' => false, 'message' => 'Invalid date.']);
+    exit;
+}
+
+// ── Block past slots ──────────────────────────────────────────
 if (strtotime($bookingDT) <= time()) {
-    echo json_encode(['success' => false, 'message' => 'Please select a future date and time.']);
+    echo json_encode(['success' => false, 'message' => 'That slot has already passed. Please choose a future date.']);
     exit;
 }
 
-// ── Block outside business hours ─────────────────────────────
-$bookingHour = (int) date('G', strtotime($bookingDT));
-if ($bookingHour < BOOKING_OPEN || $bookingHour >= BOOKING_CLOSE) {
-    echo json_encode([
-        'success' => false,
-        'message' => 'Bookings are only accepted between 8:00 AM and 10:00 PM. Please choose a valid time.'
-    ]);
-    exit;
-}
-
-// ── GCash fields (only required when payment = GCash) ────────
+// ── GCash fields ─────────────────────────────────────────────
 $gcash_name      = clean($_POST['gcash_name']      ?? '');
 $gcash_number    = clean($_POST['gcash_number']    ?? '');
 $gcash_reference = clean($_POST['gcash_reference'] ?? '');
 
 if ($payment === 'GCash') {
     if (!$gcash_name || !$gcash_number || !$gcash_reference) {
-        echo json_encode(['success' => false, 'message' => 'Please fill in all GCash details (name, number, and reference number).']);
+        echo json_encode(['success' => false, 'message' => 'Please fill in all GCash details.']);
         exit;
     }
     if (!preg_match('/^09\d{9}$/', $gcash_number)) {
@@ -112,7 +117,7 @@ if ($payment === 'GCash') {
     }
 }
 
-// ── generate unique ticket number (collision-safe) ───────────
+// ── Generate unique ticket ────────────────────────────────────
 $ticket = null;
 for ($i = 0; $i < 5; $i++) {
     $candidate = 'T' . strtoupper(substr(bin2hex(random_bytes(5)), 0, 8));
@@ -129,18 +134,9 @@ if (!$ticket) {
 }
 
 // ── Handle proof of payment upload ───────────────────────────
-//
-//  FIX: proof_path is now stored as a root-relative URL that includes
-//  the project subfolder "webtools-main", so it resolves correctly
-//  from any page on localhost:
-//
-//    Stored in DB:  /webtools-main/PHP/uploads/proofs/proof_TICKET_TIME.jpg
-//    Used as:       <img src="/webtools-main/PHP/uploads/proofs/proof_TICKET_TIME.jpg">
-//
 $proof_path = null;
 
 if ($payment === 'GCash') {
-
     if (empty($_FILES['proof']['tmp_name'])) {
         echo json_encode(['success' => false, 'message' => 'Please upload your GCash payment screenshot.']);
         exit;
@@ -159,11 +155,8 @@ if ($payment === 'GCash') {
         exit;
     }
 
-    // Physical disk path — saves inside PHP/uploads/proofs/
     $upload_dir = __DIR__ . '/uploads/proofs/';
-    if (!is_dir($upload_dir)) {
-        mkdir($upload_dir, 0755, true);
-    }
+    if (!is_dir($upload_dir)) mkdir($upload_dir, 0755, true);
 
     $ext       = strtolower(pathinfo($_FILES['proof']['name'], PATHINFO_EXTENSION));
     $filename  = 'proof_' . $ticket . '_' . time() . '.' . $ext;
@@ -174,65 +167,38 @@ if ($payment === 'GCash') {
         exit;
     }
 
-    // ✅ FIX: include /webtools-main/ so the URL works from any page
     $proof_path = '/webtools-main/PHP/uploads/proofs/' . $filename;
 }
 
-// ── Time slot conflict check (2-hour buffer) ──────────────────
-$bufferSecs  = BUFFER_HOURS * 3600;
-$windowStart = date('Y-m-d H:i:s', strtotime($bookingDT) - $bufferSecs);
-$windowEnd   = date('Y-m-d H:i:s', strtotime($bookingDT) + $bufferSecs);
-
-$conflictStmt = $pdo->prepare("
-    SELECT COUNT(*) AS conflicts
+// ── Check if slot is already taken ───────────────────────────
+$slotTime = $slotMap[$slot];
+$slotStmt = $pdo->prepare("
+    SELECT COUNT(*) 
     FROM bookings
-    WHERE booking_datetime BETWEEN :start AND :end
-    AND status != 'Cancelled'
+    WHERE DATE(booking_datetime) = ?
+      AND TIME(booking_datetime) = ?
+      AND status != 'Cancelled'
 ");
-$conflictStmt->execute([
-    ':start' => $windowStart,
-    ':end'   => $windowEnd,
-]);
-$conflicts = (int) $conflictStmt->fetchColumn();
-
-if ($conflicts > 0) {
-    $nextStmt = $pdo->prepare("
-        SELECT booking_datetime
-        FROM bookings
-        WHERE booking_datetime BETWEEN :start AND :end
-        AND status != 'Cancelled'
-        ORDER BY booking_datetime ASC
-        LIMIT 1
-    ");
-    $nextStmt->execute([
-        ':start' => $windowStart,
-        ':end'   => $windowEnd,
-    ]);
-    $conflictRow  = $nextStmt->fetch();
-    $conflictTime = $conflictRow
-        ? date('F j, Y \a\t g:i A', strtotime($conflictRow['booking_datetime']))
-        : 'that time';
-
+$slotStmt->execute([$date, $slotTime]);
+if ((int) $slotStmt->fetchColumn() > 0) {
     echo json_encode([
         'success' => false,
-        'message' => "Sorry, that time slot is unavailable. There is already a booking near {$conflictTime}. Please choose a time at least 2 hours apart."
+        'message' => "Sorry, the {$slotLabels[$slot]} slot on " . date('F j, Y', strtotime($date)) . " is already taken. Please choose another slot or date."
     ]);
     exit;
 }
 
 // ── Daily capacity check ──────────────────────────────────────
-$bookingDate = date('Y-m-d', strtotime($bookingDT));
-
 $limitStmt   = $pdo->query("SELECT setting_value FROM settings WHERE setting_key = 'daily_capacity'");
 $DAILY_LIMIT = (int)($limitStmt->fetchColumn() ?: 100);
 
 $capStmt = $pdo->prepare("
-    SELECT COALESCE(SUM(guests), 0) AS total_guests
+    SELECT COALESCE(SUM(guests), 0)
     FROM bookings
     WHERE DATE(booking_datetime) = ?
-    AND status != 'Cancelled'
+      AND status != 'Cancelled'
 ");
-$capStmt->execute([$bookingDate]);
+$capStmt->execute([$date]);
 $bookedGuests = (int) $capStmt->fetchColumn();
 
 if (($bookedGuests + $guests) > $DAILY_LIMIT) {
@@ -244,13 +210,11 @@ if (($bookedGuests + $guests) > $DAILY_LIMIT) {
     exit;
 }
 
-// ── get amount from package ───────────────────────────────────
+// ── Get amount from package ───────────────────────────────────
 $amount = getAmount($package);
-
-// ── optional: link to logged-in user ─────────────────────────
 $userId = $_SESSION['id'] ?? null;
 
-// ── insert ────────────────────────────────────────────────────
+// ── Insert booking ────────────────────────────────────────────
 try {
     $stmt = $pdo->prepare("
         INSERT INTO bookings
@@ -286,6 +250,8 @@ try {
         'success' => true,
         'message' => 'Booking submitted successfully!',
         'ticket'  => $ticket,
+        'slot'    => $slotLabels[$slot],
+        'date'    => date('F j, Y', strtotime($date)),
     ]);
 
 } catch (PDOException $e) {
