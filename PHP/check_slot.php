@@ -1,31 +1,24 @@
 <?php
 /**
- * check_slot.php
+ * check_slot.php  (fixed)
  *
- * MODE A — new calendar (called by homepage.php):
+ * MODE A — calendar (called by homepage.php):
  *   GET ?date=2026-05-28&slot=morning
  *   Returns: { available, remaining, booked, capacity }
  *
- * MODE B — legacy (your original, untouched):
+ * MODE B — legacy datetime conflict check:
  *   GET ?datetime=2026-05-28 08:00:00
  *   Returns: { available, message }
- *
- * Matches booking_submit.php exactly:
- *   - booking_datetime  DATETIME
- *   - guests            INT
- *   - status != 'Cancelled'   (capital C)
- *   - daily_capacity from settings table
- *
- * Slot → time mapping (same as booking_submit.php $slotMap):
- *   morning   → 08:00:00
- *   afternoon → 14:00:00
- *   evening   → 19:00:00
  */
+
+// ── Suppress warnings/notices so they never corrupt JSON output ───────────────
+error_reporting(0);
+ini_set('display_errors', 0);
 
 header('Content-Type: application/json');
 include("connect.php");   // provides $pdo
 
-define('BUFFER_HOURS', 2);   // kept for MODE B
+define('BUFFER_HOURS', 2);
 
 $slotTimes = [
     'morning'   => '08:00:00',
@@ -33,11 +26,17 @@ $slotTimes = [
     'evening'   => '19:00:00',
 ];
 
-// ── Read daily capacity from settings (same as booking_submit.php) ────────────
+// ── Read daily capacity from settings ────────────────────────────────────────
+$DAILY_LIMIT = 100;
 try {
-    $limitStmt   = $pdo->query("SELECT setting_value FROM settings WHERE setting_key = 'daily_capacity'");
-    $DAILY_LIMIT = (int)($limitStmt->fetchColumn() ?: 100);
-} catch (Exception $e) {
+    $limitStmt = $pdo->query("SELECT setting_value FROM settings WHERE setting_key = 'daily_capacity' LIMIT 1");
+    if ($limitStmt) {
+        $val = $limitStmt->fetchColumn();
+        if ($val !== false && (int)$val > 0) {
+            $DAILY_LIMIT = (int)$val;
+        }
+    }
+} catch (Throwable $e) {
     $DAILY_LIMIT = 100;
 }
 
@@ -50,7 +49,7 @@ $hasDatetime = !$hasDateSlot && isset($_GET['datetime']) && trim($_GET['datetime
 if ($hasDateSlot) {
 
     $date = trim($_GET['date']);
-    $slot = trim($_GET['slot']);
+    $slot = strtolower(trim($_GET['slot']));
 
     if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)) {
         echo json_encode(['available' => false, 'remaining' => 0, 'message' => 'Invalid date format']);
@@ -66,7 +65,7 @@ if ($hasDateSlot) {
     }
 
     try {
-        // 1. How many guests already booked this specific slot
+        // 1. Guests already booked this specific slot
         $slotTime = $slotTimes[$slot];
         $slotStmt = $pdo->prepare("
             SELECT COALESCE(SUM(guests), 0) AS booked_slot
@@ -88,14 +87,14 @@ if ($hasDateSlot) {
         $dayStmt->execute([$date]);
         $bookedDay = (int)$dayStmt->fetchColumn();
 
-    } catch (Exception $e) {
+    } catch (Throwable $e) {
         echo json_encode(['available' => false, 'remaining' => 0, 'message' => 'DB error: ' . $e->getMessage()]);
         exit;
     }
 
-    // Remaining = how many more guests can be added today overall
     $remaining = max(0, $DAILY_LIMIT - $bookedDay);
-    $available = $remaining > 0 && $bookedSlot === 0;  // slot must also be empty
+    // Slot is available if day has remaining capacity AND this specific slot has no bookings yet
+    $available = ($remaining > 0 && $bookedSlot === 0);
 
     echo json_encode([
         'available' => $available,
@@ -107,7 +106,7 @@ if ($hasDateSlot) {
 }
 
 // ══════════════════════════════════════════════════════════════════════════════
-// MODE B — legacy datetime conflict check (original logic, 100% unchanged)
+// MODE B — legacy datetime conflict check
 // ══════════════════════════════════════════════════════════════════════════════
 if ($hasDatetime) {
 
@@ -123,16 +122,21 @@ if ($hasDatetime) {
     $windowStart = date('Y-m-d H:i:s', $ts - $bufferSecs);
     $windowEnd   = date('Y-m-d H:i:s', $ts + $bufferSecs);
 
-    $stmt = $pdo->prepare("
-        SELECT booking_datetime
-        FROM bookings
-        WHERE booking_datetime BETWEEN :start AND :end
-          AND status != 'Cancelled'
-        ORDER BY booking_datetime ASC
-        LIMIT 1
-    ");
-    $stmt->execute([':start' => $windowStart, ':end' => $windowEnd]);
-    $conflict = $stmt->fetch();
+    try {
+        $stmt = $pdo->prepare("
+            SELECT booking_datetime
+            FROM bookings
+            WHERE booking_datetime BETWEEN :start AND :end
+              AND status != 'Cancelled'
+            ORDER BY booking_datetime ASC
+            LIMIT 1
+        ");
+        $stmt->execute([':start' => $windowStart, ':end' => $windowEnd]);
+        $conflict = $stmt->fetch();
+    } catch (Throwable $e) {
+        echo json_encode(['available' => false, 'message' => 'DB error: ' . $e->getMessage()]);
+        exit;
+    }
 
     if ($conflict) {
         $conflictTime = date('F j, Y \a\t g:i A', strtotime($conflict['booking_datetime']));

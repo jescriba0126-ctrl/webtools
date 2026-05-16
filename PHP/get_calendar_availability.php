@@ -1,9 +1,10 @@
 <?php
-
- */
+// ── Suppress warnings/notices so they never corrupt JSON output ───────────────
+error_reporting(0);
+ini_set('display_errors', 0);
 
 session_start();
-include("connect.php");   
+include("connect.php");
 
 header('Content-Type: application/json');
 
@@ -16,12 +17,19 @@ if ($year < 2020 || $year > 2100 || $month < 1 || $month > 12) {
     exit;
 }
 
-// ── Read daily capacity from settings (same as booking_submit.php) ────────────
+// ── Read daily capacity from settings ────────────────────────────────────────
+$DAILY_LIMIT = 100; // safe default
 try {
-    $limitStmt   = $pdo->query("SELECT setting_value FROM settings WHERE setting_key = 'daily_capacity'");
-    $DAILY_LIMIT = (int)($limitStmt->fetchColumn() ?: 100);
-} catch (Exception $e) {
-    $DAILY_LIMIT = 100;   // fallback if settings table missing
+    $limitStmt = $pdo->query("SELECT setting_value FROM settings WHERE setting_key = 'daily_capacity' LIMIT 1");
+    if ($limitStmt) {
+        $val = $limitStmt->fetchColumn();
+        if ($val !== false && (int)$val > 0) {
+            $DAILY_LIMIT = (int)$val;
+        }
+    }
+} catch (Throwable $e) {
+    // settings table may not exist yet — use default 100
+    $DAILY_LIMIT = 100;
 }
 
 // Slot names and their times — must match booking_submit.php $slotMap
@@ -41,9 +49,9 @@ $monthEnd   = date('Y-m-t', strtotime($monthStart));
 try {
     $stmt = $pdo->prepare("
         SELECT
-            DATE(booking_datetime)       AS bdate,
-            TIME(booking_datetime)       AS btime,
-            COALESCE(SUM(guests), 0)     AS booked_guests
+            DATE(booking_datetime)   AS bdate,
+            TIME(booking_datetime)   AS btime,
+            COALESCE(SUM(guests), 0) AS booked_guests
         FROM bookings
         WHERE DATE(booking_datetime) BETWEEN ? AND ?
           AND status != 'Cancelled'
@@ -51,7 +59,7 @@ try {
     ");
     $stmt->execute([$monthStart, $monthEnd]);
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (Exception $e) {
+} catch (Throwable $e) {
     echo json_encode(['success' => false, 'message' => 'DB error: ' . $e->getMessage()]);
     exit;
 }
@@ -59,10 +67,9 @@ try {
 // ── Build lookup: $booked['2026-05-28']['morning'] = 40 ───────────────────────
 $booked = [];
 foreach ($rows as $row) {
-    // TIME() may return "08:00:00" or "8:00:00" depending on MySQL version
-    // Normalise to H:i:s with leading zero
-    $t        = $row['btime'];
-    $tPadded  = strlen($t) === 7 ? '0' . $t : $t;   // "8:00:00" → "08:00:00"
+    $t       = $row['btime'];
+    // Normalise "8:00:00" → "08:00:00" (MySQL version differences)
+    $tPadded = (strlen($t) === 7) ? '0' . $t : $t;
     $slotName = $timeToSlot[$tPadded] ?? null;
     if ($slotName !== null) {
         $booked[$row['bdate']][$slotName] = (int)$row['booked_guests'];
@@ -91,21 +98,16 @@ for ($d = 1; $d <= $daysInMonth; $d++) {
     // How many slots are individually at capacity
     $fullSlots = 0;
     foreach ($slotNames as $slot) {
-        $slotBooked = $booked[$dateStr][$slot] ?? 0;
-        // A slot is "full" if adding 1 more guest would exceed daily limit
-        // OR the slot itself already has bookings ≥ DAILY_LIMIT
-        if ($slotBooked >= $DAILY_LIMIT) {
+        if (($booked[$dateStr][$slot] ?? 0) >= $DAILY_LIMIT) {
             $fullSlots++;
         }
     }
 
-    // Remaining guest capacity for the whole day
     $remaining = max(0, $DAILY_LIMIT - $totalBookedDay);
 
     if ($remaining === 0) {
         $availability[$dateStr] = ['status' => 'full', 'remaining' => 0];
     } elseif ($fullSlots > 0 || $totalBookedDay > 0) {
-        // Some bookings exist but still space left
         $availability[$dateStr] = ['status' => 'partial', 'remaining' => $remaining];
     } else {
         $availability[$dateStr] = ['status' => 'open', 'remaining' => $remaining];
