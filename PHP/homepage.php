@@ -172,7 +172,7 @@ include("connect.php");
       <div id="formMessage" style="display:none; padding:14px 18px; border-radius:8px;
            margin-bottom:18px; font-size:15px; font-weight:500;"></div>
 
-      <form id="bookingForm" class="booking-form">
+      <form id="bookingForm" class="booking-form" enctype="multipart/form-data">
 
         <!-- FULL NAME -->
         <p>
@@ -297,47 +297,83 @@ include("connect.php");
 
   <!-- ================= GCASH DETAILS ================= -->
 
-  <div class="gcash-box" id="gcashBox">
-    <div class="gcash-content">
-      <div class="gcash-layout">
+  <!-- ================= GCASH DETAILS ================= -->
 
-        <!-- LEFT SIDE -->
-        <div class="gcash-info-side">
-          <div class="gcash-header">
-            <div class="gcash-icon">📲</div>
-            <div>
-              <h4>GCash Reservation Details</h4>
-              <p>Send your reservation payment to:</p>
-            </div>
+<div class="gcash-box" id="gcashBox">
+  <div class="gcash-content">
+    <div class="gcash-layout">
+
+      <!-- LEFT SIDE -->
+      <div class="gcash-info-side">
+        <div class="gcash-header">
+          <div class="gcash-icon">📲</div>
+          <div>
+            <h4>GCash Reservation Details</h4>
+            <p>Send your reservation payment to:</p>
           </div>
-          <div class="gcash-details">
-            <div class="detail-item">
-              <span>Account Name</span>
-              <strong>Cubiertos Food Hub</strong>
-            </div>
-            <div class="detail-item">
-              <span>GCash Number</span>
-              <strong>0981 027 0704</strong>
-            </div>
+        </div>
+        <div class="gcash-details">
+          <div class="detail-item">
+            <span>Account Name</span>
+            <strong>Cubiertos Food Hub</strong>
           </div>
-          <div class="upload-proof">
-            <label>Upload Payment Screenshot</label>
-            <input type="file" name="proof" accept="image/*">
+          <div class="detail-item">
+            <span>GCash Number</span>
+            <strong>0981 027 0704</strong>
           </div>
         </div>
 
-        <!-- RIGHT SIDE -->
-        <div class="gcash-qr-side">
-          <div class="qr-card">
-            <h4>Scan QR Code</h4>
-            <img src="../IMAGES/gcash.jpg" alt="GCash QR Code">
-            <p>Scan using your GCash app for faster payment processing.</p>
+        <!-- ── NEW: Sender GCash Info ── -->
+        <div class="gcash-sender-info">
+          <h5>Your GCash Information</h5>
+
+          <div class="gcash-field">
+            <label for="gcashName">GCash Account Name <span class="required">*</span></label>
+            <input type="text" id="gcashName" name="gcash_name"
+                   placeholder="e.g. Juan Dela Cruz"
+                   autocomplete="off">
+            <small class="field-hint">Name registered on your GCash account</small>
+          </div>
+
+          <div class="gcash-field">
+            <label for="gcashNumber">GCash Number <span class="required">*</span></label>
+            <input type="tel" id="gcashNumber" name="gcash_number"
+                   placeholder="e.g. 0917 123 4567"
+                   maxlength="11"
+                   autocomplete="off">
+            <small class="field-hint">11-digit mobile number linked to GCash</small>
+          </div>
+
+          <div class="gcash-field">
+            <label for="gcashRef">Reference Number <span class="required">*</span></label>
+            <input type="text" id="gcashRef" name="gcash_reference"
+                   placeholder="e.g. 1234567890"
+                   maxlength="20"
+                   autocomplete="off">
+            <small class="field-hint">Found in your GCash transaction history</small>
           </div>
         </div>
+        <!-- ── END NEW ── -->
 
+        <div class="upload-proof">
+          <label>Upload Payment Screenshot <span class="required">*</span></label>
+          <input type="file" name="proof" accept="image/*" id="proofUpload">
+          <small class="field-hint">Attach a screenshot of your successful GCash transaction</small>
+        </div>
       </div>
+
+      <!-- RIGHT SIDE -->
+      <div class="gcash-qr-side">
+        <div class="qr-card">
+          <h4>Scan QR Code</h4>
+          <img src="../IMAGES/gcash.jpg" alt="GCash QR Code">
+          <p>Scan using your GCash app for faster payment processing.</p>
+        </div>
+      </div>
+
     </div>
   </div>
+</div>
 
   <!-- ================= SPECIAL NOTES ================= -->
 
@@ -531,9 +567,7 @@ include("connect.php");
           showMsg("❌ " + (json.message || "Something went wrong."), false);
         }
 
-      } catch (err) {
-        showMsg("❌ Network error. Please try again.", false);
-        console.error(err);
+      
       } finally {
         submitBtn.disabled    = false;
         submitBtn.textContent = "Submit Booking";

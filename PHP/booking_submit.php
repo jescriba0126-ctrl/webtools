@@ -73,7 +73,7 @@ if ($guests < 1 || $guests > 500) {
     exit;
 }
 
-// ── Convert "2025-12-25T19:00" → "2025-12-25 19:00:00" ───────
+// ── Convert "2025-12-25T19:00" -> "2025-12-25 19:00:00" ──────
 $bookingDT = date('Y-m-d H:i:s', strtotime($datetime));
 if (!$bookingDT || $bookingDT === '1970-01-01 00:00:00') {
     echo json_encode(['success' => false, 'message' => 'Invalid date/time.']);
@@ -96,14 +96,100 @@ if ($bookingHour < BOOKING_OPEN || $bookingHour >= BOOKING_CLOSE) {
     exit;
 }
 
-// ── Time slot conflict check (2-hour buffer) ──────────────────
-// Checks if any existing non-cancelled booking falls within 2 hours
-// before or after the requested time on the same date
-$bufferSecs    = BUFFER_HOURS * 3600;
-$windowStart   = date('Y-m-d H:i:s', strtotime($bookingDT) - $bufferSecs);
-$windowEnd     = date('Y-m-d H:i:s', strtotime($bookingDT) + $bufferSecs);
+// ── GCash fields (only required when payment = GCash) ────────
+$gcash_name      = clean($_POST['gcash_name']      ?? '');
+$gcash_number    = clean($_POST['gcash_number']    ?? '');
+$gcash_reference = clean($_POST['gcash_reference'] ?? '');
 
-$conflictStmt  = $pdo->prepare("
+if ($payment === 'GCash') {
+    if (!$gcash_name || !$gcash_number || !$gcash_reference) {
+        echo json_encode(['success' => false, 'message' => 'Please fill in all GCash details (name, number, and reference number).']);
+        exit;
+    }
+    if (!preg_match('/^09\d{9}$/', $gcash_number)) {
+        echo json_encode(['success' => false, 'message' => 'Invalid GCash number. Must be 11 digits starting with 09.']);
+        exit;
+    }
+}
+
+// ── generate unique ticket number (collision-safe) ───────────
+// Uses random_bytes for stronger uniqueness, retries on collision
+$ticket = null;
+for ($i = 0; $i < 5; $i++) {
+    $candidate = 'T' . strtoupper(substr(bin2hex(random_bytes(5)), 0, 8));
+    $chk = $pdo->prepare("SELECT COUNT(*) FROM bookings WHERE ticket_number = ?");
+    $chk->execute([$candidate]);
+    if ((int)$chk->fetchColumn() === 0) {
+        $ticket = $candidate;
+        break;
+    }
+}
+if (!$ticket) {
+    echo json_encode(['success' => false, 'message' => 'Could not generate a unique ticket. Please try again.']);
+    exit;
+}
+
+// ── Handle proof of payment upload ───────────────────────────
+//
+//  FOLDER STRUCTURE:
+//    /your-project/
+//      PHP/
+//        booking_submit.php   <- __DIR__
+//        payment_admin.php
+//        uploads/
+//          proofs/            <- images saved here
+//
+//  proof_path stored in DB as a root-relative web URL:
+//    /PHP/uploads/proofs/proof_TICKET_TIME.jpg
+//  This works as <img src="/PHP/uploads/proofs/..."> from ANY page.
+//
+$proof_path = null;
+
+if ($payment === 'GCash') {
+
+    if (empty($_FILES['proof']['tmp_name'])) {
+        echo json_encode(['success' => false, 'message' => 'Please upload your GCash payment screenshot.']);
+        exit;
+    }
+
+    $allowed_types = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    $file_type     = mime_content_type($_FILES['proof']['tmp_name']);
+
+    if (!in_array($file_type, $allowed_types)) {
+        echo json_encode(['success' => false, 'message' => 'Proof must be a JPG, PNG, GIF, or WEBP image.']);
+        exit;
+    }
+
+    if ($_FILES['proof']['size'] > 5 * 1024 * 1024) {
+        echo json_encode(['success' => false, 'message' => 'Proof image must be under 5MB.']);
+        exit;
+    }
+
+    // Physical disk path — inside the PHP/ folder alongside this script
+    $upload_dir = __DIR__ . '/uploads/proofs/';
+    if (!is_dir($upload_dir)) {
+        mkdir($upload_dir, 0755, true);
+    }
+
+    $ext       = strtolower(pathinfo($_FILES['proof']['name'], PATHINFO_EXTENSION));
+    $filename  = 'proof_' . $ticket . '_' . time() . '.' . $ext;
+    $full_path = $upload_dir . $filename;
+
+    if (!move_uploaded_file($_FILES['proof']['tmp_name'], $full_path)) {
+        echo json_encode(['success' => false, 'message' => 'Failed to save proof image. Please try again.']);
+        exit;
+    }
+
+    // Root-relative web URL — works as <img src="..."> from any page on the site
+    $proof_path = '/PHP/uploads/proofs/' . $filename;
+}
+
+// ── Time slot conflict check (2-hour buffer) ──────────────────
+$bufferSecs  = BUFFER_HOURS * 3600;
+$windowStart = date('Y-m-d H:i:s', strtotime($bookingDT) - $bufferSecs);
+$windowEnd   = date('Y-m-d H:i:s', strtotime($bookingDT) + $bufferSecs);
+
+$conflictStmt = $pdo->prepare("
     SELECT COUNT(*) AS conflicts
     FROM bookings
     WHERE booking_datetime BETWEEN :start AND :end
@@ -116,7 +202,6 @@ $conflictStmt->execute([
 $conflicts = (int) $conflictStmt->fetchColumn();
 
 if ($conflicts > 0) {
-    // Find the actual conflicting booking time to show the customer
     $nextStmt = $pdo->prepare("
         SELECT booking_datetime
         FROM bookings
@@ -140,7 +225,6 @@ if ($conflicts > 0) {
     ]);
     exit;
 }
-// ── end time slot check ───────────────────────────────────────
 
 // ── Daily capacity check ──────────────────────────────────────
 $bookingDate = date('Y-m-d', strtotime($bookingDT));
@@ -165,10 +249,6 @@ if (($bookedGuests + $guests) > $DAILY_LIMIT) {
     ]);
     exit;
 }
-// ── end capacity check ────────────────────────────────────────
-
-// ── generate unique ticket number ────────────────────────────
-$ticket = 'T' . strtoupper(substr(uniqid(), -8));
 
 // ── get amount from package ───────────────────────────────────
 $amount = getAmount($package);
@@ -180,26 +260,32 @@ $userId = $_SESSION['id'] ?? null;
 try {
     $stmt = $pdo->prepare("
         INSERT INTO bookings
-            (ticket, user_id, name, email, phone, occasion, guests,
-             package, amount, payment_method, booking_datetime, special_notes, status)
+            (ticket_number, user_id, name, email, phone, occasion, guests,
+             package, amount, payment_method, booking_datetime, special_notes,
+             gcash_name, gcash_number, gcash_reference, proof_path, status)
         VALUES
             (:ticket, :user_id, :name, :email, :phone, :occasion, :guests,
-             :package, :amount, :payment, :datetime, :notes, 'Pending')
+             :package, :amount, :payment, :datetime, :notes,
+             :gcash_name, :gcash_number, :gcash_reference, :proof_path, 'Pending')
     ");
 
     $stmt->execute([
-        ':ticket'   => $ticket,
-        ':user_id'  => $userId,
-        ':name'     => $name,
-        ':email'    => $email,
-        ':phone'    => $phone,
-        ':occasion' => $occasion,
-        ':guests'   => $guests,
-        ':package'  => $package,
-        ':amount'   => $amount,
-        ':payment'  => $payment,
-        ':datetime' => $bookingDT,
-        ':notes'    => $notes,
+        ':ticket'          => $ticket,
+        ':user_id'         => $userId,
+        ':name'            => $name,
+        ':email'           => $email,
+        ':phone'           => $phone,
+        ':occasion'        => $occasion,
+        ':guests'          => $guests,
+        ':package'         => $package,
+        ':amount'          => $amount,
+        ':payment'         => $payment,
+        ':datetime'        => $bookingDT,
+        ':notes'           => $notes,
+        ':gcash_name'      => $gcash_name,
+        ':gcash_number'    => $gcash_number,
+        ':gcash_reference' => $gcash_reference,
+        ':proof_path'      => $proof_path,
     ]);
 
     echo json_encode([
