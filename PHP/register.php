@@ -2,6 +2,7 @@
 ob_start();
 session_start();
 include 'connect.php';
+include 'Mailer.php'; // 1. Added mail helper include
 
 // ================= SIGN UP =================
 if (isset($_POST['signUp'])) {
@@ -34,11 +35,17 @@ if (isset($_POST['signUp'])) {
     // MD5 — matches existing database hashes
     $hashedPassword = md5($password);
 
-    $insertQuery = "INSERT INTO users (firstName, lastName, gender, email, password, role)
-                    VALUES ('$firstName', '$lastName', '$gender', '$email', '$hashedPassword', 'user')";
+    // 2. GENERATE COMPLIANT SECURITY TOKENS AND UPDATE STRUCTURAL INSERT VALUES
+    $token = bin2hex(random_bytes(50));
+    
+    $insertQuery = "INSERT INTO users (firstName, lastName, gender, email, password, role, is_verified, verification_token)
+                    VALUES ('$firstName', '$lastName', '$gender', '$email', '$hashedPassword', 'user', 0, '$token')";
 
     if (mysqli_query($conn, $insertQuery)) {
-        header("Location: ../HTML/login.html?success=Account+created!+Please+log+in.");
+        // Dispatch the email notification string immediately following database persistence
+        sendVerificationEmail($email, $firstName, $token);
+        
+        header("Location: ../HTML/login.html?success=" . urlencode("Account created! Check your email to verify your registration."));
         exit();
     } else {
         header("Location: ../HTML/login.html?error=Registration+failed.+Try+again.&panel=register");
@@ -59,6 +66,12 @@ if (isset($_POST['signIn'])) {
 
         $row = mysqli_fetch_assoc($result);
 
+        // 3. SECURE PASSIVE RESTRICTION BLOCKING UNVERIFIED ENTRIES
+        if ((int)$row['is_verified'] === 0) {
+            header("Location: ../HTML/login.html?error=" . urlencode("Please verify your email address before signing in."));
+            exit();
+        }
+
         session_regenerate_id(true);
 
         $_SESSION['id']             = $row['Id'];
@@ -70,13 +83,12 @@ if (isset($_POST['signIn'])) {
         if ($row['role'] === 'admin') {
             header("Location: admin.php");
             exit();
+        } else {
+            header("Location: ../HTML/menu.html"); 
+            exit();
         }
-
-        header("Location: homepage.php");
-        exit();
-
     } else {
-        header("Location: ../HTML/login.html?error=Incorrect+email+or+password");
+        header("Location: ../HTML/login.html?error=Incorrect+Email+or+Password");
         exit();
     }
 }
